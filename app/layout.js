@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 export const metadata = {
   title: "টাস্ক রিওয়ার্ড — কাজ করুন, পুরস্কার জিতুন",
-  description: "বাংলা টাস্ক ও রিওয়ার্ড ওয়েবসাইট (ডেমো সংস্করণ)",
+  description: "বাংলা টাস্ক ও রিওয়ার্ড ওয়েবসাইট",
 };
 
 export default function RootLayout({ children }) {
