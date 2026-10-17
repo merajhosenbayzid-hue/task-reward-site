@@ -47,7 +47,7 @@ export default function Dashboard() {
       </div>
 
       <p className="mt-6 text-center text-xs text-gray-500">
-        ⚠️ ডেমো সংস্করণ — এই তথ্য শুধু আপনার ব্রাউজারে সংরক্ষিত (localStorage)।
+        আপনার সর্বশেষ তথ্য নিচে দেখুন।
       </p>
     </div>
   );
