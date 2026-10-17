@@ -32,7 +32,7 @@ export default function Home() {
             ড্যাশবোর্ড
           </Link>
         </div>
-        <p className="mt-4 text-xs text-emerald-200">⚠️ ডেমো সংস্করণ — কোনো আসল টাকা লেনদেন হয় না</p>
+        
       </section>
 
       {/* Packages */}
