@@ -107,7 +107,7 @@ export default function Deposit() {
 
       {history.length > 0 && (
         <div className="mt-6">
-          <h2 className="font-bold">🕘 আমার ডিপোজিট ইতিহাস (ডেমো)</h2>
+          <h2 className="font-bold">🕘 আমার ডিপোজিট ইতিহাস</h2>
           <div className="mt-2 space-y-2">
             {history.map((d) => (
               <div key={d.id} className="bg-white rounded-xl shadow p-4 text-sm flex justify-between">
