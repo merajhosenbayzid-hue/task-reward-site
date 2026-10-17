@@ -20,9 +20,6 @@ export default function Header() {
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold">💰 টাস্ক রিওয়ার্ড</span>
-          <span className="text-xs bg-amber-400 text-emerald-950 font-bold px-2 py-0.5 rounded-full">
-            ডেমো সংস্করণ
-          </span>
         </Link>
       </div>
       <nav className="bg-emerald-800">
