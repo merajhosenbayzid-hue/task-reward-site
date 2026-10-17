@@ -109,7 +109,7 @@ export default function Withdraw() {
 
       {history.length > 0 && (
         <div className="mt-6">
-          <h2 className="font-bold">🕘 উত্তোলন ইতিহাস (ডেমো)</h2>
+          <h2 className="font-bold">🕘 উত্তোলন ইতিহাস</h2>
           <div className="mt-2 space-y-2">
             {history.map((w) => (
               <div key={w.id} className="bg-white rounded-xl shadow p-4 text-sm flex justify-between">
