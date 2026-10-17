@@ -56,14 +56,14 @@ export default function Admin() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-center">🛠️ অ্যাডমিন প্যানেল</h1>
-      <p className="text-center text-gray-600 mt-1">ডেমো সংস্করণ — সব তথ্য নমুনা</p>
+      <p className="text-center text-gray-600 mt-1">সব কার্যক্রম এখান থেকে পরিচালনা করুন</p>
 
       <h2 className="mt-8 font-bold text-lg">💵 ডিপোজিট যাচাই</h2>
       <div className="mt-2">
         <Table head={["ব্যবহারকারী", "মাধ্যম", "টাকা", "TrxID", "অবস্থা", ""]}>
           {deposits.map((d, i) => (
             <tr key={d.id} className={i % 2 ? "bg-emerald-50" : "bg-white"}>
-              <td className="p-3">{d.user || "ডেমো ব্যবহারকারী"}</td>
+              <td className="p-3">{d.user || "ব্যবহারকারী"}</td>
               <td className="p-3">{d.method}</td>
               <td className="p-3 font-bold">{d.amount} টাকা</td>
               <td className="p-3">{d.trxId}</td>
@@ -88,7 +88,7 @@ export default function Admin() {
         <Table head={["ব্যবহারকারী", "মাধ্যম", "টাকা", "তারিখ", "অবস্থা", ""]}>
           {withdrawals.map((w, i) => (
             <tr key={w.id} className={i % 2 ? "bg-emerald-50" : "bg-white"}>
-              <td className="p-3">{w.user || "ডেমো ব্যবহারকারী"}</td>
+              <td className="p-3">{w.user || "ব্যবহারকারী"}</td>
               <td className="p-3">{w.method}</td>
               <td className="p-3 font-bold">{w.amount} টাকা</td>
               <td className="p-3">{w.date}</td>
