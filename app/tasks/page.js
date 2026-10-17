@@ -166,7 +166,7 @@ export default function Tasks() {
       </div>
 
       <p className="mt-6 text-center text-xs text-gray-500">
-        ⚠️ ডেমো সংস্করণ — ক্লিক গণনা এই ব্রাউজারে সংরক্ষিত থাকে।
+        ক্লিক গণনা আপনার অ্যাকাউন্টে সংরক্ষিত থাকে।
       </p>
     </div>
   );
