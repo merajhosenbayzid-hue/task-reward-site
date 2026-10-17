@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-4 py-6 text-center text-sm">
         <p className="font-bold">💰 টাস্ক রিওয়ার্ড</p>
         <p className="mt-1 text-emerald-300">
-          এটি একটি ডেমো সংস্করণ — এখানে কোনো আসল টাকা লেনদেন হয় না।
+          © ২০২৬ টাস্ক রিওয়ার্ড — সর্বস্বত্ব সংরক্ষিত
         </p>
       </div>
     </footer>
