@@ -89,7 +89,7 @@ export default function Deposit() {
 
       {done && (
         <div className="mt-5 border border-aqua/40 bg-aqua/10 rounded-[2rem] p-5 text-center font-bold text-aqua">
-          ✅ আবেদন জমা হয়েছে! যাচাইয়ের পর {ACTIVE_DAYS} দিনের জন্য অ্যাক্টিভ হবে।
+          ✅ ডিপোজিট সফল! অ্যাকাউন্ট {ACTIVE_DAYS} দিনের জন্য অ্যাক্টিভ হয়েছে।
         </div>
       )}
 
@@ -122,7 +122,7 @@ export default function Deposit() {
         <button type="submit" className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25">
           {ACTIVATION_AMOUNT} টাকা ডিপোজিট জমা দিন
         </button>
-        <p className="text-xs text-faint text-center">📝 ম্যানুয়াল যাচাই — অ্যাডমিন যাচাই করে অ্যাকাউন্ট অ্যাক্টিভ করবেন</p>
+        <p className="text-xs text-faint text-center">📝 ডিপোজিটের তথ্য সংরক্ষিত থাকবে — প্রয়োজনে অ্যাডমিন যাচাই করবেন</p>
       </form>
 
       {history.length > 0 && (
