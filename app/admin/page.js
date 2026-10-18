@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getList, seedDemoData } from "../../lib/demo";
+import Link from "next/link";
+import { getList, seedDemoData, getCurrentUser, getUsers, isActive } from "../../lib/demo";
 
-const DEMO_USERS = [
-  { name: "রহিম উদ্দিন", package: "প্যাকেজ ২", balance: "৫৫ টাকা", referrals: 4, status: "সক্রিয়" },
-  { name: "করিম শেখ", package: "প্যাকেজ ৩", balance: "১১০ টাকা", referrals: 11, status: "সক্রিয়" },
-  { name: "সালমা বেগম", package: "প্যাকেজ ১", balance: "১১ টাকা", referrals: 1, status: "সক্রিয়" },
-];
+const OWNER_EMAIL = "merajhosenbayzid@gmail.com";
 
 const DEMO_TASKS = [
   { name: "টাস্ক ১ — ৫০০ ক্লিক", reward: "১২ টাকা", done: 34 },
@@ -36,11 +33,21 @@ function Table({ head, children }) {
 export default function Admin() {
   const [deposits, setDeposits] = useState([]);
   const [withdrawals, setWithdrawals] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [allowed, setAllowed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    seedDemoData();
-    setDeposits(getList("deposits"));
-    setWithdrawals(getList("withdrawals"));
+    const cu = getCurrentUser();
+    const ok = !!cu && cu.email === OWNER_EMAIL;
+    setAllowed(ok);
+    if (ok) {
+      seedDemoData();
+      setDeposits(getList("deposits"));
+      setWithdrawals(getList("withdrawals"));
+      setUsers(getUsers());
+    }
+    setLoaded(true);
   }, []);
 
   const approve = (list, setList, id) => {
@@ -52,6 +59,28 @@ export default function Admin() {
       localStorage.setItem(key, JSON.stringify(updated));
     }
   };
+
+  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
+
+  if (!allowed) {
+    return (
+      <div className="max-w-md mx-auto text-center py-16">
+        <div className="glass rounded-[2.5rem] p-10">
+          <p className="text-5xl">🔒</p>
+          <h1 className="mt-4 text-2xl font-bold text-white">অ্যাডমিন প্যানেল</h1>
+          <p className="text-mist mt-2 text-sm">
+            এই পেজটি শুধুমাত্র সাইট মালিকের জন্য সংরক্ষিত।
+          </p>
+          <Link
+            href="/login"
+            className="mt-6 inline-block btn-gradient text-white font-bold px-8 py-3 rounded-full hover:opacity-90"
+          >
+            লগিন করুন
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -108,18 +137,26 @@ export default function Admin() {
         </Table>
       </div>
 
-      <h2 className="mt-10 font-bold text-xl text-white">👥 ব্যবহারকারী</h2>
+      <h2 className="mt-10 font-bold text-xl text-white">👥 ব্যবহারকারী ({users.length} জন)</h2>
       <div className="mt-2">
-        <Table head={["নাম", "প্যাকেজ", "ব্যালেন্স", "রেফার", "অবস্থা"]}>
-          {DEMO_USERS.map((u, i) => (
-            <tr key={u.name} className={i % 2 ? "bg-white/5" : ""}>
+        <Table head={["নাম", "ইমেইল", "মোবাইল", "ব্যালেন্স", "রেফারেল কোড", "অবস্থা"]}>
+          {users.map((u, i) => (
+            <tr key={u.email} className={i % 2 ? "bg-white/5" : ""}>
               <td className="p-4 font-bold text-white">{u.name}</td>
-              <td className="p-4">{u.package}</td>
-              <td className="p-4">{u.balance}</td>
-              <td className="p-4">{u.referrals} জন</td>
-              <td className="p-4 text-aqua font-bold">{u.status}</td>
+              <td className="p-4">{u.email}</td>
+              <td className="p-4">{u.phone}</td>
+              <td className="p-4 text-white">{u.balance} টাকা</td>
+              <td className="p-4">{u.referralCode}</td>
+              <td className="p-4 font-bold" style={{ color: isActive(u) ? "#2DD4BF" : "#FFB199" }}>
+                {isActive(u) ? "🟢 সক্রিয়" : "🔴 নিষ্ক্রিয়"}
+              </td>
             </tr>
           ))}
+          {users.length === 0 && (
+            <tr>
+              <td className="p-4 text-center" colSpan={6}>এখনো কোনো ব্যবহারকারী রেজিস্টার করেনি।</td>
+            </tr>
+          )}
         </Table>
       </div>
 
