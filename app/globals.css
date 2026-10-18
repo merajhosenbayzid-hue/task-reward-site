@@ -18,3 +18,24 @@ button, a, input, select, textarea {
   background: #FFCC00;
   color: #2B2D42;
 }
+
+/* Live vertical ticker (LiveMe-style auto scroll) */
+@keyframes ticker-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.ticker-up {
+  animation: ticker-up 45s linear infinite;
+}
+.ticker-up:hover {
+  animation-play-state: paused;
+}
+
+/* Gentle floating for background coins */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-22px) rotate(8deg); }
+}
+.floaty {
+  animation: floaty 8s ease-in-out infinite;
+}
