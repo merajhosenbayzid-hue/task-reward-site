@@ -1,244 +1,229 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
 import LiveFeed from "../components/LiveFeed";
 
-const STEPS = [
-  { n: "১", title: "ফ্রি অ্যাকাউন্ট খুলুন", text: "Gmail ও মোবাইল নম্বর দিয়ে ১ মিনিটে অ্যাকাউন্ট খুলুন — কোনো টাকা লাগবে না।", bg: "bg-lav" },
-  { n: "২", title: "অ্যাকাউন্ট অ্যাক্টিভ করুন", text: "বিকাশ, নগদ বা রকেটে ১০০ টাকা ডিপোজিট করে ৭ দিনের জন্য অ্যাক্টিভ করুন।", bg: "bg-sun" },
-  { n: "৩", title: "টাস্ক ও রেফার করুন", text: "সহজ টাস্ক সম্পন্ন করুন এবং বন্ধুদের রেফার করে বোনাস আয় করুন।", bg: "bg-peach" },
-  { n: "৪", title: "পুরস্কার জিতুন", text: "শর্ত পূরণ হলে বিকাশ/নগদ/রকেটে টাকা উত্তোলন করুন।", bg: "bg-peri" },
-];
+const MARQUEE = ["রেফার করুন", "কমিশন জিতুন", "টাস্ক সম্পন্ন করুন", "১০% ওয়েলকাম বোনাস", "দ্রুত পেমেন্ট", "২৪/৭ সাপোর্ট"];
 
-const STATS = [
-  { value: "১২,০০০+", label: "সন্তুষ্ট ইউজার" },
-  { value: "৮.৫ লাখ৳+", label: "মোট পেমেন্ট" },
-  { value: "৪.৮/৫", label: "ইউজার রেটিং" },
-  { value: "২৪ ঘণ্টা", label: "পেমেন্ট সময়" },
-];
-
-const TASK_TYPES = [
-  { icon: "🖱️", title: "সহজ টাস্ক", text: "ক্লিক ও সাধারণ কাজ করে আয় করুন", bg: "bg-lav", chip: "জনপ্রিয়", chipBg: "bg-sun" },
-  { icon: "👥", title: "রেফার করুন", text: "বন্ধুদের আমন্ত্রণ জানিয়ে বোনাস জিতুন", bg: "bg-peach", chip: "বোনাস", chipBg: "bg-coral text-white" },
-  { icon: "🎁", title: "বোনাস আয়", text: "ওয়েলকাম ও রেফার বোনাসে আয় বাড়ান", bg: "bg-peri", chip: "১০%+", chipBg: "bg-lav" },
-];
-
-const BENEFITS = [
-  { icon: "🔒", title: "নিরাপদ", text: "আপনার তথ্য ও টাকা সম্পূর্ণ সুরক্ষিত থাকে", bg: "bg-lav" },
-  { icon: "⚡", title: "দ্রুত পেমেন্ট", text: "উত্তোলনের ২৪ ঘণ্টার মধ্যে টাকা পৌঁছে যায়", bg: "bg-creamdeep" },
-  { icon: "📜", title: "স্বচ্ছ নিয়ম", text: "সব নিয়ম পরিষ্কার — লুকানো কোনো শর্ত নেই", bg: "bg-peach" },
-];
-
-const FEATURES = [
-  { icon: "🎁", title: "১০% ওয়েলকাম বোনাস", text: "প্রতিটি সফল ডিপোজিটে ১০% বোনাস — ১০০ টাকায় ১১০ টাকা!", bg: "bg-lav" },
-  { icon: "👥", title: "৫% রেফার বোনাস", text: "বন্ধুরা ডিপোজিট করলে আপনি ৫%, তারাও ৫% পাবেন।", bg: "bg-peach" },
-  { icon: "🟢", title: "৭ দিনের অ্যাক্টিভেশন", text: "মাত্র ১০০ টাকায় পুরো সপ্তাহের সব সুবিধা।", bg: "bg-peri" },
-  { icon: "🏧", title: "সহজ উত্তোলন", text: "শর্ত পূরণ হলেই বিকাশ/নগদ/রকেটে টাকা তুলুন।", bg: "bg-creamdeep" },
-  { icon: "🎧", title: "বাংলা সাপোর্ট", text: "যেকোনো সমস্যায় বাংলায় সাহায্য পাবেন।", bg: "bg-lav" },
-  { icon: "🇧🇩", title: "বাংলাদেশি প্ল্যাটফর্ম", text: "বিকাশ, নগদ, রকেট — সব পরিচিত মাধ্যমে পেমেন্ট।", bg: "bg-peach" },
-];
-
-const TESTIMONIALS = [
-  {
-    name: "রহিম উদ্দিন", area: "ঢাকা", stars: "⭐⭐⭐⭐⭐",
-    text: "প্রথমে বিশ্বাস হয়নি, কিন্তু ৭ দিনে ১০ জন রেফার করে ৫০০ টাকা তুলেছি। বিকাশে টাকা পেয়েছি ১ দিনেই!",
-  },
-  {
-    name: "সুমাইয়া আক্তার", area: "চট্টগ্রাম", stars: "⭐⭐⭐⭐⭐",
-    text: "নিয়মগুলো একদম পরিষ্কার। ডিপোজিটের পর অ্যাকাউন্ট অ্যাক্টিভ হলো, রেফার করে ভালো বোনাস পেয়েছি।",
-  },
-  {
-    name: "করিম হোসেন", area: "রাজশাহী", stars: "⭐⭐⭐⭐",
-    text: "সাপোর্ট খুব ভালো — একটা সমস্যায় মেসেজ করতেই সাথে সাথে সমাধান পেয়েছি। টাকা তোলাও সহজ।",
-  },
-];
-
-const FAQS = [
-  { q: "অ্যাকাউন্ট খুলতে কি টাকা লাগে?", a: "না, সম্পূর্ণ বিনামূল্যে অ্যাকাউন্ট খুলতে পারবেন। শুধু Gmail ও BD মোবাইল নম্বর লাগবে।" },
-  { q: "অ্যাক্টিভেশন কী? কেন ১০০ টাকা ডিপোজিট করতে হবে?", a: "১০০ টাকা ডিপোজিট করলে আপনার অ্যাকাউন্ট ৭ দিনের জন্য অ্যাক্টিভ হয়। অ্যাক্টিভ থাকলেই রেফার, বোনাস ও উত্তোলনের সুবিধা পাবেন।" },
-  { q: "টাকা কীভাবে পাবো?", a: "বিকাশ, নগদ বা রকেটে। উত্তোলনের আবেদন করলে ২৪ ঘণ্টার মধ্যে পেমেন্ট পাঠানো হয়।" },
-  { q: "রেফার কীভাবে করবো?", a: "অ্যাকাউন্ট অ্যাক্টিভ করার পর আপনার ইউনিক রেফারেল লিংক পাবেন। লিংকটি বন্ধুদের সাথে শেয়ার করলেই হবে।" },
-  { q: "৭ দিন পর কী হবে?", a: "অ্যাক্টিভেশন শেষ হলে নতুন রেফার ও আয় বন্ধ থাকবে। আবার ১০০ টাকা ডিপোজিট করে রিঅ্যাক্টিভ করতে পারবেন।" },
-  { q: "এই সাইট কি বিশ্বস্ত?", a: "আমাদের সব নিয়ম ওয়েবসাইটে পরিষ্কারভাবে লেখা আছে — কোনো লুকানো শর্ত নেই। হাজারো ইউজার নিয়মিত পেমেন্ট পাচ্ছেন।" },
-];
-
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
+function Reveal({ children, className = "", delay = 0 }) {
   return (
-    <div className="border-b border-white/10">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center py-5 text-left gap-4"
-      >
-        <span className="text-white/90 font-bold">{q}</span>
-        <span className="text-white/60 text-2xl font-light shrink-0">{open ? "−" : "+"}</span>
-      </button>
-      {open && <p className="pb-5 text-white/60 text-sm leading-relaxed">{a}</p>}
+    <div className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
     </div>
   );
 }
 
 export default function Home() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="-mt-2">
-      {/* Hero — cream band, big rounded, with live feed */}
-      <section className="bg-creamdeep rounded-[2.5rem] px-6 md:px-12 pt-10 md:pt-14 pb-12 md:pb-16 relative overflow-hidden">
-        <div className="absolute -top-16 -right-16 w-56 h-56 bg-sun/40 rounded-full" />
-        <div className="absolute -bottom-20 -left-10 w-64 h-64 bg-lav/40 rounded-full" />
-        <div className="relative grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-center">
-          <div className="max-w-2xl">
-            <p className="text-ink text-sm font-bold">
-              🎉 নতুন ইউজারদের জন্য ১০% ওয়েলকাম বোনাস
-            </p>
-            <h1 className="mt-5 text-4xl md:text-6xl font-bold leading-[1.15] text-ink">
-              কাজ করুন,<br />পুরস্কার জিতুন
-            </h1>
-            <p className="mt-4 text-inksoft text-base md:text-lg max-w-lg">
-              সহজ টাস্ক সম্পন্ন করে ও বন্ধুদের রেফার করে আয় করুন।
-              ফ্রি অ্যাকাউন্ট, স্বচ্ছ নিয়ম, ২৪ ঘণ্টায় পেমেন্ট।
-            </p>
-            <div className="mt-7 flex gap-3 flex-wrap">
-              <Link
-                href="/signup"
-                className="bg-coral text-white font-bold px-8 py-4 rounded-2xl hover:bg-coraldeep shadow-lg shadow-coral/30 text-base"
-              >
-                শুরু করুন — ফ্রি
-              </Link>
-              <Link
-                href="/login"
-                className="bg-white text-ink font-bold px-8 py-4 rounded-2xl hover:bg-cream shadow-sm"
-              >
-                লগিন
-              </Link>
-            </div>
-            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-              {STATS.map((s) => (
-                <div key={s.label} className="bg-white/70 rounded-3xl p-4 text-center">
-                  <p className="text-xl md:text-2xl font-bold text-ink whitespace-nowrap">{s.value}</p>
-                  <p className="text-xs text-inksoft mt-1">{s.label}</p>
-                </div>
+    <div>
+      {/* ---------- HERO ---------- */}
+      <section className="grid lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
+        <div>
+          <p className="text-xs uppercase tracking-[0.25em] text-peach font-bold">
+            🎉 নতুন ইউজারদের জন্য ১০% ওয়েলকাম বোনাস
+          </p>
+          <h1 className="mt-4 text-5xl sm:text-6xl font-bold leading-tight text-white">
+            কাজ করুন, <span className="text-gradient">রেফার করুন</span>
+            <br />
+            পুরস্কার জিতুন
+          </h1>
+          <p className="mt-5 text-mist text-lg max-w-md">
+            বাংলাদেশের সবচেয়ে সহজ টাস্ক ও রিওয়ার্ড প্ল্যাটফর্ম। প্রতিদিন
+            হাজারো ইউজার আয় করছে — আপনিও শুরু করুন একদম ফ্রিতে।
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link
+              href="/signup"
+              className="bg-white text-night font-bold px-8 py-3.5 rounded-full hover:bg-mist transition shadow-xl shadow-white/10"
+            >
+              ফ্রি অ্যাকাউন্ট খুলুন
+            </Link>
+            <Link
+              href="/dashboard"
+              className="border border-white/25 text-white font-bold px-8 py-3.5 rounded-full hover:bg-white/10 transition"
+            >
+              ড্যাশবোর্ড দেখুন
+            </Link>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+            {[
+              ["১২,০০০+", "সন্তুষ্ট ইউজার"],
+              ["৮.৫ লাখ৳+", "মোট পেমেন্ট"],
+              ["৪.৮/৫", "ইউজার রেটিং"],
+              ["২৪ ঘণ্টা", "সাপোর্ট"],
+            ].map(([v, l]) => (
+              <div key={l}>
+                <p className="text-2xl font-bold text-white">{v}</p>
+                <p className="text-xs text-faint">{l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Reveal>
+          <LiveFeed />
+        </Reveal>
+      </section>
+
+      {/* ---------- MARQUEE ---------- */}
+      <div className="mt-16 -mx-4 overflow-hidden border-y border-white/10 py-4">
+        <div className="animate-marquee flex whitespace-nowrap w-max">
+          {[0, 1].map((n) => (
+            <div key={n} className="flex">
+              {MARQUEE.map((m, i) => (
+                <span key={i} className="mx-6 text-sm font-bold uppercase tracking-widest text-mist flex items-center gap-6">
+                  {m} <span className="text-peach">✦</span>
+                </span>
               ))}
             </div>
-          </div>
-          <div className="max-w-sm w-full mx-auto lg:mx-0">
-            <LiveFeed />
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* Task types — white band, photo-style cards */}
-      <section className="mt-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-ink">টাস্কের ধরন</h2>
-        <p className="text-center text-inksoft mt-2">পছন্দের কাজ বেছে নিন</p>
-        <div className="mt-8 grid md:grid-cols-3 gap-5">
-          {TASK_TYPES.map((t) => (
-            <div key={t.title} className={`${t.bg} rounded-[2rem] p-7 relative overflow-hidden`}>
-              <span className={`${t.chipBg} text-xs font-bold px-3 py-1.5 rounded-full`}>
-                {t.chip}
-              </span>
-              <p className="text-5xl mt-5">{t.icon}</p>
-              <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm">
-                <p className="font-bold text-lg text-ink">{t.title}</p>
-                <p className="text-sm text-inksoft mt-1">{t.text}</p>
+      {/* ---------- HOW IT WORKS ---------- */}
+      <section className="mt-20">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.25em] text-aqua font-bold text-center">HOW IT WORKS</p>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-white text-center">
+            মাত্র ৩ ধাপে <span className="text-gradient">আয় শুরু</span>
+          </h2>
+        </Reveal>
+        <div className="mt-10 grid sm:grid-cols-3 gap-5">
+          {[
+            ["১", "ফ্রি অ্যাকাউন্ট খুলুন", "শুধু নাম, জিমেইল ও মোবাইল নম্বর দিয়ে ১ মিনিটে রেজিস্টার করুন।", "from-peach to-rose"],
+            ["২", "১০০৳ দিয়ে অ্যাক্টিভ করুন", "৭ দিনের জন্য অ্যাকাউন্ট অ্যাক্টিভ করুন ও রেফারেল শুরু করুন।", "from-rose to-grape"],
+            ["৩", "রেফার করুন ও আয় করুন", "বন্ধুদের রেফার করুন, প্রতিটি ডিপোজিটে ৫% কমিশন পান।", "from-aqua to-grape"],
+          ].map(([n, t, d, g], i) => (
+            <Reveal key={t} delay={i * 120}>
+              <div className="glass rounded-[2rem] p-7 h-full hover:bg-white/[0.08] transition">
+                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${g} flex items-center justify-center text-xl font-bold text-white`}>
+                  {n}
+                </div>
+                <h3 className="mt-4 text-xl font-bold text-white">{t}</h3>
+                <p className="mt-2 text-sm text-mist">{d}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Benefits — pastel cards */}
-      <section className="mt-14">
-        <div className="grid md:grid-cols-3 gap-5">
-          {BENEFITS.map((b) => (
-            <div key={b.title} className={`${b.bg} rounded-[2rem] p-8`}>
-              <p className="text-4xl">{b.icon}</p>
-              <p className="mt-4 font-bold text-xl text-ink">{b.title}</p>
-              <p className="mt-1 text-inksoft">{b.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* How to start — cream band, big rounded */}
-      <section className="mt-14 bg-creamdeep rounded-[2.5rem] px-6 md:px-12 py-12 md:py-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-ink">কীভাবে আয় শুরু করবেন</h2>
-        <p className="text-center text-inksoft mt-2">মাত্র ৪টি সহজ ধাপ</p>
+      {/* ---------- FEATURES ---------- */}
+      <section className="mt-20">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.25em] text-aqua font-bold text-center">FEATURES</p>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-white text-center">
+            কেন <span className="text-gradient">টাস্ক রিওয়ার্ড</span>?
+          </h2>
+        </Reveal>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {STEPS.map((s) => (
-            <div key={s.n} className="bg-white rounded-[2rem] p-7">
-              <span className={`${s.bg} w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl text-ink`}>
-                {s.n}
-              </span>
-              <p className="mt-4 font-bold text-lg text-ink">{s.title}</p>
-              <p className="mt-1 text-sm text-inksoft">{s.text}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            href="/signup"
-            className="inline-block bg-coral text-white font-bold px-10 py-4 rounded-2xl hover:bg-coraldeep shadow-lg shadow-coral/30"
-          >
-            শুরু করুন
-          </Link>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="mt-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-ink">কেন টাস্ক রিওয়ার্ড?</h2>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {FEATURES.map((f) => (
-            <div key={f.title} className={`${f.bg} rounded-[2rem] p-7`}>
-              <p className="text-4xl">{f.icon}</p>
-              <p className="mt-3 font-bold text-lg text-ink">{f.title}</p>
-              <p className="mt-1 text-sm text-inksoft">{f.text}</p>
-            </div>
+          {[
+            ["🎁", "১০% ওয়েলকাম বোনাস", "প্রথম ডিপোজিটেই অতিরিক্ত বোনাস।"],
+            ["👥", "৫% রেফারেল কমিশন", "প্রতিটি রেফারের ডিপোজিটে ইনস্ট্যান্ট কমিশন।"],
+            ["⚡", "দ্রুত পেমেন্ট", "উত্তোলন রিকোয়েস্টে দ্রুত অ্যাপ্রুভাল।"],
+            ["🔒", "১০০% নিরাপদ", "আপনার তথ্য ও ব্যালেন্স সম্পূর্ণ সুরক্ষিত।"],
+          ].map(([e, t, d], i) => (
+            <Reveal key={t} delay={i * 100}>
+              <div className="glass rounded-[2rem] p-6 h-full hover:bg-white/[0.08] transition">
+                <p className="text-4xl">{e}</p>
+                <h3 className="mt-3 font-bold text-white">{t}</h3>
+                <p className="mt-1.5 text-sm text-mist">{d}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="mt-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-ink">ইউজারদের মতামত</h2>
-        <p className="text-center text-inksoft mt-2">যারা ইতিমধ্যে আয় করছেন</p>
-        <div className="mt-8 grid md:grid-cols-3 gap-5">
-          {TESTIMONIALS.map((t) => (
-            <div key={t.name} className="bg-white rounded-[2rem] p-7 shadow-sm">
-              <p className="text-sm">{t.stars}</p>
-              <p className="mt-3 text-inksoft italic">"{t.text}"</p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="w-11 h-11 bg-sun rounded-2xl flex items-center justify-center font-bold text-ink">
-                  {t.name[0]}
-                </div>
-                <div>
-                  <p className="font-bold text-sm text-ink">{t.name}</p>
-                  <p className="text-xs text-inksoft">📍 {t.area} • যাচাইকৃত ✅</p>
+      {/* ---------- TESTIMONIALS ---------- */}
+      <section className="mt-20">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.25em] text-aqua font-bold text-center">TESTIMONIALS</p>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-white text-center">
+            ইউজাররা যা <span className="text-gradient">বলছেন</span>
+          </h2>
+        </Reveal>
+        <div className="mt-10 grid sm:grid-cols-3 gap-5">
+          {[
+            ["রাহাত হোসেন", "ঢাকা", "প্রথম মাসেই ১,২০০৳ উত্তোলন করেছি। রেফারেল সিস্টেমটা সত্যিই কাজ করে!", "from-peach to-rose"],
+            ["নুসরাত জাহান", "চট্টগ্রাম", "ইন্টারফেসটা অনেক সহজ। বন্ধুদের রেফার করে ভালো কমিশন পাচ্ছি।", "from-aqua to-grape"],
+            ["সাকিব আল হাসান", "রাজশাহী", "পেমেন্ট দ্রুত পেয়েছি। সাপোর্ট টিমও খুব হেল্পফুল।", "from-rose to-grape"],
+          ].map(([n, c, q, g], i) => (
+            <Reveal key={n} delay={i * 120}>
+              <div className="glass rounded-[2rem] p-6 h-full">
+                <p className="text-mist text-sm leading-relaxed">"{q}"</p>
+                <div className="mt-4 flex items-center gap-3">
+                  <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${g} flex items-center justify-center font-bold text-white`}>
+                    {n[0]}
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-sm">{n}</p>
+                    <p className="text-xs text-faint">{c} • ⭐⭐⭐⭐⭐</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Q&A — dark navy panel like Yandex */}
-      <section className="mt-14 bg-navy rounded-[2.5rem] px-6 md:px-12 py-12 md:py-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-white">প্রশ্ন ও উত্তর</h2>
-        <div className="mt-6 max-w-2xl mx-auto">
-          {FAQS.map((f) => (
-            <FaqItem key={f.q} q={f.q} a={f.a} />
+      {/* ---------- FAQ ---------- */}
+      <section className="mt-20">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.25em] text-aqua font-bold text-center">FAQ</p>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-white text-center">
+            সাধারণ <span className="text-gradient">প্রশ্নোত্তর</span>
+          </h2>
+        </Reveal>
+        <div className="mt-10 max-w-3xl mx-auto space-y-3">
+          {[
+            ["অ্যাকাউন্ট খুলতে কি টাকা লাগে?", "না, সম্পূর্ণ ফ্রি। শুধু নাম, জিমেইল ও মোবাইল নম্বর দিলেই হবে।"],
+            ["কীভাবে আয় করবো?", "১০০৳ ডিপোজিট করে ৭ দিনের জন্য অ্যাকাউন্ট অ্যাক্টিভ করুন, তারপর বন্ধুদের রেফার করুন। প্রতিটি রেফারের ডিপোজিটে ৫% কমিশন পাবেন।"],
+            ["টাকা কীভাবে তুলবো?", "নিজের অ্যাকাউন্ট অ্যাক্টিভ থাকলে এবং ১০ জন অ্যাক্টিভ রেফার থাকলে উত্তোলন করতে পারবেন।"],
+            ["পেমেন্ট কত দ্রুত পাবো?", "উত্তোলন রিকোয়েস্ট অ্যাডমিন অ্যাপ্রুভালের পর দ্রুত পেমেন্ট পাঠানো হয়।"],
+          ].map(([q, a], i) => (
+            <Reveal key={q} delay={i * 80}>
+              <details className="glass rounded-2xl px-6 py-4 group">
+                <summary className="font-bold text-white cursor-pointer list-none flex justify-between items-center">
+                  {q}
+                  <span className="text-peach group-open:rotate-45 transition text-xl">+</span>
+                </summary>
+                <p className="mt-3 text-sm text-mist">{a}</p>
+              </details>
+            </Reveal>
           ))}
         </div>
-        <div className="mt-10 text-center">
-          <Link
-            href="/signup"
-            className="inline-block bg-coral text-white font-bold px-10 py-4 rounded-2xl hover:bg-coraldeep"
-          >
-            এখনই অ্যাকাউন্ট খুলুন — ফ্রি
-          </Link>
-        </div>
       </section>
+
+      {/* ---------- FINAL CTA ---------- */}
+      <Reveal>
+        <section className="mt-20 relative overflow-hidden rounded-[2.5rem]">
+          <div className="absolute inset-0 btn-gradient opacity-90" />
+          <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl animate-blob" />
+          <div className="relative px-8 py-14 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+              আজই শুরু করুন আপনার আয়ের যাত্রা
+            </h2>
+            <p className="mt-3 text-white/85 max-w-md mx-auto">
+              ফ্রি অ্যাকাউন্ট খুলুন, ১০% ওয়েলকাম বোনাস নিন।
+            </p>
+            <Link
+              href="/signup"
+              className="mt-7 inline-block bg-white text-night font-bold px-10 py-4 rounded-full hover:bg-mist transition shadow-2xl"
+            >
+              এখনই শুরু করুন →
+            </Link>
+          </div>
+        </section>
+      </Reveal>
     </div>
   );
 }
