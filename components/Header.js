@@ -32,63 +32,80 @@ export default function Header() {
   }
 
   return (
-    <div className="sticky top-3 z-50 px-3">
-      <header className="max-w-5xl mx-auto bg-white/85 backdrop-blur-md rounded-full shadow-lg shadow-ink/5 border border-white pl-4 pr-2 py-2 flex items-center gap-2">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="w-9 h-9 bg-sun rounded-2xl flex items-center justify-center text-xl font-bold text-ink">
+    <div className="fixed top-4 left-0 right-0 z-50 px-4">
+      <header className="max-w-6xl mx-auto flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <span className="w-10 h-10 rounded-full btn-gradient flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-rose/30">
             ৳
           </span>
-          <span className="text-lg font-bold text-ink hidden sm:inline">টাস্ক রিওয়ার্ড</span>
+          <span className="text-lg font-bold text-white hidden sm:inline">টাস্ক রিওয়ার্ড</span>
         </Link>
 
-        <nav className="flex-1 flex items-center gap-0.5 overflow-x-auto whitespace-nowrap text-sm px-2">
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`px-3 py-2 rounded-full font-bold transition ${
-                pathname === l.href
-                  ? "bg-cream text-ink"
-                  : "text-inksoft hover:bg-cream/70"
-              }`}
-            >
-              {l.label}
-            </Link>
-          ))}
+        <nav className="flex-1 hidden md:flex justify-center">
+          <div className="glass rounded-full px-2 py-1.5 flex items-center gap-0.5">
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`px-4 py-2 rounded-full text-sm font-bold transition whitespace-nowrap ${
+                  pathname === l.href
+                    ? "bg-white text-night"
+                    : "text-mist hover:text-white hover:bg-white/10"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        {/* mobile nav scroll */}
+        <nav className="flex-1 md:hidden overflow-x-auto">
+          <div className="flex gap-0.5 whitespace-nowrap text-sm">
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`px-3 py-2 rounded-full font-bold ${
+                  pathname === l.href ? "bg-white text-night" : "text-mist"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
         </nav>
 
         {ready &&
           (user ? (
-            <div className="flex items-center gap-1.5 shrink-0">
-              <span className="hidden md:inline bg-cream px-3 py-2 rounded-full text-sm font-bold text-ink">
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="hidden lg:inline glass rounded-full px-4 py-2 text-sm font-bold text-white">
                 💰 {user.balance}৳
               </span>
               <span
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${
-                  isActive(user) ? "bg-lav" : "bg-peach"
-                }`}
+                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm glass`}
                 title={isActive(user) ? "অ্যাক্টিভ" : "ইনঅ্যাক্টিভ"}
               >
                 {isActive(user) ? "🟢" : "🔴"}
               </span>
               <button
                 onClick={doLogout}
-                className="bg-ink text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-navy"
+                className="bg-white text-night text-sm font-bold px-5 py-2.5 rounded-full hover:bg-mist"
               >
                 লগআউট
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/login"
-                className="text-sm font-bold text-ink px-3 py-2 rounded-full hover:bg-cream"
+                className="text-sm font-bold text-mist hover:text-white px-3 py-2 hidden sm:inline"
               >
                 লগিন
               </Link>
               <Link
                 href="/signup"
-                className="bg-coral text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-coraldeep shadow-md shadow-coral/30"
+                className="btn-gradient text-white text-sm font-bold px-6 py-2.5 rounded-full shadow-lg shadow-rose/30 hover:opacity-90"
               >
                 শুরু করুন
               </Link>
