@@ -10,18 +10,18 @@ const COINS = [
 ];
 
 const CHECKS = [
-  { left: "12%", top: "30%", delay: "0s" },
-  { left: "82%", top: "34%", delay: "2.3s" },
-  { left: "68%", top: "70%", delay: "4.6s" },
-  { left: "22%", top: "72%", delay: "1.4s" },
+  { left: "3%", top: "30%", delay: "0s" },
+  { left: "93%", top: "34%", delay: "2.3s" },
+  { left: "90%", top: "70%", delay: "4.6s" },
+  { left: "5%", top: "72%", delay: "1.4s" },
 ];
 
 const RISERS = [
-  { left: "10%", text: "+৫৳ কমিশন", icon: "💰", delay: "0s", dur: "9s" },
-  { left: "85%", text: "✓ টাস্ক সম্পন্ন", icon: "✅", delay: "3s", dur: "10s" },
-  { left: "30%", text: "👥 নতুন রেফার", icon: "", delay: "6s", dur: "9.5s" },
-  { left: "62%", text: "+১৫৳ বোনাস", icon: "🎁", delay: "1.8s", dur: "11s" },
-  { left: "45%", text: "✓ পেমেন্ট পাঠানো", icon: "", delay: "4.5s", dur: "10.5s" },
+  { left: "2%", text: "+৫৳ কমিশন", icon: "💰", delay: "0s", dur: "9s" },
+  { left: "95%", text: "✓ টাস্ক সম্পন্ন", icon: "✅", delay: "3s", dur: "10s" },
+  { left: "6%", text: "👥 নতুন রেফার", icon: "", delay: "6s", dur: "9.5s" },
+  { left: "91%", text: "+১৫৳ বোনাস", icon: "🎁", delay: "1.8s", dur: "11s" },
+  { left: "4%", text: "✓ পেমেন্ট পাঠানো", icon: "", delay: "4.5s", dur: "10.5s" },
 ];
 
 const NODES = [
