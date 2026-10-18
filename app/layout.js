@@ -6,6 +6,7 @@ import Background from "../components/Background";
 export const metadata = {
   title: "টাস্ক রিওয়ার্ড — কাজ করুন, পুরস্কার জিতুন",
   description: "বাংলা টাস্ক ও রিওয়ার্ড ওয়েবসাইট",
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({ children }) {
