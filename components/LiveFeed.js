@@ -1,53 +1,110 @@
 "use client";
 
-const FEED = [
-  { name: "রহিম উদ্দিন", amount: "৫", time: "১ মিনিট আগে", bg: "bg-lav" },
-  { name: "সুমাইয়া আক্তার", amount: "২.৫০", time: "২ মিনিট আগে", bg: "bg-peach" },
-  { name: "করিম হোসেন", amount: "১৫", time: "৩ মিনিট আগে", bg: "bg-peri" },
-  { name: "নাজমুল হক", amount: "৫", time: "৫ মিনিট আগে", bg: "bg-creamdeep" },
-  { name: "ফারিয়া সুলতানা", amount: "৭.৫০", time: "৭ মিনিট আগে", bg: "bg-lav" },
-  { name: "তানভীর আহমেদ", amount: "২.৫০", time: "৯ মিনিট আগে", bg: "bg-peach" },
-  { name: "শারমিন আক্তার", amount: "৫", time: "১২ মিনিট আগে", bg: "bg-peri" },
-  { name: "মেহেদি হাসান", amount: "১৫", time: "১৫ মিনিট আগে", bg: "bg-creamdeep" },
-  { name: "রিয়া মনি", amount: "২.৫০", time: "১৮ মিনিট আগে", bg: "bg-lav" },
-  { name: "সাকিব খান", amount: "৫", time: "২১ মিনিট আগে", bg: "bg-peach" },
-  { name: "নুসরাত জাহান", amount: "৭.৫০", time: "২৫ মিনিট আগে", bg: "bg-peri" },
-  { name: "আরিফুল ইসলাম", amount: "৫", time: "২৮ মিনিট আগে", bg: "bg-creamdeep" },
+import { useEffect, useRef, useState } from "react";
+
+const NAMES = [
+  "রহিম উদ্দিন", "সুমাইয়া আক্তার", "করিম হোসেন", "নাজমুল হক",
+  "ফারিয়া সুলতানা", "তানভীর আহমেদ", "শারমিন আক্তার", "মেহেদি হাসান",
+  "রিয়া মনি", "সাকিব খান", "নুসরাত জাহান", "আরিফুল ইসলাম",
+  "জুবাইদা আক্তার", "হাসান মাহমুদ", "তাসনিম রহমান", "ইমরান খান",
+];
+const AMOUNTS = ["৫", "২.৫০", "১৫", "৭.৫০", "১০"];
+const AVATAR_GRADS = [
+  "from-peach to-rose", "from-aqua to-grape", "from-rose to-grape",
+  "from-sun to-peach", "from-grape to-aqua",
 ];
 
+let uid = 0;
+function makeItem() {
+  uid += 1;
+  return {
+    id: uid,
+    name: NAMES[Math.floor(Math.random() * NAMES.length)],
+    amount: AMOUNTS[Math.floor(Math.random() * AMOUNTS.length)],
+    grad: AVATAR_GRADS[Math.floor(Math.random() * AVATAR_GRADS.length)],
+    secs: 0,
+    fresh: true,
+  };
+}
+
+function timeAgo(secs) {
+  if (secs < 60) return "এইমাত্র";
+  const m = Math.floor(secs / 60);
+  const bn = String(m).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
+  return `${bn} মিনিট আগে`;
+}
+
 export default function LiveFeed() {
-  const loop = [...FEED, ...FEED];
+  const [items, setItems] = useState(() => {
+    const initial = [];
+    for (let i = 0; i < 7; i++) {
+      const it = makeItem();
+      it.secs = (i + 1) * 47;
+      it.fresh = false;
+      initial.push(it);
+    }
+    return initial;
+  });
+  const tick = useRef(0);
+
+  useEffect(() => {
+    const add = setInterval(() => {
+      setItems((prev) => {
+        const next = [makeItem(), ...prev.map((p) => ({ ...p, fresh: false }))];
+        return next.slice(0, 9);
+      });
+    }, 5000);
+    const age = setInterval(() => {
+      tick.current += 1;
+      setItems((prev) => prev.map((p) => ({ ...p, secs: p.secs + 5 })));
+    }, 5000);
+    return () => {
+      clearInterval(add);
+      clearInterval(age);
+    };
+  }, []);
+
   return (
-    <div className="bg-white/85 backdrop-blur rounded-[2rem] p-5 shadow-xl shadow-ink/5 border border-white">
+    <div className="glass rounded-[2rem] p-5 shadow-2xl shadow-black/40">
       <div className="flex items-center gap-2.5">
         <span className="relative flex h-3 w-3">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+          <span className="animate-soft-ping absolute inline-flex h-full w-full rounded-full bg-rose" />
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-rose" />
         </span>
-        <p className="font-bold text-ink">লাইভ রেফার কমিশন</p>
+        <p className="font-bold text-white">লাইভ রেফারেল অ্যাক্টিভিটি</p>
       </div>
-      <p className="text-xs text-inksoft mt-1">ইউজাররা এখন কমিশন পাচ্ছেন</p>
+      <p className="text-xs text-mist mt-1">ইউজাররা এখন কমিশন পাচ্ছেন</p>
 
-      <div className="mt-4 h-80 overflow-hidden relative">
-        <div className="ticker-up space-y-2.5">
-          {loop.map((f, i) => (
+      <div className="mt-4 h-[26rem] overflow-hidden relative">
+        <div className="space-y-2.5">
+          {items.map((f) => (
             <div
-              key={i}
-              className="flex items-center gap-3 py-2"
+              key={f.id}
+              className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors ${f.fresh ? "animate-feed-in" : ""}`}
             >
-              <div className={`w-10 h-10 ${f.bg} rounded-2xl flex items-center justify-center font-bold text-ink shrink-0`}>
+              <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${f.grad} flex items-center justify-center font-bold text-white text-sm shrink-0 shadow-md`}>
                 {f.name[0]}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-ink truncate">{f.name}</p>
-                <p className="text-xs text-inksoft">রেফার কমিশন পেয়েছেন • {f.time}</p>
+                <p className="text-sm font-bold text-white truncate">{f.name}</p>
+                <p className="text-xs text-mist truncate">
+                  রেফার কমিশন পেয়েছেন • {timeAgo(f.secs)}
+                </p>
               </div>
-              <p className="text-sm font-bold text-coral whitespace-nowrap">+{f.amount}৳</p>
+              <div className="text-right shrink-0">
+                <p className="text-sm font-bold text-peach whitespace-nowrap">+{f.amount}৳</p>
+                <p className="text-[10px] text-aqua font-bold">✓ অনুমোদিত</p>
+              </div>
             </div>
           ))}
         </div>
-        <div className="pointer-events-none absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-white to-transparent" />
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-panel to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-panel to-transparent" />
+      </div>
+
+      <div className="mt-3 flex items-center justify-between text-xs text-faint">
+        <span>🟢 {120 + (tick.current % 30)} জন অনলাইন</span>
+        <span>আজ {340 + (tick.current % 50)}টি কমিশন</span>
       </div>
     </div>
   );
