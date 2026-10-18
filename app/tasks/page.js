@@ -5,44 +5,7 @@ import { getTaskClicks, addTaskClick } from "../../lib/demo";
 
 const WAIT_SECONDS = 10;
 
-const TASKS = [
-  {
-    id: "task1",
-    n: "টাস্ক ১",
-    title: "৫০০ ক্লিক",
-    target: 500,
-    reward: "১২ টাকা",
-    url: "https://velvet-links.netlify.app/r/500clicka12tk",
-    desc: "লিংকে গিয়ে ৫০০টি ক্লিক সম্পন্ন করুন।",
-  },
-  {
-    id: "task2",
-    n: "টাস্ক ২",
-    title: "৬০০ ক্লিক",
-    target: 600,
-    reward: "১৪ টাকা",
-    url: "https://velvet-links.netlify.app/r/600clicka14tk",
-    desc: "লিংকে গিয়ে ৬০০টি ক্লিক সম্পন্ন করুন।",
-  },
-  {
-    id: "task3",
-    n: "টাস্ক ৩",
-    title: "৭০০ ক্লিক",
-    target: 700,
-    reward: "১৬ টাকা",
-    url: "https://velvet-links.netlify.app/r/700clicka16tk",
-    desc: "লিংকে গিয়ে ৭০০টি ক্লিক সম্পন্ন করুন।",
-  },
-  {
-    id: "task4",
-    n: "টাস্ক ৪",
-    title: "৮০০ ক্লিক",
-    target: 800,
-    reward: "২০ টাকা",
-    url: "https://velvet-links.netlify.app/r/800clicka20tk",
-    desc: "লিংকে গিয়ে ৮০০টি ক্লিক সম্পন্ন করুন।",
-  },
-];
+const TASKS = [];
 
 const BN_DIGITS = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
 function bn(n) {
@@ -92,6 +55,13 @@ export default function Tasks() {
         করলে গণনা হবে না।
       </p>
 
+      {TASKS.length === 0 ? (
+        <div className="mt-6 bg-white rounded-xl shadow p-10 border border-emerald-100 text-center">
+          <p className="text-4xl">📭</p>
+          <p className="mt-3 text-lg font-bold">এখনো কোনো টাস্ক যোগ করা হয়নি</p>
+          <p className="mt-1 text-gray-600 text-sm">নতুন টাস্ক শীঘ্রই আসছে।</p>
+        </div>
+      ) : (
       <div className="mt-6 grid sm:grid-cols-2 gap-4">
         {TASKS.map((t) => {
           const done = clicks[t.id] || 0;
@@ -164,6 +134,7 @@ export default function Tasks() {
           );
         })}
       </div>
+      )}
 
       <p className="mt-6 text-center text-xs text-gray-500">
         ক্লিক গণনা আপনার অ্যাকাউন্টে সংরক্ষিত থাকে।
