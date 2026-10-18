@@ -1,16 +1,10 @@
 import Link from "next/link";
 
-const PACKAGES = [
-  { name: "প্যাকেজ ১", deposit: "৫০ টাকা", referrals: "১০ জন", target: "১০০ টাকা" },
-  { name: "প্যাকেজ ২", deposit: "৫০ টাকা", referrals: "১০ জন", target: "৫০০ টাকা" },
-  { name: "প্যাকেজ ৩", deposit: "১০০ টাকা", referrals: "১০ জন", target: "১,০০০ টাকা" },
-];
-
 const STEPS = [
   { n: "১", title: "অ্যাকাউন্ট খুলুন", text: "রেফারেল লিংক দিয়ে বিনামূল্যে অ্যাকাউন্ট খুলুন।" },
-  { n: "২", title: "প্যাকেজ বেছে ডিপোজিট করুন", text: "বিকাশ, নগদ বা রকেটে ১০–১০০ টাকা ডিপোজিট করুন।" },
+  { n: "২", title: "অ্যাকাউন্ট অ্যাক্টিভ করুন", text: "বিকাশ, নগদ বা রকেটে ১০০ টাকা ডিপোজিট করে ৭ দিনের জন্য অ্যাক্টিভ করুন।" },
   { n: "৩", title: "বোনাস পান", text: "ডিপোজিট যাচাই হলে ১০% ওয়েলকাম বোনাস যোগ হবে।" },
-  { n: "৪", title: "টাস্ক ও রেফার করুন", text: "প্যাকেজের টাস্ক সম্পন্ন করুন ও বন্ধুদের রেফার করুন।" },
+  { n: "৪", title: "টাস্ক ও রেফার করুন", text: "টাস্ক সম্পন্ন করুন ও বন্ধুদের রেফার করুন।" },
   { n: "৫", title: "টাকা উত্তোলন করুন", text: "শর্ত পূরণ হলে উত্তোলনের আবেদন করুন।" },
 ];
 
@@ -33,33 +27,6 @@ export default function Home() {
           </Link>
         </div>
         
-      </section>
-
-      {/* Packages */}
-      <section className="mt-10">
-        <h2 className="text-2xl font-bold text-center">📦 প্যাকেজসমূহ</h2>
-        <div className="mt-4 overflow-x-auto rounded-xl shadow">
-          <table className="w-full bg-white text-center min-w-[480px]">
-            <thead>
-              <tr className="bg-emerald-700 text-white">
-                <th className="p-3">প্যাকেজ</th>
-                <th className="p-3">ডিপোজিট</th>
-                <th className="p-3">প্রয়োজনীয় রেফার</th>
-                <th className="p-3">উত্তোলন লক্ষ্য</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PACKAGES.map((p, i) => (
-                <tr key={p.name} className={i % 2 ? "bg-emerald-50" : "bg-white"}>
-                  <td className="p-3 font-bold">{p.name}</td>
-                  <td className="p-3">{p.deposit}</td>
-                  <td className="p-3">{p.referrals}</td>
-                  <td className="p-3 font-bold text-emerald-700">{p.target}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </section>
 
       {/* Bonuses */}
