@@ -113,7 +113,7 @@ export default function Home() {
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
             {STATS.map((s) => (
               <div key={s.label} className="bg-white/70 rounded-3xl p-4 text-center">
-                <p className="text-xl md:text-2xl font-bold text-ink">{s.value}</p>
+                <p className="text-xl md:text-2xl font-bold text-ink whitespace-nowrap">{s.value}</p>
                 <p className="text-xs text-inksoft mt-1">{s.label}</p>
               </div>
             ))}
