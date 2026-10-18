@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurrentUser, logout } from "../lib/demo";
+import { getCurrentUser, logout, isActive, daysLeft } from "../lib/demo";
 
 const LINKS = [
   { href: "/", label: "হোম" },
@@ -42,6 +42,15 @@ export default function Header() {
           (user ? (
             <div className="flex items-center gap-2 text-sm">
               <span className="font-bold hidden sm:inline">👤 {user.name}</span>
+              <span className="bg-emerald-900 px-2.5 py-1 rounded-lg font-bold">💰 {user.balance}৳</span>
+              <span
+                className={`px-2.5 py-1 rounded-lg font-bold ${
+                  isActive(user) ? "bg-emerald-500" : "bg-red-500"
+                }`}
+                title={isActive(user) ? `${daysLeft(user)} দিন বাকি` : "ইনঅ্যাক্টিভ"}
+              >
+                {isActive(user) ? "🟢" : "🔴"}
+              </span>
               <button
                 onClick={doLogout}
                 className="bg-emerald-900 px-3 py-1.5 rounded-lg font-bold hover:bg-emerald-950"
