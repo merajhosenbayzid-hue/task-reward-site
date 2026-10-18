@@ -88,9 +88,9 @@ export default function Home() {
         <div className="absolute -bottom-20 -left-10 w-64 h-64 bg-lav/40 rounded-full" />
         <div className="relative grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-center">
           <div className="max-w-2xl">
-            <span className="inline-block bg-white text-ink text-sm font-bold px-4 py-2 rounded-full shadow-sm">
+            <p className="text-ink text-sm font-bold">
               🎉 নতুন ইউজারদের জন্য ১০% ওয়েলকাম বোনাস
-            </span>
+            </p>
             <h1 className="mt-5 text-4xl md:text-6xl font-bold leading-[1.15] text-ink">
               কাজ করুন,<br />পুরস্কার জিতুন
             </h1>
