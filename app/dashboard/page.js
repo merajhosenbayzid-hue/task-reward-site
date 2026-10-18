@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getUser, getCurrentUser } from "../../lib/demo";
+import {
+  getCurrentUser, isActive, daysLeft, getReferralStats, getWithdrawEligibility,
+} from "../../lib/demo";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -13,8 +15,6 @@ export default function Dashboard() {
     if (cu) {
       setUser(cu);
       setAuthed(true);
-    } else {
-      setUser(getUser());
     }
   }, []);
 
@@ -42,11 +42,15 @@ export default function Dashboard() {
       </div>
     );
 
+  const active = isActive(user);
+  const stats = getReferralStats(user.referralCode);
+  const elig = getWithdrawEligibility(user);
+
   const cards = [
     { label: "💰 ব্যালেন্স", value: `${user.balance} টাকা`, color: "border-emerald-500" },
-    { label: "👥 মোট রেফার", value: `${user.referrals} জন`, color: "border-amber-400" },
-    { label: "✅ সম্পন্ন টাস্ক", value: `${user.tasksDone} টি`, color: "border-sky-500" },
-    { label: "📦 আমার প্যাকেজ", value: user.package, color: "border-purple-500" },
+    { label: "👥 মোট রেফার", value: `${stats.total} জন`, color: "border-amber-400" },
+    { label: "🟢 অ্যাক্টিভ রেফার", value: `${stats.active} জন`, color: "border-sky-500" },
+    { label: "✅ সম্পন্ন টাস্ক", value: `${user.tasksDone} টি`, color: "border-purple-500" },
   ];
 
   return (
@@ -54,13 +58,33 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold text-center">👤 ড্যাশবোর্ড</h1>
       <p className="text-center text-gray-600 mt-1">স্বাগতম, {user.name}!</p>
 
-      <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className={`mt-4 rounded-xl p-4 text-center font-bold ${active ? "bg-emerald-100 text-emerald-800 border border-emerald-400" : "bg-red-50 text-red-700 border border-red-300"}`}>
+        {active ? (
+          <>🟢 অ্যাকাউন্ট অ্যাক্টিভ — {daysLeft(user)} দিন বাকি</>
+        ) : (
+          <>🔴 অ্যাকাউন্ট ইনঅ্যাক্টিভ —{" "}
+            <Link href="/deposit" className="underline">১০০ টাকা ডিপোজিট করে ৭ দিনের জন্য অ্যাক্টিভ করুন</Link>
+          </>
+        )}
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
         {cards.map((c) => (
           <div key={c.label} className={`bg-white rounded-xl shadow p-5 border-t-4 ${c.color} text-center`}>
             <p className="text-sm text-gray-500">{c.label}</p>
             <p className="mt-1 text-2xl font-bold">{c.value}</p>
           </div>
         ))}
+      </div>
+
+      <div className={`mt-4 rounded-xl p-4 text-sm font-bold ${elig.eligible ? "bg-emerald-50 text-emerald-700 border border-emerald-300" : "bg-gray-50 text-gray-600 border border-gray-200"}`}>
+        {elig.eligible ? (
+          <>🎉 আপনি টাকা উত্তোলনের যোগ্য!{" "}
+            <Link href="/withdraw" className="underline">উত্তোলন করুন</Link>
+          </>
+        ) : (
+          <>ℹ️ উত্তোলনের যোগ্যতা: {stats.active}/১০ জন অ্যাক্টিভ রেফারেল{!active && ", অ্যাকাউন্ট অ্যাক্টিভ করা বাকি"}</>
+        )}
       </div>
 
       <div className="mt-6 grid sm:grid-cols-3 gap-3">
@@ -74,10 +98,6 @@ export default function Dashboard() {
           বন্ধুদের রেফার করুন
         </Link>
       </div>
-
-      <p className="mt-6 text-center text-xs text-gray-500">
-        আপনার সর্বশেষ তথ্য নিচে দেখুন।
-      </p>
     </div>
   );
 }
