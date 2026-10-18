@@ -9,6 +9,7 @@ import {
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [authed, setAuthed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const cu = getCurrentUser();
@@ -16,9 +17,10 @@ export default function Dashboard() {
       setUser(cu);
       setAuthed(true);
     }
+    setLoaded(true);
   }, []);
 
-  if (!user) return <p className="text-center py-16 text-inksoft">লোড হচ্ছে...</p>;
+  if (!loaded) return <p className="text-center py-16 text-inksoft">লোড হচ্ছে...</p>;
 
   if (!authed)
     return (
