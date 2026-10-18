@@ -26,39 +26,44 @@ export default function Login() {
   }
 
   const input =
-    "w-full border border-gray-300 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:ring-2 focus:ring-emerald-500";
+    "w-full border-2 border-creamdeep rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-coral bg-white";
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-center">🔑 লগিন</h1>
-      <p className="text-center text-gray-600 mt-1 text-sm">আপনার Gmail ও পাসওয়ার্ড দিয়ে লগিন করুন।</p>
+    <div className="max-w-md mx-auto py-8">
+      <div className="text-center">
+        <span className="inline-block w-16 h-16 bg-sun rounded-[1.5rem] text-4xl flex items-center justify-center mx-auto">
+          🔑
+        </span>
+        <h1 className="mt-4 text-3xl font-bold text-ink">লগিন</h1>
+        <p className="text-inksoft mt-1 text-sm">আপনার Gmail ও পাসওয়ার্ড দিয়ে লগিন করুন।</p>
+      </div>
 
-      <form onSubmit={submit} className="mt-6 bg-white rounded-xl shadow p-6 space-y-4">
+      <form onSubmit={submit} className="mt-6 bg-white rounded-[2rem] p-8 shadow-sm space-y-5">
         <div>
-          <label className="font-bold text-sm">Gmail ঠিকানা</label>
+          <label className="font-bold text-sm text-ink">Gmail ঠিকানা</label>
           <input className={input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@gmail.com" />
         </div>
         <div>
-          <label className="font-bold text-sm">পাসওয়ার্ড</label>
+          <label className="font-bold text-sm text-ink">পাসওয়ার্ড</label>
           <input className={input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••" />
         </div>
 
         {error && (
-          <p className="bg-red-50 text-red-700 font-bold text-sm rounded-xl px-4 py-3">❌ {error}</p>
+          <p className="bg-peach text-ink font-bold text-sm rounded-2xl px-4 py-3">❌ {error}</p>
         )}
 
         <button
           type="submit"
           disabled={busy}
-          className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 disabled:opacity-50"
+          className="w-full bg-coral text-white font-bold py-4 rounded-2xl hover:bg-coraldeep disabled:opacity-50 shadow-lg shadow-coral/25"
         >
           {busy ? "অপেক্ষা করুন…" : "লগিন করুন"}
         </button>
       </form>
 
-      <p className="text-center mt-4 text-sm">
+      <p className="text-center mt-5 text-sm text-inksoft">
         অ্যাকাউন্ট নেই?{" "}
-        <Link href="/signup" className="text-emerald-700 font-bold">অ্যাকাউন্ট খুলুন</Link>
+        <Link href="/signup" className="text-coral font-bold">অ্যাকাউন্ট খুলুন</Link>
       </p>
     </div>
   );
