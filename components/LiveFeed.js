@@ -33,7 +33,7 @@ export default function LiveFeed() {
           {loop.map((f, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 bg-cream/80 rounded-2xl p-3"
+              className="flex items-center gap-3 py-2"
             >
               <div className={`w-10 h-10 ${f.bg} rounded-2xl flex items-center justify-center font-bold text-ink shrink-0`}>
                 {f.name[0]}
