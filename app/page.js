@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import LiveFeed from "../components/LiveFeed";
 
 const STEPS = [
   { n: "১", title: "ফ্রি অ্যাকাউন্ট খুলুন", text: "Gmail ও মোবাইল নম্বর দিয়ে ১ মিনিটে অ্যাকাউন্ট খুলুন — কোনো টাকা লাগবে না।", bg: "bg-lav" },
@@ -81,42 +82,47 @@ function FaqItem({ q, a }) {
 export default function Home() {
   return (
     <div className="-mt-2">
-      {/* Hero — cream band, big rounded */}
+      {/* Hero — cream band, big rounded, with live feed */}
       <section className="bg-creamdeep rounded-[2.5rem] px-6 md:px-12 pt-10 md:pt-14 pb-12 md:pb-16 relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-56 h-56 bg-sun/40 rounded-full" />
         <div className="absolute -bottom-20 -left-10 w-64 h-64 bg-lav/40 rounded-full" />
-        <div className="relative max-w-2xl">
-          <span className="inline-block bg-white text-ink text-sm font-bold px-4 py-2 rounded-full shadow-sm">
-            🎉 নতুন ইউজারদের জন্য ১০% ওয়েলকাম বোনাস
-          </span>
-          <h1 className="mt-5 text-4xl md:text-6xl font-bold leading-[1.15] text-ink">
-            কাজ করুন,<br />পুরস্কার জিতুন
-          </h1>
-          <p className="mt-4 text-inksoft text-base md:text-lg max-w-lg">
-            সহজ টাস্ক সম্পন্ন করে ও বন্ধুদের রেফার করে আয় করুন।
-            ফ্রি অ্যাকাউন্ট, স্বচ্ছ নিয়ম, ২৪ ঘণ্টায় পেমেন্ট।
-          </p>
-          <div className="mt-7 flex gap-3 flex-wrap">
-            <Link
-              href="/signup"
-              className="bg-coral text-white font-bold px-8 py-4 rounded-2xl hover:bg-coraldeep shadow-lg shadow-coral/30 text-base"
-            >
-              শুরু করুন — ফ্রি
-            </Link>
-            <Link
-              href="/login"
-              className="bg-white text-ink font-bold px-8 py-4 rounded-2xl hover:bg-cream shadow-sm"
-            >
-              লগিন
-            </Link>
+        <div className="relative grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-center">
+          <div className="max-w-2xl">
+            <span className="inline-block bg-white text-ink text-sm font-bold px-4 py-2 rounded-full shadow-sm">
+              🎉 নতুন ইউজারদের জন্য ১০% ওয়েলকাম বোনাস
+            </span>
+            <h1 className="mt-5 text-4xl md:text-6xl font-bold leading-[1.15] text-ink">
+              কাজ করুন,<br />পুরস্কার জিতুন
+            </h1>
+            <p className="mt-4 text-inksoft text-base md:text-lg max-w-lg">
+              সহজ টাস্ক সম্পন্ন করে ও বন্ধুদের রেফার করে আয় করুন।
+              ফ্রি অ্যাকাউন্ট, স্বচ্ছ নিয়ম, ২৪ ঘণ্টায় পেমেন্ট।
+            </p>
+            <div className="mt-7 flex gap-3 flex-wrap">
+              <Link
+                href="/signup"
+                className="bg-coral text-white font-bold px-8 py-4 rounded-2xl hover:bg-coraldeep shadow-lg shadow-coral/30 text-base"
+              >
+                শুরু করুন — ফ্রি
+              </Link>
+              <Link
+                href="/login"
+                className="bg-white text-ink font-bold px-8 py-4 rounded-2xl hover:bg-cream shadow-sm"
+              >
+                লগিন
+              </Link>
+            </div>
+            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
+              {STATS.map((s) => (
+                <div key={s.label} className="bg-white/70 rounded-3xl p-4 text-center">
+                  <p className="text-xl md:text-2xl font-bold text-ink whitespace-nowrap">{s.value}</p>
+                  <p className="text-xs text-inksoft mt-1">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {STATS.map((s) => (
-              <div key={s.label} className="bg-white/70 rounded-3xl p-4 text-center">
-                <p className="text-xl md:text-2xl font-bold text-ink whitespace-nowrap">{s.value}</p>
-                <p className="text-xs text-inksoft mt-1">{s.label}</p>
-              </div>
-            ))}
+          <div className="max-w-sm w-full mx-auto lg:mx-0">
+            <LiveFeed />
           </div>
         </div>
       </section>
