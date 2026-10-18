@@ -33,7 +33,7 @@ export default function Referral() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold text-center">👥 রেফারেল</h1>
+      <h1 className="text-2xl font-bold text-center">🎁 রেফার করুন, পুরস্কার জিতুন</h1>
       <p className="text-center text-gray-600 mt-1">
         বন্ধুদের রেফার করুন — তাদের ডিপোজিটে আপনি পাবেন <b>৫%</b> বোনাস!
       </p>
