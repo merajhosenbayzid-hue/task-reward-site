@@ -1,6 +1,7 @@
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Background from "../components/Background";
 
 export const metadata = {
   title: "টাস্ক রিওয়ার্ড — কাজ করুন, পুরস্কার জিতুন",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="bg-cream text-ink min-h-screen flex flex-col">
+        <Background />
         <Header />
         <main className="flex-1 w-full max-w-5xl mx-auto px-4 pt-6 pb-2">{children}</main>
         <Footer />
