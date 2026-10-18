@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { registerUser } from "../../lib/demo";
 
-export default function Signup() {
+function SignupForm() {
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", referral: "" });
+  const params = useSearchParams();
+  const refFromUrl = params.get("ref") || "";
+  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", referral: refFromUrl });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -35,10 +37,16 @@ export default function Signup() {
     <div className="max-w-md mx-auto">
       <h1 className="text-2xl font-bold text-center">📝 অ্যাকাউন্ট খুলুন</h1>
       <p className="text-center text-gray-600 mt-1 text-sm">
-        শুধু Gmail ঠিকানা ও BD মোবাইল নম্বর দিয়ে অ্যাকাউন্ট খোলা যাবে।
+        সম্পূর্ণ বিনামূল্যে অ্যাকাউন্ট খুলুন — কোনো ডিপোজিট লাগবে না।
       </p>
 
-      <form onSubmit={submit} className="mt-6 bg-white rounded-xl shadow p-6 space-y-4">
+      {refFromUrl && (
+        <p className="mt-3 text-center text-sm bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2">
+          🎁 রেফারেল কোড <b>{refFromUrl}</b> দিয়ে এসেছেন!
+        </p>
+      )}
+
+      <form onSubmit={submit} className="mt-4 bg-white rounded-xl shadow p-6 space-y-4">
         <div>
           <label className="font-bold text-sm">আপনার নাম</label>
           <input className={input} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="যেমন: রহিম উদ্দিন" />
@@ -80,5 +88,13 @@ export default function Signup() {
         <Link href="/login" className="text-emerald-700 font-bold">লগিন করুন</Link>
       </p>
     </div>
+  );
+}
+
+export default function Signup() {
+  return (
+    <Suspense fallback={<p className="text-center py-10">লোড হচ্ছে...</p>}>
+      <SignupForm />
+    </Suspense>
   );
 }
