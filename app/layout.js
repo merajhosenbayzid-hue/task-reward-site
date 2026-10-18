@@ -19,10 +19,10 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="bg-cream text-ink min-h-screen flex flex-col">
+      <body className="bg-night text-ink min-h-screen flex flex-col">
         <Background />
         <Header />
-        <main className="flex-1 w-full max-w-5xl mx-auto px-4 pt-6 pb-2">{children}</main>
+        <main className="flex-1 w-full max-w-6xl mx-auto px-4 pt-28 pb-4 relative z-10">{children}</main>
         <Footer />
       </body>
     </html>
