@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const PACKAGES = [
-  { name: "প্যাকেজ ১", deposit: "১০ টাকা", referrals: "১০ জন", target: "১০০ টাকা" },
+  { name: "প্যাকেজ ১", deposit: "৫০ টাকা", referrals: "১০ জন", target: "১০০ টাকা" },
   { name: "প্যাকেজ ২", deposit: "৫০ টাকা", referrals: "১০ জন", target: "৫০০ টাকা" },
   { name: "প্যাকেজ ৩", deposit: "১০০ টাকা", referrals: "১০ জন", target: "১,০০০ টাকা" },
 ];
