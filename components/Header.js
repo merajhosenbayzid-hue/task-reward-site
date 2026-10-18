@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurrentUser, logout, isActive, daysLeft } from "../lib/demo";
+import { getCurrentUser, logout, isActive } from "../lib/demo";
 
 const LINKS = [
   { href: "/", label: "হোম" },
@@ -12,7 +12,6 @@ const LINKS = [
   { href: "/deposit", label: "ডিপোজিট" },
   { href: "/withdraw", label: "উত্তোলন" },
   { href: "/referral", label: "রেফারেল" },
-  { href: "/admin", label: "অ্যাডমিন" },
 ];
 
 export default function Header() {
@@ -33,62 +32,69 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
-      <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold">💰 টাস্ক রিওয়ার্ড</span>
+    <div className="sticky top-3 z-50 px-3">
+      <header className="max-w-5xl mx-auto bg-white/85 backdrop-blur-md rounded-full shadow-lg shadow-ink/5 border border-white pl-4 pr-2 py-2 flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <span className="w-9 h-9 bg-sun rounded-2xl flex items-center justify-center text-xl font-bold text-ink">
+            ৳
+          </span>
+          <span className="text-lg font-bold text-ink hidden sm:inline">টাস্ক রিওয়ার্ড</span>
         </Link>
-        {ready &&
-          (user ? (
-            <div className="flex items-center gap-2 text-sm">
-              <span className="font-bold hidden sm:inline">👤 {user.name}</span>
-              <span className="bg-emerald-900 px-2.5 py-1 rounded-lg font-bold">💰 {user.balance}৳</span>
-              <span
-                className={`px-2.5 py-1 rounded-lg font-bold ${
-                  isActive(user) ? "bg-emerald-500" : "bg-red-500"
-                }`}
-                title={isActive(user) ? `${daysLeft(user)} দিন বাকি` : "ইনঅ্যাক্টিভ"}
-              >
-                {isActive(user) ? "🟢" : "🔴"}
-              </span>
-              <button
-                onClick={doLogout}
-                className="bg-emerald-900 px-3 py-1.5 rounded-lg font-bold hover:bg-emerald-950"
-              >
-                লগআউট
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 text-sm font-bold">
-              <Link href="/login" className="px-3 py-1.5 hover:underline">
-                লগিন
-              </Link>
-              <Link
-                href="/signup"
-                className="bg-amber-400 text-emerald-950 px-3 py-1.5 rounded-lg hover:bg-amber-300"
-              >
-                সাইন আপ
-              </Link>
-            </div>
-          ))}
-      </div>
-      <nav className="bg-emerald-800">
-        <div className="max-w-5xl mx-auto px-4 flex gap-1 overflow-x-auto whitespace-nowrap text-sm">
+
+        <nav className="flex-1 flex items-center gap-0.5 overflow-x-auto whitespace-nowrap text-sm px-2">
           {LINKS.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className={`px-3 py-2.5 ${
+              className={`px-3 py-2 rounded-full font-bold transition ${
                 pathname === l.href
-                  ? "bg-emerald-900 font-bold border-b-2 border-amber-400"
-                  : "hover:bg-emerald-700"
+                  ? "bg-cream text-ink"
+                  : "text-inksoft hover:bg-cream/70"
               }`}
             >
               {l.label}
             </Link>
           ))}
-        </div>
-      </nav>
-    </header>
+        </nav>
+
+        {ready &&
+          (user ? (
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="hidden md:inline bg-cream px-3 py-2 rounded-full text-sm font-bold text-ink">
+                💰 {user.balance}৳
+              </span>
+              <span
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${
+                  isActive(user) ? "bg-lav" : "bg-peach"
+                }`}
+                title={isActive(user) ? "অ্যাক্টিভ" : "ইনঅ্যাক্টিভ"}
+              >
+                {isActive(user) ? "🟢" : "🔴"}
+              </span>
+              <button
+                onClick={doLogout}
+                className="bg-ink text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-navy"
+              >
+                লগআউট
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 shrink-0">
+              <Link
+                href="/login"
+                className="text-sm font-bold text-ink px-3 py-2 rounded-full hover:bg-cream"
+              >
+                লগিন
+              </Link>
+              <Link
+                href="/signup"
+                className="bg-coral text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-coraldeep shadow-md shadow-coral/30"
+              >
+                শুরু করুন
+              </Link>
+            </div>
+          ))}
+      </header>
+    </div>
   );
 }
