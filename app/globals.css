@@ -4,4 +4,17 @@
 
 body {
   font-family: 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif;
+  background: #FFF4D6;
+  color: #2B2D42;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Yandex-style: no sharp edges on interactive elements */
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #FFCC00;
+  color: #2B2D42;
 }
