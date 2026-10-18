@@ -12,8 +12,6 @@ function bn(n) {
   return String(n).replace(/\d/g, (d) => BN_DIGITS[+d]);
 }
 
-const CARD_BGS = ["bg-lav", "bg-peach", "bg-peri", "bg-creamdeep"];
-
 export default function Tasks() {
   const [clicks, setClicks] = useState({});
   const [countdown, setCountdown] = useState({}); // taskId -> seconds left
@@ -50,18 +48,18 @@ export default function Tasks() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-ink">📋 টাস্ক তালিকা</h1>
-      <p className="text-center text-inksoft mt-2 max-w-xl mx-auto">
+      <h1 className="text-3xl font-bold text-center text-white">📋 টাস্ক তালিকা</h1>
+      <p className="text-center text-mist mt-2 max-w-xl mx-auto">
         বাটনে ক্লিক করলে লিংক নতুন ট্যাবে খুলবে।{" "}
-        <b className="text-ink">১০ সেকেন্ড</b> থাকলে <b className="text-ink">১ ক্লিক</b> গণনা হবে — তার আগে ট্যাব বন্ধ
+        <b className="text-white">১০ সেকেন্ড</b> থাকলে <b className="text-white">১ ক্লিক</b> গণনা হবে — তার আগে ট্যাব বন্ধ
         করলে গণনা হবে না।
       </p>
 
       {TASKS.length === 0 ? (
-        <div className="mt-8 bg-white rounded-[2.5rem] p-12 shadow-sm text-center max-w-md mx-auto">
+        <div className="mt-8 glass rounded-[2.5rem] p-12 text-center max-w-md mx-auto">
           <p className="text-6xl">📭</p>
-          <p className="mt-4 text-xl font-bold text-ink">এখনো কোনো টাস্ক যোগ করা হয়নি</p>
-          <p className="mt-1 text-inksoft text-sm">নতুন টাস্ক শীঘ্রই আসছে।</p>
+          <p className="mt-4 text-xl font-bold text-white">এখনো কোনো টাস্ক যোগ করা হয়নি</p>
+          <p className="mt-1 text-mist text-sm">নতুন টাস্ক শীঘ্রই আসছে।</p>
         </div>
       ) : (
       <div className="mt-8 grid sm:grid-cols-2 gap-5">
@@ -71,47 +69,44 @@ export default function Tasks() {
           const counting = left != null;
           const pct = Math.min(100, Math.round((done / t.target) * 100));
           return (
-            <div
-              key={t.id}
-              className={`${CARD_BGS[idx % CARD_BGS.length]} rounded-[2rem] p-7`}
-            >
+            <div key={t.id} className="glass rounded-[2rem] p-7">
               <div className="flex items-center justify-between">
-                <span className="bg-white text-ink text-sm font-bold px-3 py-1.5 rounded-full">
+                <span className="bg-white/10 text-white text-sm font-bold px-3 py-1.5 rounded-full">
                   {t.n}
                 </span>
-                <span className="bg-sun text-ink text-sm font-bold px-3 py-1.5 rounded-full">
+                <span className="bg-white text-night text-sm font-bold px-3 py-1.5 rounded-full">
                   পুরস্কার: {t.reward}
                 </span>
               </div>
-              <div className="mt-4 bg-white rounded-3xl p-5">
-                <h3 className="text-xl font-bold text-ink">{t.title}</h3>
-                <p className="mt-1 text-inksoft text-sm">{t.desc}</p>
+              <div className="mt-4 bg-white/5 rounded-3xl p-5">
+                <h3 className="text-xl font-bold text-white">{t.title}</h3>
+                <p className="mt-1 text-mist text-sm">{t.desc}</p>
               </div>
 
               <div className="mt-4">
-                <div className="flex justify-between text-sm font-bold text-ink">
+                <div className="flex justify-between text-sm font-bold text-white">
                   <span>
                     ক্লিক: {bn(done)} / {bn(t.target)}
                   </span>
                   <span>{bn(pct)}%</span>
                 </div>
-                <div className="mt-2 h-3 bg-white/70 rounded-full overflow-hidden">
+                <div className="mt-2 h-3 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-coral rounded-full transition-all"
+                    className="h-full btn-gradient rounded-full transition-all"
                     style={{ width: pct + "%" }}
                   />
                 </div>
               </div>
 
               {counting ? (
-                <div className="mt-4 bg-white rounded-3xl p-5 text-center">
-                  <div className="text-4xl font-bold text-ink">
+                <div className="mt-4 bg-white/5 rounded-3xl p-5 text-center">
+                  <div className="text-4xl font-bold text-white">
                     ⏳ {bn(left)}
                   </div>
-                  <p className="text-sm text-inksoft mt-1">
+                  <p className="text-sm text-mist mt-1">
                     সেকেন্ড অপেক্ষা করুন… ট্যাব বন্ধ করবেন না
                   </p>
-                  <div className="mt-3 h-3 bg-cream rounded-full overflow-hidden">
+                  <div className="mt-3 h-3 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-sun rounded-full transition-all"
                       style={{
@@ -123,14 +118,14 @@ export default function Tasks() {
               ) : (
                 <button
                   onClick={() => startTask(t)}
-                  className="mt-4 block w-full text-center bg-coral text-white font-bold py-4 rounded-2xl hover:bg-coraldeep shadow-lg shadow-coral/25"
+                  className="mt-4 block w-full text-center btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25"
                 >
                   টাস্ক শুরু করুন ↗
                 </button>
               )}
 
               {flashed[t.id] && (
-                <p className="mt-3 text-center text-ink font-bold bg-white rounded-full py-2">
+                <p className="mt-3 text-center text-white font-bold bg-white/10 rounded-full py-2">
                   ✓ ১ ক্লিক গণনা হয়েছে!
                 </p>
               )}
@@ -140,7 +135,7 @@ export default function Tasks() {
       </div>
       )}
 
-      <p className="mt-8 text-center text-xs text-inksoft">
+      <p className="mt-8 text-center text-xs text-faint">
         প্রতিটি টাস্কে ১০ সেকেন্ড করে থাকলে ১টি ক্লিক গণনা হয়।
       </p>
     </div>
