@@ -18,9 +18,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="bg-emerald-50 text-gray-800 min-h-screen flex flex-col">
+      <body className="bg-cream text-ink min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-6">{children}</main>
+        <main className="flex-1 w-full max-w-5xl mx-auto px-4 pt-6 pb-2">{children}</main>
         <Footer />
       </body>
     </html>
