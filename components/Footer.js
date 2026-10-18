@@ -2,43 +2,43 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-emerald-950 text-emerald-100 mt-12">
-      <div className="max-w-5xl mx-auto px-4 py-10">
+    <footer className="bg-navy text-white mt-16 rounded-t-[2.5rem]">
+      <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid sm:grid-cols-3 gap-8">
           <div>
-            <p className="text-lg font-bold">💰 টাস্ক রিওয়ার্ড</p>
-            <p className="mt-2 text-sm text-emerald-300">
+            <div className="flex items-center gap-2">
+              <span className="w-9 h-9 bg-sun rounded-2xl flex items-center justify-center text-xl font-bold text-ink">
+                ৳
+              </span>
+              <span className="text-lg font-bold">টাস্ক রিওয়ার্ড</span>
+            </div>
+            <p className="mt-3 text-sm text-white/60">
               বাংলাদেশের বিশ্বস্ত টাস্ক ও রিওয়ার্ড প্ল্যাটফর্ম। সহজ কাজ করুন,
               রেফার করুন, পুরস্কার জিতুন।
             </p>
-            <div className="mt-3 flex gap-2 text-sm">
-              <span className="bg-emerald-900 px-2.5 py-1 rounded-lg">🔒 ১০০% নিরাপদ</span>
-              <span className="bg-emerald-900 px-2.5 py-1 rounded-lg">⚡ দ্রুত পেমেন্ট</span>
+          </div>
+          <div>
+            <p className="font-bold text-sm text-white/40">দ্রুত লিংক</p>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+              <Link href="/tasks" className="text-white/70 hover:text-white">টাস্ক</Link>
+              <Link href="/deposit" className="text-white/70 hover:text-white">ডিপোজিট</Link>
+              <Link href="/withdraw" className="text-white/70 hover:text-white">উত্তোলন</Link>
+              <Link href="/referral" className="text-white/70 hover:text-white">রেফারেল</Link>
+              <Link href="/signup" className="text-white/70 hover:text-white">অ্যাকাউন্ট খুলুন</Link>
+              <Link href="/login" className="text-white/70 hover:text-white">লগিন</Link>
             </div>
           </div>
           <div>
-            <p className="font-bold">দ্রুত লিংক</p>
-            <div className="mt-2 grid grid-cols-2 gap-1 text-sm text-emerald-300">
-              <Link href="/tasks" className="hover:text-white py-1">টাস্ক</Link>
-              <Link href="/deposit" className="hover:text-white py-1">ডিপোজিট</Link>
-              <Link href="/withdraw" className="hover:text-white py-1">উত্তোলন</Link>
-              <Link href="/referral" className="hover:text-white py-1">রেফারেল</Link>
-              <Link href="/signup" className="hover:text-white py-1">অ্যাকাউন্ট খুলুন</Link>
-              <Link href="/login" className="hover:text-white py-1">লগিন</Link>
-            </div>
-          </div>
-          <div>
-            <p className="font-bold">যোগাযোগ</p>
-            <div className="mt-2 text-sm text-emerald-300 space-y-1">
+            <p className="font-bold text-sm text-white/40">যোগাযোগ</p>
+            <div className="mt-3 text-sm text-white/70 space-y-2">
               <p>🎧 সাপোর্ট: প্রতিদিন সকাল ৯টা – রাত ১০টা</p>
-              <p>💬 লাইভ চ্যাট শীঘ্রই আসছে</p>
-              <p>📧 ইমেইল: support@task-reward-site.onrender.com</p>
+              <p>📧 support@task-reward-site.onrender.com</p>
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-emerald-900 text-center text-sm text-emerald-400">
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs text-white/40">
           <p>© ২০২৬ টাস্ক রিওয়ার্ড — সর্বস্বত্ব সংরক্ষিত</p>
-          <p className="mt-1 text-xs">স্বচ্ছ নিয়ম • নিরাপদ পেমেন্ট • বাংলাদেশি প্ল্যাটফর্ম 🇧🇩</p>
+          <p>স্বচ্ছ নিয়ম • নিরাপদ পেমেন্ট • বাংলাদেশি প্ল্যাটফর্ম 🇧🇩</p>
         </div>
       </div>
     </footer>
