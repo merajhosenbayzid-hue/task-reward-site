@@ -2,20 +2,32 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getCurrentUser, isActive, daysLeft } from "../../lib/demo";
+import { getCurrentUser, isActive, daysLeft, getReferralInfo, referralLink } from "../../lib/api";
 
 export default function Referral() {
   const [user, setUser] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [stats, setStats] = useState({ total: 0, active: 0 });
+  const [info, setInfo] = useState(null);
 
   useEffect(() => {
-    const cu = getCurrentUser();
-    setUser(cu);
-    if (cu) {
-      import("../../lib/demo").then((m) => setStats(m.getReferralStats(cu.referralCode)));
-    }
+    let alive = true;
+    (async () => {
+      const cu = await getCurrentUser();
+      if (!alive) return;
+      setUser(cu);
+      if (cu) {
+        try {
+          const ri = await getReferralInfo();
+          if (alive) setInfo(ri);
+        } catch {}
+      }
+      setLoaded(true);
+    })();
+    return () => { alive = false; };
   }, []);
+
+  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
 
   if (!user) {
     return (
@@ -31,7 +43,7 @@ export default function Referral() {
   }
 
   const active = isActive(user);
-  const link = `https://task-reward-site.onrender.com/signup?ref=${user.referralCode}`;
+  const link = info ? referralLink(info.referralCode) : "";
 
   const copy = async () => {
     try {
@@ -47,7 +59,7 @@ export default function Referral() {
     <div className="max-w-xl mx-auto">
       <h1 className="text-3xl font-bold text-center text-white">🎁 <span className="text-gradient">রেফার করুন, পুরস্কার জিতুন</span></h1>
       <p className="text-center text-mist mt-2">
-        বন্ধুদের রেফার করুন — তাদের ডিপোজিটে আপনি পাবেন <b className="text-white">৫%</b> বোনাস!
+        বন্ধুদের রেফার করুন — তাদের ডিপোজিট অনুমোদন হলে আপনি পাবেন <b className="text-white">৫%</b> বোনাস!
       </p>
 
       <div className={`mt-6 rounded-[2rem] p-5 text-center font-bold border ${
@@ -79,21 +91,37 @@ export default function Referral() {
             {copied ? "✅ কপি!" : "কপি"}
           </button>
         </div>
-        <p className="mt-2 text-xs text-faint">আপনার কোড: <b className="text-white">{user.referralCode}</b></p>
+        <p className="mt-2 text-xs text-faint">আপনার কোড: <b className="text-white">{info?.referralCode}</b></p>
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-4">
         <div className="glass rounded-[2rem] p-6 text-center">
           <p className="text-3xl">👥</p>
           <p className="text-sm text-faint mt-1">মোট রেফার</p>
-          <p className="text-2xl font-bold text-white">{stats.total} জন</p>
+          <p className="text-2xl font-bold text-white">{info?.total ?? 0} জন</p>
         </div>
         <div className="glass rounded-[2rem] p-6 text-center">
           <p className="text-3xl">🟢</p>
           <p className="text-sm text-faint mt-1">অ্যাক্টিভ রেফার</p>
-          <p className="text-2xl font-bold text-white">{stats.active} জন</p>
+          <p className="text-2xl font-bold text-white">{info?.active ?? 0} জন</p>
         </div>
       </div>
+
+      {info && info.list.length > 0 && (
+        <div className="mt-5 glass rounded-[2rem] p-6">
+          <p className="font-bold text-white mb-3">👥 আপনার রেফারেল তালিকা</p>
+          <div className="space-y-2">
+            {info.list.map((r, i) => (
+              <div key={i} className="flex justify-between items-center bg-white/5 rounded-2xl px-4 py-2.5 text-sm">
+                <span className="text-white font-bold">{r.name}</span>
+                <span className={r.active ? "text-aqua font-bold" : "text-faint"}>
+                  {r.active ? "🟢 অ্যাক্টিভ" : "🔴 ইনঅ্যাক্টিভ"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-5 glass rounded-[2rem] p-5 text-sm text-mist">
         ℹ️ রেফার করার সুবিধা শুধু অ্যাক্টিভ অ্যাকাউন্টে থাকে। উত্তোলনের জন্য কমপক্ষে
@@ -106,28 +134,26 @@ export default function Referral() {
           <table className="w-full text-center text-sm min-w-[420px] glass">
             <thead>
               <tr className="bg-white/10 text-white">
-                <th className="p-4 font-bold">নতুন ব্যবহারকারীর ডিপোজিট</th>
-                <th className="p-4 font-bold">রেফারকারী পাবেন</th>
-                <th className="p-4 font-bold">নতুন ব্যবহারকারী পাবেন</th>
+                <th className="p-4 font-bold">রেফারের ডিপোজিট</th>
+                <th className="p-4 font-bold">আপনি পাবেন</th>
               </tr>
             </thead>
             <tbody>
               {[
-                { deposit: "১০ টাকা", referrer: "০.৫০ টাকা", newUser: "১.৫০ টাকা" },
-                { deposit: "৫০ টাকা", referrer: "২.৫০ টাকা", newUser: "৭.৫০ টাকা" },
-                { deposit: "১০০ টাকা", referrer: "৫ টাকা", newUser: "১৫ টাকা" },
+                { deposit: "১০০ টাকা", bonus: "৫ টাকা" },
+                { deposit: "৫০০ টাকা", bonus: "২৫ টাকা" },
+                { deposit: "১০০০ টাকা", bonus: "৫০ টাকা" },
               ].map((r, i) => (
                 <tr key={r.deposit} className={i % 2 ? "bg-white/5" : ""}>
                   <td className="p-4 text-white">{r.deposit}</td>
-                  <td className="p-4 font-bold text-peach">{r.referrer}</td>
-                  <td className="p-4 font-bold text-peach">{r.newUser}</td>
+                  <td className="p-4 font-bold text-peach">{r.bonus}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <p className="mt-2 text-xs text-faint">
-          * নতুন ব্যবহারকারীর বোনাস = ৫% রেফার বোনাস + ১০% ওয়েলকাম বোনাস। বোনাস শুধু ডিপোজিট নিশ্চিত হওয়ার পর যোগ হয়।
+          * ৫% রেফার বোনাস শুধু ডিপোজিট অ্যাডমিন-অনুমোদনের পর যোগ হয়।
         </p>
       </div>
     </div>
