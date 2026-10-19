@@ -35,9 +35,9 @@ export default function Background() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
       {/* animated gradient blobs — peach/pink/purple/teal */}
-      <div className="animate-blob absolute -top-48 -left-48 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-25 bg-gradient-to-br from-peach via-rose to-grape" />
-      <div className="animate-blob absolute top-1/4 -right-56 w-[32rem] h-[32rem] rounded-full blur-3xl opacity-20 bg-gradient-to-br from-grape via-rose to-peach" style={{ animationDelay: "-6s" }} />
-      <div className="animate-blob absolute bottom-0 left-1/3 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-15 bg-gradient-to-br from-aqua via-grape to-rose" style={{ animationDelay: "-12s" }} />
+      <div className="animate-blob absolute -top-48 -left-48 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-25 bg-gradient-to-br from-[#ff7a1a] via-[#ff5e62] to-[#c026d3]" />
+      <div className="animate-blob absolute top-1/4 -right-56 w-[32rem] h-[32rem] rounded-full blur-3xl opacity-20 bg-gradient-to-br from-[#c026d3] via-[#ff5e62] to-[#ff7a1a]" style={{ animationDelay: "-6s" }} />
+      <div className="animate-blob absolute bottom-0 left-1/3 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-15 bg-gradient-to-br from-[#ff7a1a] via-grape to-rose" style={{ animationDelay: "-12s" }} />
 
       {/* referral network — moving connections */}
       <svg
