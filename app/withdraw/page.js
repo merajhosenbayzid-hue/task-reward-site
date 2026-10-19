@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   getCurrentUser, getReferralInfo, getWithdrawEligibility, isActive, daysLeft,
 } from "../../lib/api";
+import { IconBank, IconClipboard, IconCheckBadge, IconXBadge, IconSparkles, IconAlert, IconClock } from "../../components/icons";
 
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
@@ -110,7 +111,7 @@ export default function Withdraw() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white">🏧 Withdraw Money</h1>
+      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconBank size={30} className="icon-3d" /> Withdraw Money</h1>
 
       <div className="mt-6 glass rounded-[2rem] p-8 text-center">
         <p className="text-faint text-sm">Withdrawable balance</p>
@@ -118,11 +119,11 @@ export default function Withdraw() {
       </div>
 
       <div className="mt-5 glass rounded-[2rem] p-7">
-        <h2 className="font-bold text-lg text-white">📋 Withdrawal requirements</h2>
+        <h2 className="font-bold text-lg text-white flex items-center gap-2"><IconClipboard size={20} className="icon-3d" /> Withdrawal requirements</h2>
         <div className="mt-4 space-y-3">
           {checks.map((c, i) => (
             <div key={i} className={`flex items-start gap-3 p-4 rounded-3xl ${c.ok ? "bg-aqua/10 border border-aqua/30" : "bg-white/5"}`}>
-              <span className="text-2xl">{c.ok ? "✅" : "⭕"}</span>
+              <span className="shrink-0 mt-0.5">{c.ok ? <IconCheckBadge size={26} className="icon-3d" /> : <IconXBadge size={26} className="icon-3d" />}</span>
               <div>
                 <p className="font-bold text-white text-sm">{c.label}</p>
                 <p className="text-mist text-xs">{c.hint}</p>
@@ -132,12 +133,12 @@ export default function Withdraw() {
         </div>
         {elig.eligible ? (
           <p className="mt-4 bg-aqua/10 border border-aqua/30 rounded-3xl px-5 py-4 font-bold text-aqua text-sm">
-            🎉 Congratulations! You&apos;re eligible to withdraw.
+            <span className="inline-flex items-center gap-2"><IconSparkles size={16} className="icon-3d" /> Congratulations! You&apos;re eligible to withdraw.</span>
           </p>
         ) : (
           <div className="mt-4 bg-peach/10 border border-peach/30 rounded-3xl px-5 py-4 text-sm">
             {elig.reasons.map((r, i) => (
-              <p key={i} className="text-peach mt-1">⚠️ {r}</p>
+              <p key={i} className="text-peach mt-1 flex items-center gap-1.5"><IconAlert size={14} className="icon-3d" /> {r}</p>
             ))}
             <div className="mt-3 flex gap-2 flex-wrap">
               <Link href="/deposit" className="btn-gradient text-white text-sm font-bold px-4 py-2.5 rounded-full">Deposit</Link>
@@ -149,7 +150,7 @@ export default function Withdraw() {
 
       {done && (
         <div className="mt-5 border border-aqua/40 bg-aqua/10 rounded-[2rem] p-5 text-center font-bold text-aqua">
-          ✅ Withdrawal request submitted! You&apos;ll be paid after admin approval.
+          <span className="inline-flex items-center gap-2"><IconCheckBadge size={18} className="icon-3d" /> Withdrawal request submitted! You&apos;ll be paid after admin approval.</span>
         </div>
       )}
 
@@ -188,7 +189,7 @@ export default function Withdraw() {
 
       {history.length > 0 && (
         <div className="mt-8">
-          <h2 className="font-bold text-xl text-white">🕘 Withdrawal history</h2>
+          <h2 className="font-bold text-xl text-white flex items-center gap-2"><IconClock size={20} className="icon-3d" /> Withdrawal history</h2>
           <div className="mt-3 space-y-3">
             {history.map((w) => (
               <div key={w.id} className="glass rounded-3xl p-5 text-sm flex justify-between items-center">
