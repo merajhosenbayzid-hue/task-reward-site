@@ -123,21 +123,96 @@ button, a, input, select, textarea {
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #FFB199, #FF6B9D 55%, #A855F7);
+  background: linear-gradient(100deg, #FFB199, #FF7A1A 55%, #FF6B9D);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .btn-gradient {
-  background: linear-gradient(100deg, #FFB199, #FF6B9D 60%, #A855F7);
+  background: linear-gradient(100deg, #ff7a1a 0%, #ff5e62 55%, #c026d3 100%);
+  box-shadow: 0 8px 30px rgba(255, 122, 26, 0.35), 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-gradient:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.btn-gradient:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* ---------- Unified warm design system ---------- */
+
+.font-display {
+  font-family: 'Baloo 2', 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* page display titles — Baloo 2 + warm gradient text */
+.page-title {
+  font-family: 'Baloo 2', 'Hind Siliguri', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, #ffb199 0%, #ff7a1a 48%, #ff6b9d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* small uppercase section labels */
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #ff7a1a;
+}
+
+/* warm card — composes with .glass (adds border tint, top highlight, warm shadow) */
+.card-warm {
+  border: 1px solid rgba(255, 122, 26, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06),
+              0 18px 50px rgba(255, 122, 26, 0.10),
+              0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+/* warm inputs */
+.input-warm {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  border-radius: 1rem;
+  color: #fff;
+}
+.input-warm::placeholder { color: #6E7099; }
+.input-warm:focus {
+  outline: none;
+  border-color: #ff7a1a;
+  box-shadow: 0 0 0 3px rgba(255, 122, 26, 0.28);
+}
+
+/* ambient warm glow blob (place inside a relative wrapper) */
+.ambient-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 122, 26, 0.20), transparent 70%);
+}
+
+/* soft glow pulse for primary CTAs */
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 8px 30px rgba(255, 122, 26, 0.35), 0 2px 8px rgba(0, 0, 0, 0.35); }
+  50% { box-shadow: 0 8px 46px rgba(255, 122, 26, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35); }
+}
+.animate-cta-pulse {
+  animation: cta-pulse 3.2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee, .animate-blob, .floaty, .animate-rise-fade,
   .animate-check-pop, .animate-dash, .animate-feed-in, .animate-soft-ping,
   .animate-icon-float, .animate-spin-slow, .icon-badge-shine, .status-dot::after,
-  .float-name {
+  .float-name, .animate-cta-pulse {
     animation: none !important;
   }
   .reveal { opacity: 1; transform: none; transition: none; }
