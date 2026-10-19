@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCurrentUser, logout, isActive } from "../lib/api";
+import { BrandMark, IconWallet, StatusDot } from "./icons";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -40,10 +41,8 @@ export default function Header() {
   return (
     <div className="fixed top-4 left-0 right-0 z-50 px-4">
       <header className="max-w-6xl mx-auto flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="w-10 h-10 rounded-full btn-gradient flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-rose/30">
-            ৳
-          </span>
+        <Link href="/" className="flex items-center gap-2.5 shrink-0 icon-interactive">
+          <BrandMark size={40} className="animate-icon-float" />
           <span className="text-lg font-bold text-white hidden sm:inline">Task Reward</span>
         </Link>
 
@@ -85,14 +84,14 @@ export default function Header() {
         {ready &&
           (user ? (
             <div className="flex items-center gap-2 shrink-0">
-              <span className="hidden lg:inline glass rounded-full px-4 py-2 text-sm font-bold text-white">
-                💰 ৳{user.balance}
+              <span className="hidden lg:inline glass rounded-full px-4 py-2 text-sm font-bold text-white items-center gap-1.5 flex">
+                <IconWallet size={16} className="icon-3d" /> ৳{user.balance}
               </span>
               <span
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm glass`}
+                className="w-9 h-9 rounded-full flex items-center justify-center glass"
                 title={isActive(user) ? "Active" : "Inactive"}
               >
-                {isActive(user) ? "🟢" : "🔴"}
+                <StatusDot active={isActive(user)} size={13} />
               </span>
               <button
                 onClick={doLogout}
