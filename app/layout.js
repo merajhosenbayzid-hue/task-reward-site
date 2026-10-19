@@ -4,7 +4,7 @@ import Chrome from "../components/Chrome";
 export const metadata = {
   title: "Task Reward — Work, Refer, Earn Rewards",
   description: "Task and reward website",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.png" },
 };
 
 export default function RootLayout({ children }) {
