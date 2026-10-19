@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurrentUser, logout, isActive } from "../lib/demo";
+import { getCurrentUser, logout, isActive } from "../lib/api";
 
 const LINKS = [
   { href: "/", label: "হোম" },
@@ -21,12 +21,18 @@ export default function Header() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setUser(getCurrentUser());
-    setReady(true);
+    let alive = true;
+    getCurrentUser().then((u) => {
+      if (alive) {
+        setUser(u);
+        setReady(true);
+      }
+    });
+    return () => { alive = false; };
   }, [pathname]);
 
-  function doLogout() {
-    logout();
+  async function doLogout() {
+    await logout();
     setUser(null);
     router.push("/");
   }
