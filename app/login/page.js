@@ -8,7 +8,7 @@ import { GOOGLE_CLIENT_ID } from "../../lib/config";
 import { IconBadge, IconKey, IconGear, IconXBadge } from "../../components/icons";
 
 const input =
-  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
+  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 text-white placeholder:text-faint";
 
 const GOOGLE_READY = !GOOGLE_CLIENT_ID.includes("PASTE_");
 
@@ -75,12 +75,13 @@ export default function Login() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-8">
-      <div className="text-center">
+    <div className="max-w-md mx-auto py-8 relative">
+      <div className="ambient-glow w-[28rem] h-[28rem] -top-24 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconKey size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 text-3xl font-bold text-white">Log in</h1>
+        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Log in</h1>
         <p className="text-mist mt-1 text-sm">Sign in to your account.</p>
       </div>
 
@@ -103,7 +104,7 @@ export default function Login() {
         </div>
       )}
 
-      <form onSubmit={submit} className="mt-2 glass rounded-[2rem] p-8 space-y-5">
+      <form onSubmit={submit} className="mt-2 glass card-warm rounded-[2rem] p-8 space-y-5 relative">
         <div>
           <label className="font-bold text-sm text-white">Gmail address</label>
           <input className={input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@gmail.com" />
@@ -125,7 +126,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={busy || !API_READY}
-          className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
+          className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
         >
           {busy ? "Please wait…" : "Log in"}
         </button>
