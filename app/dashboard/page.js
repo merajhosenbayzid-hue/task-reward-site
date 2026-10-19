@@ -47,7 +47,7 @@ export default function Dashboard() {
   if (!authed)
     return (
       <div className="max-w-md mx-auto text-center py-16">
-        <div className="glass rounded-[2.5rem] p-10">
+        <div className="glass card-warm rounded-[2.5rem] p-10">
           <p className="flex justify-center"><IconUser size={48} className="icon-3d" /></p>
           <h1 className="mt-4 text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-mist mt-2">Log in to view your dashboard.</p>
@@ -67,15 +67,17 @@ export default function Dashboard() {
   const elig = getWithdrawEligibility(user, stats);
 
   const cards = [
-    { icon: <IconWallet size={24} className="[&_*]:stroke-white" />, label: "Balance", value: formatMoney(user.balance, currency), g: "from-peach to-rose" },
-    { icon: <IconUsers size={24} className="[&_*]:stroke-white" />, label: "Total referrals", value: `${stats.total}`, g: "from-aqua to-grape" },
-    { icon: <StatusDot active size={22} />, label: "Active referrals", value: `${stats.active}`, g: "from-grape to-rose" },
-    { icon: <IconCheckBadge size={24} className="[&_*]:stroke-white" />, label: "Completed tasks", value: "0", g: "from-rose to-sun" },
+    { icon: <IconWallet size={24} className="[&_*]:stroke-white" />, label: "Balance", value: formatMoney(user.balance, currency), g: "from-[#ff7a1a] to-[#ff5e62]" },
+    { icon: <IconUsers size={24} className="[&_*]:stroke-white" />, label: "Total referrals", value: `${stats.total}`, g: "from-[#ff5e62] to-[#c026d3]" },
+    { icon: <StatusDot active size={22} />, label: "Active referrals", value: `${stats.active}`, g: "from-[#c026d3] to-[#ff7a1a]" },
+    { icon: <IconCheckBadge size={24} className="[&_*]:stroke-white" />, label: "Completed tasks", value: "0", g: "from-[#ff7a1a] to-[#c026d3]" },
   ];
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+      <div className="relative"><div className="ambient-glow w-[30rem] h-[16rem] -top-24 -left-24" aria-hidden="true" />
+      <p className="eyebrow relative">Overview</p>
+      <h1 className="font-display text-4xl font-extrabold page-title relative">Dashboard</h1></div>
       <p className="text-mist mt-1">Welcome, {user.name}!</p>
 
       {/* deposit decision notifications */}
@@ -97,7 +99,7 @@ export default function Dashboard() {
       ))}
 
       {/* balance hero card */}
-      <div className="mt-6 relative overflow-hidden rounded-[2rem]">
+      <div className="mt-6 relative overflow-hidden rounded-[2rem] ring-1 ring-orange-500/25 shadow-[0_20px_60px_rgba(255,122,26,0.18)]">
         <div className="absolute inset-0 btn-gradient opacity-90" />
         <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/20 blur-3xl animate-blob" />
         <div className="relative p-8 flex items-center justify-between">
@@ -124,8 +126,8 @@ export default function Dashboard() {
 
       <div className="mt-5 grid grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
-          <div key={c.label} className="glass rounded-[2rem] p-6 text-center hover:bg-white/[0.08] transition">
-            <div className={`w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br ${c.g} flex items-center justify-center`}>
+          <div key={c.label} className="glass card-warm rounded-[2rem] p-6 text-center hover:bg-white/[0.08] transition">
+            <div className={`w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br ${c.g} flex items-center justify-center shadow-[0_8px_24px_rgba(255,122,26,0.35)]`}>
               {c.icon}
             </div>
             <p className="mt-3 text-xs text-faint">{c.label}</p>
