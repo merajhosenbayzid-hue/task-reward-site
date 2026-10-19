@@ -1,0 +1,113 @@
+/* ---------- Promo landing page styles ---------- */
+
+.promo-headline {
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+}
+
+/* solid dark words on the orange shape */
+.promo-dark-word {
+  color: #1a0e05;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* neon glowing words — continuous animation */
+.neon-word {
+  position: relative;
+  display: block;
+  color: #fff;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.55),
+    0 0 34px rgba(255, 175, 70, 0.9),
+    0 0 70px rgba(255, 122, 26, 0.75),
+    0 0 120px rgba(255, 122, 26, 0.5);
+  animation: neon-breathe 4s ease-in-out infinite;
+  will-change: filter;
+}
+
+/* travelling light sweep across the glowing words */
+.neon-word::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 22%,
+    rgba(255, 255, 255, 0.95) 40%,
+    rgba(255, 240, 214, 0.95) 50%,
+    rgba(255, 255, 255, 0.95) 60%,
+    transparent 78%
+  );
+  background-size: 280% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: neon-sweep 3.5s linear infinite;
+  pointer-events: none;
+  will-change: background-position;
+}
+
+@keyframes neon-sweep {
+  0% { background-position: 130% 0; }
+  100% { background-position: -130% 0; }
+}
+
+@keyframes neon-breathe {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.22); }
+}
+
+/* twinkling 4-point stars */
+@keyframes promo-twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(20deg); }
+}
+.promo-star {
+  animation: promo-twinkle 3.4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+  will-change: opacity, transform;
+}
+
+/* floating paper cards */
+@keyframes promo-card-float {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50% { transform: translateY(-14px) rotate(var(--tilt, 0deg)); }
+}
+.promo-card {
+  animation: promo-card-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* warm glow behind the lamp */
+@keyframes promo-glow-pulse {
+  0%, 100% { opacity: 0.32; }
+  50% { opacity: 0.48; }
+}
+.promo-glow {
+  animation: promo-glow-pulse 5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* soft entrance for hero content */
+@keyframes promo-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.promo-rise {
+  animation: promo-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-word,
+  .neon-word::after,
+  .promo-star,
+  .promo-card,
+  .promo-glow,
+  .promo-rise {
+    animation: none !important;
+  }
+}
