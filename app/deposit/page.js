@@ -5,13 +5,20 @@ import Link from "next/link";
 import {
   getCurrentUser, requestDeposit, myDeposits, isActive, daysLeft,
 } from "../../lib/api";
+import { StatusDot, IconBanknote, IconCheckBadge, IconXBadge, IconBulb, IconSend, IconEdit, IconClock } from "../../components/icons";
 
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
 const inputCls =
   "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-rose focus:outline-none text-white placeholder:text-faint";
 
-const STATUS_EN = { pending: "⏳ Pending", approved: "✅ Approved", rejected: "❌ Rejected" };
+function StatusLabel({ status }) {
+  const cls = "inline-flex items-center gap-1";
+  if (status === "pending") return <span className={cls}><IconClock size={14} className="icon-3d" /> Pending</span>;
+  if (status === "approved") return <span className={cls}><IconCheckBadge size={14} className="icon-3d" /> Approved</span>;
+  if (status === "rejected") return <span className={cls}><IconXBadge size={14} className="icon-3d" /> Rejected</span>;
+  return <span>{status}</span>;
+}
 
 export default function Deposit() {
   const [user, setUser] = useState(null);
@@ -79,7 +86,7 @@ export default function Deposit() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white">💵 Deposit</h1>
+      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconBanknote size={30} className="icon-3d" /> Deposit</h1>
       <p className="text-center text-mist mt-2 text-sm">
         Send the money, then submit the transaction ID — your balance will be credited after admin approval.
       </p>
@@ -88,20 +95,20 @@ export default function Deposit() {
         active ? "border-aqua/40 text-aqua bg-aqua/5" : "border-peach/40 text-peach bg-peach/5"
       }`}>
         {active ? (
-          <>🟢 Account active — {daysLeft(user)} days left</>
+          <span className="inline-flex items-center gap-2"><StatusDot active size={13} /> Account active — {daysLeft(user)} days left</span>
         ) : (
-          <>🔴 Account inactive — an approved deposit of ৳100+ activates it for 7 days</>
+          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — an approved deposit of ৳100+ activates it for 7 days</span>
         )}
       </div>
 
       {done && (
         <div className="mt-5 border border-aqua/40 bg-aqua/10 rounded-[2rem] p-5 text-center font-bold text-aqua text-sm">
-          ✅ {done}
+          <span className="inline-flex items-center gap-2"><IconCheckBadge size={16} className="icon-3d" /> {done}</span>
         </div>
       )}
       {error && (
         <div className="mt-5 bg-peach/15 border border-peach/40 rounded-[2rem] p-5 text-center font-bold text-peach text-sm">
-          ❌ {error}
+          <span className="inline-flex items-center gap-2"><IconXBadge size={16} className="icon-3d" /> {error}</span>
         </div>
       )}
 
@@ -113,7 +120,7 @@ export default function Deposit() {
             onChange={(e) => setAmount(e.target.value)}
             className={inputCls} placeholder="e.g. 100"
           />
-          <p className="text-xs text-faint mt-1">💡 ৳100 or more activates your account for 7 days.</p>
+          <p className="text-xs text-faint mt-1 flex items-center gap-1"><IconBulb size={14} className="icon-3d" /> ৳100 or more activates your account for 7 days.</p>
         </div>
         <div>
           <label className="font-bold text-sm text-white">Payment method</label>
@@ -145,23 +152,23 @@ export default function Deposit() {
           disabled={busy}
           className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
         >
-          {busy ? "Sending…" : "📤 Send deposit request"}
+          {busy ? "Sending…" : <span className="inline-flex items-center gap-2"><IconSend size={18} className="icon-3d icon-interactive" /> Send deposit request</span>}
         </button>
         <p className="text-xs text-faint text-center">
-          📝 Admin will verify the payment and approve — then your balance will be credited.
+          <span className="inline-flex items-center gap-1"><IconEdit size={14} className="icon-3d" /> Admin will verify the payment and approve — then your balance will be credited.</span>
         </p>
       </form>
 
       {history.length > 0 && (
         <div className="mt-8">
-          <h2 className="font-bold text-xl text-white">🕘 My deposit requests</h2>
+          <h2 className="font-bold text-xl text-white flex items-center gap-2"><IconClock size={20} className="icon-3d" /> My deposit requests</h2>
           <div className="mt-3 space-y-3">
             {history.map((d) => (
               <div key={d.requestId} className="glass rounded-3xl p-5 text-sm">
                 <div className="flex justify-between items-center gap-2">
                   <p className="font-bold text-white">{d.method} — ৳{d.amount}</p>
                   <span className="text-xs font-bold whitespace-nowrap">
-                    {STATUS_EN[d.status] || d.status}
+                    <StatusLabel status={d.status} />
                   </span>
                 </div>
                 <p className="text-faint text-xs mt-1">
