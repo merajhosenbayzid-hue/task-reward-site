@@ -16,7 +16,7 @@ import {
 const TABS = ["Overview", "Requests", "Users", "Settings", "Audit Log", "Backup"];
 
 const inputCls =
-  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3 focus:border-rose focus:outline-none text-white placeholder:text-faint";
+  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3 focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 focus:outline-none text-white placeholder:text-faint";
 const btnPrimary =
   "btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90 transition disabled:opacity-50";
 const btnGhost =
@@ -51,7 +51,7 @@ function RequestCard({ r, kind, onDecide, busy }) {
   const [reason, setReason] = useState("");
   const isPending = String(r.status || "").toLowerCase() === "pending";
   return (
-    <div className="glass rounded-3xl p-5">
+    <div className="glass card-warm rounded-3xl p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="font-bold text-white text-sm break-all">{r.requestId}</p>
@@ -332,10 +332,11 @@ export default function OwnerPanel() {
 
   if (stage === "login1" || stage === "login2") {
     return (
-      <div className="max-w-md mx-auto py-16">
-        <div className="glass rounded-[2.5rem] p-10 text-center">
+      <div className="max-w-md mx-auto py-16 relative">
+        <div className="ambient-glow w-[28rem] h-[20rem] top-0 left-1/2 -translate-x-1/2" aria-hidden="true" />
+        <div className="glass card-warm rounded-[2.5rem] p-10 text-center relative">
           <div className="flex justify-center"><IconShieldCheck size={56} className="icon-3d animate-icon-float" /></div>
-          <h1 className="mt-4 text-2xl font-bold text-white">Owner Panel</h1>
+          <h1 className="mt-4 font-display text-3xl font-extrabold page-title">Owner Panel</h1>
           <p className="mt-1 text-xs text-faint flex items-center justify-center gap-1.5">
             <IconLock size={12} className="icon-3d" /> Restricted area — authorized owner only
           </p>
@@ -395,13 +396,15 @@ export default function OwnerPanel() {
   ] : [];
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto relative">
+      <div className="ambient-glow w-[36rem] h-[18rem] -top-20 -left-24" aria-hidden="true" />
+      <p className="eyebrow relative">Restricted</p>
       {/* header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <IconShieldCheck size={40} className="icon-3d" />
           <div>
-            <h1 className="text-2xl font-bold text-white">Owner Panel</h1>
+            <h1 className="font-display text-3xl font-extrabold page-title">Owner Panel</h1>
             <p className="text-xs text-faint break-all">{email}</p>
           </div>
         </div>
@@ -437,7 +440,7 @@ export default function OwnerPanel() {
               <>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {cards.map((c) => (
-                    <div key={c.label} className="glass rounded-3xl p-5">
+                    <div key={c.label} className="glass card-warm rounded-3xl p-5">
                       <div className="flex items-center gap-2">{c.icon}</div>
                       <p className="mt-2 text-3xl font-bold text-white">{c.value}</p>
                       <p className="text-xs text-faint">{c.label}</p>
@@ -447,7 +450,7 @@ export default function OwnerPanel() {
                 <h3 className="mt-8 font-bold text-lg text-white">Recent activity</h3>
                 <div className="mt-3 space-y-2">
                   {audit.slice(0, 8).map((a, i) => (
-                    <div key={i} className="glass rounded-2xl px-4 py-3 text-xs flex flex-wrap gap-x-4 gap-y-1">
+                    <div key={i} className="glass card-warm rounded-2xl px-4 py-3 text-xs flex flex-wrap gap-x-4 gap-y-1">
                       <span className="text-faint">{fmtTime(a.time)}</span>
                       <span className="text-white font-bold">{a.action}</span>
                       <span className="text-mist break-all">{a.detail}</span>
@@ -477,10 +480,10 @@ export default function OwnerPanel() {
 
         {tab === "Users" && (
           <div>
-            <div className="overflow-x-auto rounded-[1.5rem] glass">
+            <div className="overflow-x-auto rounded-[1.5rem] glass card-warm">
               <table className="w-full text-sm min-w-[720px]">
                 <thead>
-                  <tr className="bg-white/10 text-white">
+                  <tr className="bg-orange-500/10 text-white">
                     {["User", "Balance", "Referral", "Status", "Action"].map((h) => (
                       <th key={h} className="p-4 text-left font-bold">{h}</th>
                     ))}
@@ -495,7 +498,7 @@ export default function OwnerPanel() {
                         <td className="p-4">
                           <p className="font-bold text-white flex items-center gap-2">
                             <IconUser size={14} className="icon-3d" /> {u.name}
-                            {isOwner && <span className="text-[10px] bg-gold/20 text-gold px-2 py-0.5 rounded-full">OWNER</span>}
+                            {isOwner && <span className="text-[10px] bg-[#ff7a1a]/20 text-[#ffb199] px-2 py-0.5 rounded-full border border-[#ff7a1a]/30">OWNER</span>}
                           </p>
                           <p className="text-xs text-faint break-all">{u.email}</p>
                           <p className="text-xs text-faint">{u.phone}</p>
@@ -532,7 +535,7 @@ export default function OwnerPanel() {
 
         {tab === "Settings" && (
           <div className="max-w-2xl space-y-6">
-            <div className="glass rounded-[2rem] p-7">
+            <div className="glass card-warm rounded-[2rem] p-7">
               <h3 className="font-bold text-lg text-white flex items-center gap-2"><IconSend size={20} className="icon-3d" /> Site announcement</h3>
               <p className="text-xs text-faint mt-1">Shown as a banner on every page. Leave empty to hide.</p>
               <textarea
@@ -567,10 +570,10 @@ export default function OwnerPanel() {
 
         {tab === "Audit Log" && (
           <div>
-            <div className="overflow-x-auto rounded-[1.5rem] glass max-h-[60vh] overflow-y-auto">
+            <div className="overflow-x-auto rounded-[1.5rem] glass card-warm max-h-[60vh] overflow-y-auto">
               <table className="w-full text-sm min-w-[640px]">
                 <thead className="sticky top-0">
-                  <tr className="bg-white/10 text-white">
+                  <tr className="bg-orange-500/10 text-white">
                     {["Time", "Actor", "Action", "Detail"].map((h) => (
                       <th key={h} className="p-4 text-left font-bold">{h}</th>
                     ))}
@@ -594,7 +597,7 @@ export default function OwnerPanel() {
 
         {tab === "Backup" && (
           <div className="max-w-2xl">
-            <div className="glass rounded-[2rem] p-8 text-center">
+            <div className="glass card-warm rounded-[2rem] p-8 text-center">
               <div className="flex justify-center"><IconClipboard size={44} className="icon-3d" /></div>
               <h3 className="mt-3 font-bold text-lg text-white">Database backup</h3>
               <p className="mt-1 text-sm text-mist">Backups are full copies of the database in your Google Drive.</p>
