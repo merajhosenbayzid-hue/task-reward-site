@@ -3,21 +3,40 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  getCurrentUser, isActive, daysLeft, getReferralStats, getWithdrawEligibility,
-} from "../../lib/demo";
+  getCurrentUser, isActive, daysLeft, getReferralInfo,
+  getWithdrawEligibility, myDeposits,
+} from "../../lib/api";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [authed, setAuthed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [stats, setStats] = useState({ total: 0, active: 0 });
+  const [notices, setNotices] = useState([]);
 
   useEffect(() => {
-    const cu = getCurrentUser();
-    if (cu) {
-      setUser(cu);
-      setAuthed(true);
-    }
-    setLoaded(true);
+    let alive = true;
+    (async () => {
+      const cu = await getCurrentUser();
+      if (!alive) return;
+      if (cu) {
+        setUser(cu);
+        setAuthed(true);
+        try {
+          const ri = await getReferralInfo();
+          if (alive) setStats({ total: ri.total, active: ri.active });
+        } catch {}
+        try {
+          const deps = await myDeposits();
+          if (alive) {
+            // notify about recently decided deposits (approved/rejected)
+            setNotices(deps.filter((d) => d.status !== "pending").slice(0, 3));
+          }
+        } catch {}
+      }
+      if (alive) setLoaded(true);
+    })();
+    return () => { alive = false; };
   }, []);
 
   if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
@@ -42,20 +61,37 @@ export default function Dashboard() {
     );
 
   const active = isActive(user);
-  const stats = getReferralStats(user.referralCode);
-  const elig = getWithdrawEligibility(user);
+  const elig = getWithdrawEligibility(user, stats);
 
   const cards = [
     { icon: "💰", label: "ব্যালেন্স", value: `${user.balance} টাকা`, g: "from-peach to-rose" },
     { icon: "👥", label: "মোট রেফার", value: `${stats.total} জন`, g: "from-aqua to-grape" },
     { icon: "🟢", label: "অ্যাক্টিভ রেফার", value: `${stats.active} জন`, g: "from-grape to-rose" },
-    { icon: "✅", label: "সম্পন্ন টাস্ক", value: `${user.tasksDone} টি`, g: "from-rose to-sun" },
+    { icon: "✅", label: "সম্পন্ন টাস্ক", value: "০ টি", g: "from-rose to-sun" },
   ];
 
   return (
     <div>
       <h1 className="text-3xl font-bold text-white">ড্যাশবোর্ড</h1>
       <p className="text-mist mt-1">স্বাগতম, {user.name}!</p>
+
+      {/* deposit decision notifications */}
+      {notices.map((n) => (
+        <div
+          key={n.requestId}
+          className={`mt-4 rounded-[2rem] p-5 font-bold border ${
+            n.status === "approved"
+              ? "border-aqua/40 bg-aqua/10 text-aqua"
+              : "border-peach/40 bg-peach/10 text-peach"
+          }`}
+        >
+          {n.status === "approved" ? (
+            <>🎉 আপনার {n.amount} টাকার ডিপোজিট অনুমোদিত হয়েছে! ব্যালেন্সে যোগ হয়েছে।</>
+          ) : (
+            <>⚠️ আপনার {n.amount} টাকার ডিপোজিট প্রত্যাখ্যাত হয়েছে। কারণ: {n.rejectReason || "—"}</>
+          )}
+        </div>
+      ))}
 
       {/* balance hero card */}
       <div className="mt-6 relative overflow-hidden rounded-[2rem]">
@@ -79,7 +115,7 @@ export default function Dashboard() {
           href="/deposit"
           className="mt-4 block text-center bg-white/10 border border-peach/40 rounded-2xl px-5 py-4 font-bold text-peach hover:bg-white/15"
         >
-          🔴 অ্যাকাউন্ট ইনঅ্যাক্টিভ — ১০০ টাকা ডিপোজিট করে ৭ দিনের জন্য অ্যাক্টিভ করুন →
+          🔴 অ্যাকাউন্ট ইনঅ্যাক্টিভ — ডিপোজিট করে অ্যাক্টিভ করুন (১০০৳+ = ৭ দিন) →
         </Link>
       )}
 
