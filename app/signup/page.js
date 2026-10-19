@@ -7,7 +7,7 @@ import { requestOtp, verifyOtpAndRegister, API_READY } from "../../lib/api";
 import { IconBadge, IconEdit, IconGear, IconGift, IconAlert, IconXBadge, IconMail, IconCheckBadge } from "../../components/icons";
 
 const input =
-  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
+  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 text-white placeholder:text-faint";
 
 function SignupForm() {
   const router = useRouter();
@@ -53,12 +53,13 @@ function SignupForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-8">
-      <div className="text-center">
+    <div className="max-w-md mx-auto py-8 relative">
+      <div className="ambient-glow w-[28rem] h-[28rem] -top-24 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconEdit size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 text-3xl font-bold text-white">Create Account</h1>
+        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Create Account</h1>
       </div>
       <p className="text-center text-mist mt-1 text-sm">
         Completely free — verify your email to open an account.
@@ -77,7 +78,7 @@ function SignupForm() {
       )}
 
       {step === 1 ? (
-        <form onSubmit={sendOtp} className="mt-4 glass rounded-[2rem] p-7 space-y-4">
+        <form onSubmit={sendOtp} className="mt-4 glass card-warm rounded-[2rem] p-7 space-y-4 relative">
           <div>
             <label className="font-bold text-sm text-white">Your name</label>
             <input className={input} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. John Doe" />
@@ -107,13 +108,13 @@ function SignupForm() {
           <button
             type="submit"
             disabled={busy || !API_READY}
-            className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
+            className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
           >
             {busy ? "Sending code…" : <span className="inline-flex items-center gap-2"><IconMail size={18} className="icon-3d icon-interactive" /> Verify email</span>}
           </button>
         </form>
       ) : (
-        <form onSubmit={verify} className="mt-4 glass rounded-[2rem] p-7 space-y-4">
+        <form onSubmit={verify} className="mt-4 glass card-warm rounded-[2rem] p-7 space-y-4 relative">
           <div className="text-center">
             <p className="flex justify-center"><IconMail size={48} className="icon-3d animate-icon-float" /></p>
             <p className="mt-3 font-bold text-white">Enter verification code</p>
@@ -144,7 +145,7 @@ function SignupForm() {
           <button
             type="submit"
             disabled={busy || otp.length !== 6}
-            className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
+            className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
           >
             {busy ? "Verifying…" : <span className="inline-flex items-center gap-2"><IconCheckBadge size={18} className="icon-3d icon-interactive" /> Verify & create account</span>}
           </button>
