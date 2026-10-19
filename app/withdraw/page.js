@@ -6,7 +6,7 @@ import {
   getCurrentUser, getReferralInfo, getWithdrawEligibility, isActive, daysLeft,
 } from "../../lib/api";
 
-const METHODS = ["বিকাশ", "নগদ", "রকেট"];
+const METHODS = ["bKash", "Nagad", "Rocket"];
 
 const inputCls =
   "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-rose focus:outline-none text-white placeholder:text-faint";
@@ -43,15 +43,15 @@ export default function Withdraw() {
     return () => { alive = false; };
   }, []);
 
-  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
+  if (!loaded) return <p className="text-center py-16 text-mist">Loading...</p>;
 
   if (!user) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
         <div className="glass rounded-[2.5rem] p-10">
-          <p className="text-lg font-bold text-white">উত্তোলন করতে লগিন করুন</p>
+          <p className="text-lg font-bold text-white">Log in to withdraw</p>
           <Link href="/login" className="mt-4 inline-block btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
-            লগিন করুন
+            Log in
           </Link>
         </div>
       </div>
@@ -63,27 +63,27 @@ export default function Withdraw() {
   const submit = (e) => {
     e.preventDefault();
     if (!elig.eligible) {
-      alert("শর্ত পূরণ হয়নি — নিচের তালিকা দেখুন।");
+      alert("Requirements not met — see the list below.");
       return;
     }
     const amt = parseInt(amount, 10);
     if (!amt || amt <= 0) {
-      alert("সঠিক টাকার পরিমাণ দিন।");
+      alert("Enter a valid amount.");
       return;
     }
     if (amt > user.balance) {
-      alert("ব্যালেন্সের চেয়ে বেশি টাকা চাওয়া যাবে না।");
+      alert("You can't request more than your balance.");
       return;
     }
     if (!account) {
-      alert("আপনার অ্যাকাউন্ট নম্বর দিন।");
+      alert("Enter your account number.");
       return;
     }
     const item = {
       id: Date.now(),
       method, account, amount: amt,
-      date: new Date().toLocaleString("bn-BD"),
-      status: "যাচাইাধীন",
+      date: new Date().toLocaleString("en-US"),
+      status: "Pending",
     };
     const list = [item, ...history];
     setHistory(list);
@@ -97,28 +97,28 @@ export default function Withdraw() {
 
   const checks = [
     {
-      label: "আপনার অ্যাকাউন্ট অ্যাক্টিভ",
+      label: "Your account is active",
       ok: isActive(user),
-      hint: isActive(user) ? `${daysLeft(user)} দিন বাকি` : "ডিপোজিট করে অ্যাক্টিভ করুন",
+      hint: isActive(user) ? `${daysLeft(user)} days left` : "Activate with a deposit",
     },
     {
-      label: "যোগ্য রেফারেল (কমপক্ষে ১০ জন)",
+      label: "Eligible referrals (at least 10)",
       ok: stats.active >= 10,
-      hint: `${stats.active} জন অ্যাক্টিভ রেফারেল`,
+      hint: `${stats.active} active referrals`,
     },
   ];
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white">🏧 টাকা উত্তোলন</h1>
+      <h1 className="text-3xl font-bold text-center text-white">🏧 Withdraw Money</h1>
 
       <div className="mt-6 glass rounded-[2rem] p-8 text-center">
-        <p className="text-faint text-sm">উত্তোলনযোগ্য ব্যালেন্স</p>
-        <p className="text-4xl font-bold text-white mt-1">{user.balance} <span className="text-xl">টাকা</span></p>
+        <p className="text-faint text-sm">Withdrawable balance</p>
+        <p className="text-4xl font-bold text-white mt-1">৳{user.balance}</p>
       </div>
 
       <div className="mt-5 glass rounded-[2rem] p-7">
-        <h2 className="font-bold text-lg text-white">📋 উত্তোলনের শর্ত</h2>
+        <h2 className="font-bold text-lg text-white">📋 Withdrawal requirements</h2>
         <div className="mt-4 space-y-3">
           {checks.map((c, i) => (
             <div key={i} className={`flex items-start gap-3 p-4 rounded-3xl ${c.ok ? "bg-aqua/10 border border-aqua/30" : "bg-white/5"}`}>
@@ -132,7 +132,7 @@ export default function Withdraw() {
         </div>
         {elig.eligible ? (
           <p className="mt-4 bg-aqua/10 border border-aqua/30 rounded-3xl px-5 py-4 font-bold text-aqua text-sm">
-            🎉 অভিনন্দন! আপনি উত্তোলনের যোগ্য।
+            🎉 Congratulations! You&apos;re eligible to withdraw.
           </p>
         ) : (
           <div className="mt-4 bg-peach/10 border border-peach/30 rounded-3xl px-5 py-4 text-sm">
@@ -140,8 +140,8 @@ export default function Withdraw() {
               <p key={i} className="text-peach mt-1">⚠️ {r}</p>
             ))}
             <div className="mt-3 flex gap-2 flex-wrap">
-              <Link href="/deposit" className="btn-gradient text-white text-sm font-bold px-4 py-2.5 rounded-full">ডিপোজিট করুন</Link>
-              <Link href="/referral" className="bg-white text-night text-sm font-bold px-4 py-2.5 rounded-full">রেফার করুন</Link>
+              <Link href="/deposit" className="btn-gradient text-white text-sm font-bold px-4 py-2.5 rounded-full">Deposit</Link>
+              <Link href="/referral" className="bg-white text-night text-sm font-bold px-4 py-2.5 rounded-full">Refer</Link>
             </div>
           </div>
         )}
@@ -149,14 +149,14 @@ export default function Withdraw() {
 
       {done && (
         <div className="mt-5 border border-aqua/40 bg-aqua/10 rounded-[2rem] p-5 text-center font-bold text-aqua">
-          ✅ উত্তোলনের আবেদন জমা হয়েছে! অ্যাডমিন অনুমোদন করলে পেমেন্ট পাঠানো হবে।
+          ✅ Withdrawal request submitted! You&apos;ll be paid after admin approval.
         </div>
       )}
 
       {elig.eligible && (
         <form onSubmit={submit} className="mt-5 glass rounded-[2rem] p-7 space-y-5">
           <div>
-            <label className="font-bold text-sm text-white">পেমেন্ট মাধ্যম</label>
+            <label className="font-bold text-sm text-white">Payment method</label>
             <div className="mt-2 grid grid-cols-3 gap-2">
               {METHODS.map((m) => (
                 <button
@@ -173,27 +173,27 @@ export default function Withdraw() {
             </div>
           </div>
           <div>
-            <label className="font-bold text-sm text-white">আপনার {method} নম্বর</label>
+            <label className="font-bold text-sm text-white">Your {method} number</label>
             <input value={account} onChange={(e) => setAccount(e.target.value)} className={inputCls} placeholder="01XXXXXXXXX" />
           </div>
           <div>
-            <label className="font-bold text-sm text-white">টাকার পরিমাণ</label>
-            <input type="number" min="1" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} placeholder="যেমন: 100" />
+            <label className="font-bold text-sm text-white">Amount</label>
+            <input type="number" min="1" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} placeholder="e.g. 100" />
           </div>
           <button type="submit" className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25">
-            উত্তোলনের আবেদন করুন
+            Request withdrawal
           </button>
         </form>
       )}
 
       {history.length > 0 && (
         <div className="mt-8">
-          <h2 className="font-bold text-xl text-white">🕘 উত্তোলন ইতিহাস</h2>
+          <h2 className="font-bold text-xl text-white">🕘 Withdrawal history</h2>
           <div className="mt-3 space-y-3">
             {history.map((w) => (
               <div key={w.id} className="glass rounded-3xl p-5 text-sm flex justify-between items-center">
                 <div>
-                  <p className="font-bold text-white">{w.method} — {w.amount} টাকা</p>
+                  <p className="font-bold text-white">{w.method} — ৳{w.amount}</p>
                   <p className="text-faint text-xs">{w.date}</p>
                 </div>
                 <span className="bg-white/10 text-white text-xs font-bold px-3 py-1.5 rounded-full">{w.status}</span>
