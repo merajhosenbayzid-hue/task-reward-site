@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconHeadset, IconMail } from "./icons";
 
 export default function Footer() {
   return (
@@ -32,8 +33,8 @@ export default function Footer() {
             <div>
               <p className="font-bold text-xs uppercase tracking-widest text-faint">Contact</p>
               <div className="mt-3 text-sm text-mist space-y-2">
-                <p>🎧 Support: every day 9 AM – 10 PM</p>
-                <p>📧 support@task-reward-site.onrender.com</p>
+                <p className="flex items-center gap-2"><IconHeadset size={16} className="icon-3d" /> Support: every day 9 AM – 10 PM</p>
+                <p className="flex items-center gap-2"><IconMail size={16} className="icon-3d" /> support@task-reward-site.onrender.com</p>
               </div>
             </div>
           </div>
