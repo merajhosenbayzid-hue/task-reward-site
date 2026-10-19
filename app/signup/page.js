@@ -4,6 +4,7 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { requestOtp, verifyOtpAndRegister, API_READY } from "../../lib/api";
+import { IconBadge, IconEdit, IconGear, IconGift, IconAlert, IconXBadge, IconMail, IconCheckBadge } from "../../components/icons";
 
 const input =
   "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
@@ -54,7 +55,9 @@ function SignupForm() {
   return (
     <div className="max-w-md mx-auto py-8">
       <div className="text-center">
-        <span className="inline-flex w-16 h-16 btn-gradient rounded-[1.5rem] text-4xl items-center justify-center mx-auto shadow-lg shadow-rose/30">📝</span>
+        <IconBadge size={64} className="mx-auto">
+          <IconEdit size={30} className="[&_*]:stroke-white" />
+        </IconBadge>
         <h1 className="mt-4 text-3xl font-bold text-white">Create Account</h1>
       </div>
       <p className="text-center text-mist mt-1 text-sm">
@@ -62,14 +65,14 @@ function SignupForm() {
       </p>
 
       {!API_READY && (
-        <p className="mt-4 text-center text-sm bg-peach/10 border border-peach/30 rounded-full px-4 py-3 font-bold text-peach">
-          ⚙️ Server setup in progress — please try again in a moment.
+        <p className="mt-4 text-center text-sm bg-peach/10 border border-peach/30 rounded-full px-4 py-3 font-bold text-peach flex items-center justify-center gap-2">
+          <IconGear size={16} className="icon-3d" /> Server setup in progress — please try again in a moment.
         </p>
       )}
 
       {refFromUrl && (
-        <p className="mt-4 text-center text-sm bg-aqua/10 border border-aqua/30 rounded-full px-4 py-3 font-bold text-aqua">
-          🎁 You came with referral code <b>{refFromUrl}</b>!
+        <p className="mt-4 text-center text-sm bg-aqua/10 border border-aqua/30 rounded-full px-4 py-3 font-bold text-aqua flex items-center justify-center gap-2">
+          <IconGift size={16} className="icon-3d" /> You came with referral code <b>{refFromUrl}</b>!
         </p>
       )}
 
@@ -82,7 +85,7 @@ function SignupForm() {
           <div>
             <label className="font-bold text-sm text-white">Gmail address</label>
             <input className={input} type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="you@gmail.com" />
-            <p className="text-xs text-faint mt-1">⚠️ The verification code will be sent to this address.</p>
+            <p className="text-xs text-faint mt-1 flex items-center gap-1"><IconAlert size={12} className="icon-3d" /> The verification code will be sent to this address.</p>
           </div>
           <div>
             <label className="font-bold text-sm text-white">Mobile number</label>
@@ -98,7 +101,7 @@ function SignupForm() {
           </div>
 
           {error && (
-            <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3">❌ {error}</p>
+            <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3 flex items-center gap-2"><IconXBadge size={16} className="icon-3d" /> {error}</p>
           )}
 
           <button
@@ -106,20 +109,20 @@ function SignupForm() {
             disabled={busy || !API_READY}
             className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
           >
-            {busy ? "Sending code…" : "📧 Verify email"}
+            {busy ? "Sending code…" : <span className="inline-flex items-center gap-2"><IconMail size={18} className="icon-3d icon-interactive" /> Verify email</span>}
           </button>
         </form>
       ) : (
         <form onSubmit={verify} className="mt-4 glass rounded-[2rem] p-7 space-y-4">
           <div className="text-center">
-            <p className="text-5xl">📧</p>
+            <p className="flex justify-center"><IconMail size={48} className="icon-3d animate-icon-float" /></p>
             <p className="mt-3 font-bold text-white">Enter verification code</p>
             <p className="text-sm text-mist mt-1">
               A 6-digit code was sent to <b className="text-white">{form.email}</b>.
             </p>
           </div>
           {info && (
-            <p className="bg-aqua/10 border border-aqua/30 text-aqua font-bold text-sm rounded-2xl px-4 py-3">✅ {info}</p>
+            <p className="bg-aqua/10 border border-aqua/30 text-aqua font-bold text-sm rounded-2xl px-4 py-3 flex items-center gap-2"><IconCheckBadge size={16} className="icon-3d" /> {info}</p>
           )}
           <div>
             <label className="font-bold text-sm text-white">OTP code</label>
@@ -135,7 +138,7 @@ function SignupForm() {
           </div>
 
           {error && (
-            <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3">❌ {error}</p>
+            <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3 flex items-center gap-2"><IconXBadge size={16} className="icon-3d" /> {error}</p>
           )}
 
           <button
@@ -143,7 +146,7 @@ function SignupForm() {
             disabled={busy || otp.length !== 6}
             className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
           >
-            {busy ? "Verifying…" : "✅ Verify & create account"}
+            {busy ? "Verifying…" : <span className="inline-flex items-center gap-2"><IconCheckBadge size={18} className="icon-3d icon-interactive" /> Verify & create account</span>}
           </button>
           <button
             type="button"
