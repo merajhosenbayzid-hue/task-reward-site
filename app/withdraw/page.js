@@ -12,7 +12,7 @@ import { useCurrency, formatMoney } from "../../lib/currency";
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
 const inputCls =
-  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-rose focus:outline-none text-white placeholder:text-faint";
+  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 focus:outline-none text-white placeholder:text-faint";
 
 export default function Withdraw() {
   const [user, setUser] = useState(null);
@@ -59,7 +59,7 @@ export default function Withdraw() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
-        <div className="glass rounded-[2.5rem] p-10">
+        <div className="glass card-warm rounded-[2.5rem] p-10">
           <p className="text-lg font-bold text-white">Log in to withdraw</p>
           <Link href="/login" className="mt-4 inline-block btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
             Log in
@@ -122,14 +122,15 @@ export default function Withdraw() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconBank size={30} className="icon-3d" /> Withdraw Money</h1>
+      <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBank size={34} className="icon-3d" /> Withdraw Money</h1></div>
 
-      <div className="mt-6 glass rounded-[2rem] p-8 text-center">
+      <div className="mt-6 glass card-warm rounded-[2rem] p-8 text-center relative">
         <p className="text-faint text-sm">Withdrawable balance</p>
         <p className="text-4xl font-bold text-white mt-1">{formatMoney(user.balance, currency)}</p>
       </div>
 
-      <div className="mt-5 glass rounded-[2rem] p-7">
+      <div className="mt-5 glass card-warm rounded-[2rem] p-7">
         <h2 className="font-bold text-lg text-white flex items-center gap-2"><IconClipboard size={20} className="icon-3d" /> Withdrawal requirements</h2>
         <div className="mt-4 space-y-3">
           {checks.map((c, i) => (
@@ -166,7 +167,7 @@ export default function Withdraw() {
       )}
 
       {elig.eligible && (
-        <form onSubmit={submit} className="mt-5 glass rounded-[2rem] p-7 space-y-5">
+        <form onSubmit={submit} className="mt-5 glass card-warm rounded-[2rem] p-7 space-y-5 relative">
           <div>
             <label className="font-bold text-sm text-white">Payment method</label>
             <div className="mt-2 grid grid-cols-3 gap-2">
@@ -200,7 +201,7 @@ export default function Withdraw() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25 disabled:opacity-50"
+            className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
           >
             {submitting ? "Submitting..." : "Request withdrawal"}
           </button>
@@ -214,7 +215,7 @@ export default function Withdraw() {
             {history.map((w) => {
               const s = String(w.status || "").toLowerCase();
               return (
-                <div key={w.requestId || w.id} className="glass rounded-3xl p-5 text-sm">
+                <div key={w.requestId || w.id} className="glass card-warm rounded-3xl p-5 text-sm">
                   <div className="flex justify-between items-center gap-3">
                     <div>
                       <p className="font-bold text-white">{w.method} — {formatMoney(w.amount, currency)}</p>
