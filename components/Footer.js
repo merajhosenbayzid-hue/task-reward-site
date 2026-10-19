@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="relative z-10 mt-20">
       <div className="max-w-6xl mx-auto px-4 pb-10">
-        <div className="glass rounded-[2rem] px-8 py-10">
+        <div className="glass card-warm rounded-[2rem] px-8 py-10">
           <div className="grid sm:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-2.5">
@@ -24,7 +24,7 @@ export default function Footer() {
               </p>
             </div>
             <div>
-              <p className="font-bold text-xs uppercase tracking-widest text-faint">Quick Links</p>
+              <p className="eyebrow">Quick Links</p>
               <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
                 <Link href="/tasks" className="text-mist hover:text-white">Tasks</Link>
                 <Link href="/deposit" className="text-mist hover:text-white">Deposit</Link>
@@ -35,7 +35,7 @@ export default function Footer() {
               </div>
             </div>
             <div>
-              <p className="font-bold text-xs uppercase tracking-widest text-faint">Contact</p>
+              <p className="eyebrow">Contact</p>
               <div className="mt-3 text-sm text-mist space-y-2">
                 <p className="flex items-center gap-2"><IconHeadset size={16} className="icon-3d" /> Support: every day 9 AM – 10 PM</p>
                 <p className="flex items-center gap-2"><IconMail size={16} className="icon-3d" /> support@task-reward-site.onrender.com</p>
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* ---------- Support & Community ---------- */}
           <div className="mt-6 pt-6 border-t border-white/10 text-center">
-            <p className="font-bold text-xs uppercase tracking-widest text-faint">Support &amp; Community</p>
+            <p className="eyebrow">Support &amp; Community</p>
             {active.length > 0 ? (
               <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-4">
                 {active.map(({ id, label, url, Icon }) => (
