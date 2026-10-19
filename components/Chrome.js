@@ -31,12 +31,13 @@ function loadPublicSettings() {
 
 function MaintenanceScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-night px-4">
-      <div className="text-center max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-night px-4 relative overflow-hidden">
+      <div className="ambient-glow w-[34rem] h-[34rem] left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
+      <div className="text-center max-w-md relative">
         <div className="flex justify-center">
           <IconGear size={56} className="icon-3d animate-spin-slow" />
         </div>
-        <h1 className="mt-5 text-3xl font-bold text-white">Under maintenance</h1>
+        <h1 className="mt-5 text-3xl font-display font-extrabold page-title">Under maintenance</h1>
         <p className="mt-2 text-mist">We&apos;re improving the site — back soon.</p>
       </div>
     </div>
@@ -63,7 +64,7 @@ export default function Chrome({ children }) {
 
   const banner =
     settings && settings.announcement ? (
-      <div className="bg-gradient-to-r from-peach via-rose to-grape text-white text-center text-xs sm:text-sm font-bold px-4 py-2.5 relative z-[60]">
+      <div className="bg-gradient-to-r from-[#ff7a1a] via-[#ff5e62] to-[#c026d3] text-white text-center text-xs sm:text-sm font-bold px-4 py-2.5 relative z-[60] shadow-[0_4px_20px_rgba(255,122,26,0.35)]">
         {settings.announcement}
       </div>
     ) : null;
