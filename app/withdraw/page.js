@@ -6,6 +6,7 @@ import {
   getCurrentUser, getReferralInfo, getWithdrawEligibility, isActive, daysLeft,
 } from "../../lib/api";
 import { IconBank, IconClipboard, IconCheckBadge, IconXBadge, IconSparkles, IconAlert, IconClock } from "../../components/icons";
+import { useCurrency, formatMoney } from "../../lib/currency";
 
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
@@ -15,6 +16,7 @@ const inputCls =
 export default function Withdraw() {
   const [user, setUser] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [currency] = useCurrency();
   const [stats, setStats] = useState({ total: 0, active: 0 });
   const [method, setMethod] = useState(METHODS[0]);
   const [account, setAccount] = useState("");
@@ -115,7 +117,7 @@ export default function Withdraw() {
 
       <div className="mt-6 glass rounded-[2rem] p-8 text-center">
         <p className="text-faint text-sm">Withdrawable balance</p>
-        <p className="text-4xl font-bold text-white mt-1">৳{user.balance}</p>
+        <p className="text-4xl font-bold text-white mt-1">{formatMoney(user.balance, currency)}</p>
       </div>
 
       <div className="mt-5 glass rounded-[2rem] p-7">
@@ -194,7 +196,7 @@ export default function Withdraw() {
             {history.map((w) => (
               <div key={w.id} className="glass rounded-3xl p-5 text-sm flex justify-between items-center">
                 <div>
-                  <p className="font-bold text-white">{w.method} — ৳{w.amount}</p>
+                  <p className="font-bold text-white">{w.method} — {formatMoney(w.amount, currency)}</p>
                   <p className="text-faint text-xs">{w.date}</p>
                 </div>
                 <span className="bg-white/10 text-white text-xs font-bold px-3 py-1.5 rounded-full">{w.status}</span>
