@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getCurrentUser, isActive, daysLeft, getReferralInfo, referralLink } from "../../lib/api";
+import { StatusDot, IconGift, IconCheckBadge, IconUsers, IconBanknote, IconLink, IconLock } from "../../components/icons";
 
 export default function Referral() {
   const [user, setUser] = useState(null);
@@ -57,7 +58,7 @@ export default function Referral() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white">🎁 <span className="text-gradient">Refer &amp; Win Rewards</span></h1>
+      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconGift size={30} className="icon-3d" /> <span className="text-gradient">Refer &amp; Win Rewards</span></h1>
       <p className="text-center text-mist mt-2">
         Refer friends — when their deposit is approved, you get a <b className="text-white">5%</b> bonus!
       </p>
@@ -66,17 +67,17 @@ export default function Referral() {
         active ? "border-aqua/40 text-aqua bg-aqua/5" : "border-peach/40 text-peach bg-peach/5"
       }`}>
         {active ? (
-          <>🟢 Account active — {daysLeft(user)} days left. You can refer.</>
+          <span className="inline-flex items-center gap-2"><StatusDot active size={13} /> Account active — {daysLeft(user)} days left. You can refer.</span>
         ) : (
-          <>🔴 Account inactive —{" "}
+          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive —{" "}
             <Link href="/deposit" className="underline">deposit to activate</Link> to refer
-          </>
+          </span>
         )}
       </div>
 
       {active ? (
       <div className="mt-5 glass rounded-[2rem] p-7">
-        <p className="font-bold text-white">🔗 Your Referral Link</p>
+        <p className="font-bold text-white flex items-center gap-2"><IconLink size={18} className="icon-3d" /> Your Referral Link</p>
         <div className="mt-3 flex gap-2">
           <input
             readOnly
@@ -88,14 +89,14 @@ export default function Referral() {
             onClick={copy}
             className="btn-gradient text-white font-bold px-5 rounded-full hover:opacity-90 shrink-0"
           >
-            {copied ? "✅ Copied!" : "Copy"}
+            {copied ? <span className="inline-flex items-center gap-1.5"><IconCheckBadge size={16} className="icon-3d icon-interactive" /> Copied!</span> : "Copy"}
           </button>
         </div>
         <p className="mt-2 text-xs text-faint">Your code: <b className="text-white">{info?.referralCode}</b></p>
       </div>
       ) : (
       <div className="mt-5 glass rounded-[2rem] p-7 text-center">
-        <p className="text-4xl">🔒</p>
+        <p className="flex justify-center"><IconLock size={44} className="icon-3d" /></p>
         <p className="font-bold text-white mt-3">Referral link locked</p>
         <p className="text-sm text-mist mt-1">
           Activate your account to unlock your referral link and code.{" "}
@@ -106,12 +107,12 @@ export default function Referral() {
 
       <div className="mt-5 grid grid-cols-2 gap-4">
         <div className="glass rounded-[2rem] p-6 text-center">
-          <p className="text-3xl">👥</p>
+          <p className="flex justify-center"><IconUsers size={32} className="icon-3d" /></p>
           <p className="text-sm text-faint mt-1">Total referrals</p>
           <p className="text-2xl font-bold text-white">{info?.total ?? 0}</p>
         </div>
         <div className="glass rounded-[2rem] p-6 text-center">
-          <p className="text-3xl">🟢</p>
+          <p className="flex justify-center"><StatusDot active size={30} /></p>
           <p className="text-sm text-faint mt-1">Active referrals</p>
           <p className="text-2xl font-bold text-white">{info?.active ?? 0}</p>
         </div>
@@ -119,13 +120,13 @@ export default function Referral() {
 
       {info && info.list.length > 0 && (
         <div className="mt-5 glass rounded-[2rem] p-6">
-          <p className="font-bold text-white mb-3">👥 Your referral list</p>
+          <p className="font-bold text-white mb-3 flex items-center gap-2"><IconUsers size={18} className="icon-3d" /> Your referral list</p>
           <div className="space-y-2">
             {info.list.map((r, i) => (
               <div key={i} className="flex justify-between items-center bg-white/5 rounded-2xl px-4 py-2.5 text-sm">
                 <span className="text-white font-bold">{r.name}</span>
                 <span className={r.active ? "text-aqua font-bold" : "text-faint"}>
-                  {r.active ? "🟢 Active" : "🔴 Inactive"}
+                  {r.active ? <span className="inline-flex items-center gap-1.5"><StatusDot active size={11} /> Active</span> : <span className="inline-flex items-center gap-1.5"><StatusDot size={11} /> Inactive</span>}
                 </span>
               </div>
             ))}
@@ -139,7 +140,7 @@ export default function Referral() {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-bold text-xl text-white">💸 Referral bonus table</h2>
+        <h2 className="font-bold text-xl text-white flex items-center gap-2"><IconBanknote size={22} className="icon-3d" /> Referral bonus table</h2>
         <div className="mt-3 overflow-x-auto rounded-[1.5rem]">
           <table className="w-full text-center text-sm min-w-[420px] glass">
             <thead>
