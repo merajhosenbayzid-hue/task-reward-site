@@ -55,46 +55,46 @@ function SignupForm() {
     <div className="max-w-md mx-auto py-8">
       <div className="text-center">
         <span className="inline-flex w-16 h-16 btn-gradient rounded-[1.5rem] text-4xl items-center justify-center mx-auto shadow-lg shadow-rose/30">📝</span>
-        <h1 className="mt-4 text-3xl font-bold text-white">অ্যাকাউন্ট খুলুন</h1>
+        <h1 className="mt-4 text-3xl font-bold text-white">Create Account</h1>
       </div>
       <p className="text-center text-mist mt-1 text-sm">
-        সম্পূর্ণ বিনামূল্যে — ইমেইল যাচাই করে অ্যাকাউন্ট খুলুন।
+        Completely free — verify your email to open an account.
       </p>
 
       {!API_READY && (
         <p className="mt-4 text-center text-sm bg-peach/10 border border-peach/30 rounded-full px-4 py-3 font-bold text-peach">
-          ⚙️ সার্ভার সেটআপ চলছে — কিছুক্ষণ পর আবার চেষ্টা করুন।
+          ⚙️ Server setup in progress — please try again in a moment.
         </p>
       )}
 
       {refFromUrl && (
         <p className="mt-4 text-center text-sm bg-aqua/10 border border-aqua/30 rounded-full px-4 py-3 font-bold text-aqua">
-          🎁 রেফারেল কোড <b>{refFromUrl}</b> দিয়ে এসেছেন!
+          🎁 You came with referral code <b>{refFromUrl}</b>!
         </p>
       )}
 
       {step === 1 ? (
         <form onSubmit={sendOtp} className="mt-4 glass rounded-[2rem] p-7 space-y-4">
           <div>
-            <label className="font-bold text-sm text-white">আপনার নাম</label>
-            <input className={input} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="যেমন: রহিম উদ্দিন" />
+            <label className="font-bold text-sm text-white">Your name</label>
+            <input className={input} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. John Doe" />
           </div>
           <div>
-            <label className="font-bold text-sm text-white">Gmail ঠিকানা</label>
+            <label className="font-bold text-sm text-white">Gmail address</label>
             <input className={input} type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="you@gmail.com" />
-            <p className="text-xs text-faint mt-1">⚠️ এই ঠিকানায় যাচাইকরণ কোড যাবে।</p>
+            <p className="text-xs text-faint mt-1">⚠️ The verification code will be sent to this address.</p>
           </div>
           <div>
-            <label className="font-bold text-sm text-white">BD মোবাইল নম্বর</label>
+            <label className="font-bold text-sm text-white">Mobile number</label>
             <input className={input} inputMode="numeric" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="01XXXXXXXXX" />
           </div>
           <div>
-            <label className="font-bold text-sm text-white">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label>
+            <label className="font-bold text-sm text-white">Password (at least 6 characters)</label>
             <input className={input} type="password" value={form.password} onChange={(e) => set("password", e.target.value)} placeholder="••••••" />
           </div>
           <div>
-            <label className="font-bold text-sm text-white">রেফারেল কোড (যদি থাকে)</label>
-            <input className={input} value={form.referral} onChange={(e) => set("referral", e.target.value)} placeholder="ঐচ্ছিক" />
+            <label className="font-bold text-sm text-white">Referral code (optional)</label>
+            <input className={input} value={form.referral} onChange={(e) => set("referral", e.target.value)} placeholder="Optional" />
           </div>
 
           {error && (
@@ -106,23 +106,23 @@ function SignupForm() {
             disabled={busy || !API_READY}
             className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
           >
-            {busy ? "কোড পাঠানো হচ্ছে…" : "📧 ইমেইল যাচাই করুন"}
+            {busy ? "Sending code…" : "📧 Verify email"}
           </button>
         </form>
       ) : (
         <form onSubmit={verify} className="mt-4 glass rounded-[2rem] p-7 space-y-4">
           <div className="text-center">
             <p className="text-5xl">📧</p>
-            <p className="mt-3 font-bold text-white">যাচাইকরণ কোড দিন</p>
+            <p className="mt-3 font-bold text-white">Enter verification code</p>
             <p className="text-sm text-mist mt-1">
-              <b className="text-white">{form.email}</b> ঠিকানায় ৬ সংখ্যার কোড পাঠানো হয়েছে।
+              A 6-digit code was sent to <b className="text-white">{form.email}</b>.
             </p>
           </div>
           {info && (
             <p className="bg-aqua/10 border border-aqua/30 text-aqua font-bold text-sm rounded-2xl px-4 py-3">✅ {info}</p>
           )}
           <div>
-            <label className="font-bold text-sm text-white">OTP কোড</label>
+            <label className="font-bold text-sm text-white">OTP code</label>
             <input
               className={`${input} text-center text-2xl tracking-[0.5em] font-bold`}
               inputMode="numeric"
@@ -131,7 +131,7 @@ function SignupForm() {
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
               placeholder="••••••"
             />
-            <p className="text-xs text-faint mt-1 text-center">কোডটি ৫ মিনিট কার্যকর থাকবে।</p>
+            <p className="text-xs text-faint mt-1 text-center">The code is valid for 5 minutes.</p>
           </div>
 
           {error && (
@@ -143,7 +143,7 @@ function SignupForm() {
             disabled={busy || otp.length !== 6}
             className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
           >
-            {busy ? "যাচাই হচ্ছে…" : "✅ যাচাই করুন ও অ্যাকাউন্ট খুলুন"}
+            {busy ? "Verifying…" : "✅ Verify & create account"}
           </button>
           <button
             type="button"
@@ -151,21 +151,21 @@ function SignupForm() {
             disabled={busy}
             className="w-full text-sm text-peach font-bold hover:underline disabled:opacity-50"
           >
-            কোড আবার পাঠান
+            Resend code
           </button>
           <button
             type="button"
             onClick={() => { setStep(1); setError(""); setInfo(""); }}
             className="w-full text-sm text-faint hover:text-white"
           >
-            ← তথ্য বদলান
+            ← Edit details
           </button>
         </form>
       )}
 
       <p className="text-center mt-5 text-sm text-mist">
-        ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
-        <Link href="/login" className="text-peach font-bold">লগিন করুন</Link>
+        Already have an account?{" "}
+        <Link href="/login" className="text-peach font-bold">Log in</Link>
       </p>
     </div>
   );
@@ -173,7 +173,7 @@ function SignupForm() {
 
 export default function Signup() {
   return (
-    <Suspense fallback={<p className="text-center py-10 text-mist">লোড হচ্ছে...</p>}>
+    <Suspense fallback={<p className="text-center py-10 text-mist">Loading...</p>}>
       <SignupForm />
     </Suspense>
   );
