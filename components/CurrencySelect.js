@@ -59,17 +59,17 @@ export default function CurrencySelect({ value, onSelect, className = "" }) {
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="glass rounded-full px-3.5 py-2 text-sm font-bold text-white flex items-center gap-1.5 hover:bg-white/10 transition"
+        className="glass card-warm rounded-full px-3.5 py-2 text-sm font-bold text-white flex items-center gap-1.5 hover:bg-white/10 transition"
         title="Display currency"
       >
-        <span className="text-peach">{CURRENCIES[cur].symbol}</span>
+        <span className="text-[#ff7a1a]">{CURRENCIES[cur].symbol}</span>
         <span>{cur}</span>
         <Chevron open={open} />
       </button>
       {open && (
         <div
           role="listbox"
-          className="absolute right-0 top-full mt-2 w-60 glass rounded-2xl p-1.5 z-50 shadow-2xl shadow-black/50"
+          className="absolute right-0 top-full mt-2 w-60 glass card-warm rounded-2xl p-1.5 z-50"
         >
           {Object.entries(CURRENCIES).map(([code, c]) => (
             <button
@@ -79,10 +79,10 @@ export default function CurrencySelect({ value, onSelect, className = "" }) {
               aria-selected={code === cur}
               onClick={() => pick(code)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${
-                code === cur ? "bg-white/10 text-white" : "text-mist hover:bg-white/5 hover:text-white"
+                code === cur ? "bg-orange-500/15 text-white" : "text-mist hover:bg-white/5 hover:text-white"
               }`}
             >
-              <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center font-bold text-peach shrink-0">
+              <span className="w-7 h-7 rounded-full bg-orange-500/15 flex items-center justify-center font-bold text-[#ff7a1a] shrink-0">
                 {c.symbol}
               </span>
               <span className="font-bold text-left flex-1">{c.label}</span>
