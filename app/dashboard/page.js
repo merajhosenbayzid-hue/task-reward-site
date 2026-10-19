@@ -6,6 +6,7 @@ import {
   getCurrentUser, isActive, daysLeft, getReferralInfo,
   getWithdrawEligibility, myDeposits,
 } from "../../lib/api";
+import { StatusDot, IconWallet, IconUsers, IconCheckBadge, IconUser, IconSparkles, IconAlert } from "../../components/icons";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -45,7 +46,7 @@ export default function Dashboard() {
     return (
       <div className="max-w-md mx-auto text-center py-16">
         <div className="glass rounded-[2.5rem] p-10">
-          <p className="text-5xl">👤</p>
+          <p className="flex justify-center"><IconUser size={48} className="icon-3d" /></p>
           <h1 className="mt-4 text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-mist mt-2">Log in to view your dashboard.</p>
           <div className="mt-6 flex gap-3 justify-center">
@@ -64,10 +65,10 @@ export default function Dashboard() {
   const elig = getWithdrawEligibility(user, stats);
 
   const cards = [
-    { icon: "💰", label: "Balance", value: `৳${user.balance}`, g: "from-peach to-rose" },
-    { icon: "👥", label: "Total referrals", value: `${stats.total}`, g: "from-aqua to-grape" },
-    { icon: "🟢", label: "Active referrals", value: `${stats.active}`, g: "from-grape to-rose" },
-    { icon: "✅", label: "Completed tasks", value: "0", g: "from-rose to-sun" },
+    { icon: <IconWallet size={24} className="[&_*]:stroke-white" />, label: "Balance", value: `৳${user.balance}`, g: "from-peach to-rose" },
+    { icon: <IconUsers size={24} className="[&_*]:stroke-white" />, label: "Total referrals", value: `${stats.total}`, g: "from-aqua to-grape" },
+    { icon: <StatusDot active size={22} />, label: "Active referrals", value: `${stats.active}`, g: "from-grape to-rose" },
+    { icon: <IconCheckBadge size={24} className="[&_*]:stroke-white" />, label: "Completed tasks", value: "0", g: "from-rose to-sun" },
   ];
 
   return (
@@ -86,9 +87,9 @@ export default function Dashboard() {
           }`}
         >
           {n.status === "approved" ? (
-            <>🎉 Your deposit of ৳{n.amount} was approved! It&apos;s been added to your balance.</>
+            <span className="inline-flex items-center gap-2"><IconSparkles size={18} className="icon-3d" /> Your deposit of ৳{n.amount} was approved! It&apos;s been added to your balance.</span>
           ) : (
-            <>⚠️ Your deposit of ৳{n.amount} was rejected. Reason: {n.rejectReason || "—"}</>
+            <span className="inline-flex items-center gap-2"><IconAlert size={18} className="icon-3d" /> Your deposit of ৳{n.amount} was rejected. Reason: {n.rejectReason || "—"}</span>
           )}
         </div>
       ))}
@@ -102,11 +103,11 @@ export default function Dashboard() {
             <p className="text-white/80 text-sm font-bold">Total balance</p>
             <p className="text-5xl font-bold text-white mt-1">৳{user.balance}</p>
             <div className="mt-3 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 text-sm font-bold text-white">
-              {active ? "🟢 Active" : "🔴 Inactive"}
+              {active ? <span className="inline-flex items-center gap-1.5"><StatusDot active size={12} /> Active</span> : <span className="inline-flex items-center gap-1.5"><StatusDot size={12} /> Inactive</span>}
               {active && <span>• {daysLeft(user)} days left</span>}
             </div>
           </div>
-          <div className="text-7xl opacity-30 floaty">💰</div>
+          <div className="opacity-30 floaty"><IconWallet size={96} /></div>
         </div>
       </div>
 
@@ -115,14 +116,14 @@ export default function Dashboard() {
           href="/deposit"
           className="mt-4 block text-center bg-white/10 border border-peach/40 rounded-2xl px-5 py-4 font-bold text-peach hover:bg-white/15"
         >
-          🔴 Account inactive — deposit to activate (৳100+ = 7 days) →
+          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — deposit to activate (৳100+ = 7 days) →</span>
         </Link>
       )}
 
       <div className="mt-5 grid grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
           <div key={c.label} className="glass rounded-[2rem] p-6 text-center hover:bg-white/[0.08] transition">
-            <div className={`w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br ${c.g} flex items-center justify-center text-2xl`}>
+            <div className={`w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br ${c.g} flex items-center justify-center`}>
               {c.icon}
             </div>
             <p className="mt-3 text-xs text-faint">{c.label}</p>
@@ -134,7 +135,7 @@ export default function Dashboard() {
       <div className={`mt-5 glass rounded-[2rem] p-6 ${elig.eligible ? "border-aqua/40" : ""}`}>
         {elig.eligible ? (
           <p className="font-bold text-white">
-            🎉 You&apos;re eligible to withdraw!{" "}
+            <span className="inline-flex items-center gap-2"><IconSparkles size={16} className="icon-3d" /> You&apos;re eligible to withdraw!</span>{" "}
             <Link href="/withdraw" className="text-peach underline">Withdraw now →</Link>
           </p>
         ) : (
