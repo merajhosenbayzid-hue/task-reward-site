@@ -35,18 +35,19 @@ export const metadata = {
 
 export default function Privacy() {
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <div className="text-center">
+    <div className="max-w-2xl mx-auto py-8 relative">
+      <div className="ambient-glow w-[26rem] h-[16rem] -top-16 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconLock size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 text-3xl font-bold text-white">Privacy Policy</h1>
+        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Privacy Policy</h1>
         <p className="text-mist mt-1 text-sm">Last updated: October 2026</p>
       </div>
 
       <div className="mt-8 space-y-4">
         {sections.map((s) => (
-          <div key={s.t} className="glass rounded-[1.5rem] p-6">
+          <div key={s.t} className="glass card-warm rounded-[1.5rem] p-6">
             <h2 className="font-bold text-white">{s.t}</h2>
             <p className="text-mist text-sm mt-2 leading-relaxed">{s.b}</p>
           </div>
