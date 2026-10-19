@@ -5,11 +5,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Background from "./Background";
 
-// Shared page chrome. The /promo landing page renders its own nav/hero,
+// Shared page chrome. The "/" landing page renders its own nav/hero,
 // so the global Header/Background/Footer are skipped only on that route.
 export default function Chrome({ children }) {
   const pathname = usePathname();
-  if (pathname === "/promo") return <>{children}</>;
+  if (pathname === "/") return <>{children}</>;
   return (
     <>
       <Background />
