@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { getTaskClicks, addTaskClick } from "../../lib/demo";
+import { IconClipboard, IconInbox, IconClock, IconCheck } from "../../components/icons";
 
 const WAIT_SECONDS = 10;
 
@@ -43,7 +44,7 @@ export default function Tasks() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-white">📋 Task List</h1>
+      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconClipboard size={30} className="icon-3d" /> Task List</h1>
       <p className="text-center text-mist mt-2 max-w-xl mx-auto">
         Clicking the button opens the link in a new tab.{" "}
         <b className="text-white">Stay 10 seconds</b> to count <b className="text-white">1 click</b> — closing the tab before that won&apos;t count.
@@ -51,7 +52,7 @@ export default function Tasks() {
 
       {TASKS.length === 0 ? (
         <div className="mt-8 glass rounded-[2.5rem] p-12 text-center max-w-md mx-auto">
-          <p className="text-6xl">📭</p>
+          <p className="flex justify-center"><IconInbox size={64} className="icon-3d animate-icon-float" /></p>
           <p className="mt-4 text-xl font-bold text-white">No tasks have been added yet</p>
           <p className="mt-1 text-mist text-sm">New tasks are coming soon.</p>
         </div>
@@ -94,8 +95,8 @@ export default function Tasks() {
 
               {counting ? (
                 <div className="mt-4 bg-white/5 rounded-3xl p-5 text-center">
-                  <div className="text-4xl font-bold text-white">
-                    ⏳ {left}
+                  <div className="text-4xl font-bold text-white flex items-center justify-center gap-3">
+                    <IconClock size={36} className="icon-3d" /> {left}
                   </div>
                   <p className="text-sm text-mist mt-1">
                     seconds — please wait… don&apos;t close the tab
@@ -120,7 +121,7 @@ export default function Tasks() {
 
               {flashed[t.id] && (
                 <p className="mt-3 text-center text-white font-bold bg-white/10 rounded-full py-2">
-                  ✓ 1 click counted!
+                  <span className="inline-flex items-center gap-2"><IconCheck size={16} /> 1 click counted!</span>
                 </p>
               )}
             </div>
