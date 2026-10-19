@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loginUser, googleLogin, API_READY } from "../../lib/api";
 import { GOOGLE_CLIENT_ID } from "../../lib/config";
+import { IconBadge, IconKey, IconGear, IconXBadge } from "../../components/icons";
 
 const input =
   "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
@@ -76,16 +77,16 @@ export default function Login() {
   return (
     <div className="max-w-md mx-auto py-8">
       <div className="text-center">
-        <span className="inline-flex w-16 h-16 btn-gradient rounded-[1.5rem] text-4xl items-center justify-center mx-auto shadow-lg shadow-rose/30">
-          🔑
-        </span>
+        <IconBadge size={64} className="mx-auto">
+          <IconKey size={30} className="[&_*]:stroke-white" />
+        </IconBadge>
         <h1 className="mt-4 text-3xl font-bold text-white">Log in</h1>
         <p className="text-mist mt-1 text-sm">Sign in to your account.</p>
       </div>
 
       {!API_READY && (
-        <p className="mt-4 text-center text-sm bg-peach/10 border border-peach/30 rounded-full px-4 py-3 font-bold text-peach">
-          ⚙️ Server setup in progress — please try again in a moment.
+        <p className="mt-4 text-center text-sm bg-peach/10 border border-peach/30 rounded-full px-4 py-3 font-bold text-peach flex items-center justify-center gap-2">
+          <IconGear size={16} className="icon-3d" /> Server setup in progress — please try again in a moment.
         </p>
       )}
 
@@ -113,7 +114,7 @@ export default function Login() {
         </div>
 
         {error && (
-          <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3">❌ {error}</p>
+          <p className="bg-peach/15 border border-peach/40 text-peach font-bold text-sm rounded-2xl px-4 py-3 flex items-center gap-2"><IconXBadge size={16} className="icon-3d" /> {error}</p>
         )}
 
         <button
