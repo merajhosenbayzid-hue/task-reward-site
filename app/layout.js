@@ -4,14 +4,14 @@ import Footer from "../components/Footer";
 import Background from "../components/Background";
 
 export const metadata = {
-  title: "টাস্ক রিওয়ার্ড — কাজ করুন, পুরস্কার জিতুন",
-  description: "বাংলা টাস্ক ও রিওয়ার্ড ওয়েবসাইট",
+  title: "Task Reward — Work, Refer, Earn Rewards",
+  description: "Task and reward website",
   icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn">
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
