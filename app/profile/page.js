@@ -245,8 +245,17 @@ export default function Profile() {
     } catch {}
   }
 
-  const memberSince = user.createdAt
-    ? new Date(user.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+  // backend stores createdAt as "dd/MM/yyyy" — parse it safely
+  const parseMemberDate = (s) => {
+    if (!s) return null;
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(s).trim());
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  };
+  const _md = parseMemberDate(user.createdAt);
+  const memberSince = _md
+    ? _md.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
     : "—";
 
   const shownPhoto = preview || user.photo;
