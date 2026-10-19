@@ -167,18 +167,35 @@ export default function PromoPage() {
 
       {/* ================= HERO ================= */}
       <section className="relative min-h-[100svh] overflow-hidden">
-        {/* owner's photo as the full hero background */}
-        <div className="absolute inset-0" aria-hidden="true">
-          <img
-            src="/images/bring-light-bg.jpg"
-            alt=""
-            className="h-full w-full object-cover"
+        {/* orange diagonal shape */}
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: "polygon(0 0, 58% 0, 30% 100%, 0 100%)" }}
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(150deg, #ff8f2e 0%, #ff7a1a 42%, #e05a00 78%, #c74e00 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(55% 40% at 24% 26%, rgba(255,226,182,.42), transparent 70%)",
+            }}
           />
         </div>
-        {/* gentle dim so our headline stays crisp over the photo */}
+
+        {/* soft vignette where orange meets dark */}
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: "rgba(10,10,24,.22)" }}
+          style={{
+            background:
+              "linear-gradient(105deg, transparent 52%, rgba(10,10,24,.55) 62%, transparent 75%)",
+          }}
           aria-hidden="true"
         />
 
@@ -270,8 +287,10 @@ export default function PromoPage() {
             </div>
           </div>
 
-          {/* right: the lamp lives inside the background photo */}
-          <div className="relative hidden lg:block" aria-hidden="true" />
+          {/* right: 3D scene */}
+          <div className="promo-rise relative" style={{ animationDelay: "0.15s" }}>
+            <LampScene />
+          </div>
         </div>
       </section>
 
