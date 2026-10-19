@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CURRENCIES, useCurrency } from "../lib/currency";
+import { CURRENCIES, useCurrency, setCurrencyLocal } from "../lib/currency";
 
 function Chevron({ open }) {
   return (
@@ -49,6 +49,7 @@ export default function CurrencySelect({ value, onSelect, className = "" }) {
   const pick = (code) => {
     setOpen(false);
     if (onSelect) onSelect(code);
+    else setCurrencyLocal(code); // default: persist display currency locally
   };
 
   return (
