@@ -17,10 +17,10 @@ const CHECKS = [
 ];
 
 const RISERS = [
-  { left: "3%", text: "+৫৳ কমিশন", icon: "💰", delay: "0s", dur: "10s" },
-  { left: "92%", text: "✓ টাস্ক সম্পন্ন", icon: "✅", delay: "2.5s", dur: "10s" },
-  { left: "8%", text: "👥 নতুন রেফার", icon: "", delay: "5s", dur: "10s" },
-  { left: "87%", text: "+১৫৳ বোনাস", icon: "🎁", delay: "7.5s", dur: "10s" },
+  { left: "3%", text: "+৳5 commission", icon: "💰", delay: "0s", dur: "10s" },
+  { left: "92%", text: "✓ Task completed", icon: "✅", delay: "2.5s", dur: "10s" },
+  { left: "8%", text: "👥 New referral", icon: "", delay: "5s", dur: "10s" },
+  { left: "87%", text: "+৳15 bonus", icon: "🎁", delay: "7.5s", dur: "10s" },
 ];
 
 const NODES = [
