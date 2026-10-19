@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import LiveFeed from "../components/LiveFeed";
 import { IconSparkles, IconGift, IconUsers, IconZap, IconLock, IconStar } from "../components/icons";
 
+import { useCurrency, formatMoney } from "../lib/currency";
+
 const MARQUEE = ["Refer & Earn", "Win Commissions", "Complete Tasks", "10% Welcome Bonus", "Fast Payments", "24/7 Support"];
 
 function Reveal({ children, className = "", delay = 0 }) {
@@ -16,6 +18,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 }
 
 export default function Home() {
+  const [currency] = useCurrency();
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");
     const io = new IntersectionObserver(
@@ -60,7 +63,7 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
             {[
               ["12,000+", "Happy users"],
-              ["৳850K+", "Total paid out"],
+              [`${formatMoney(850000, currency)}+`, "Total paid out"],
               ["4.8/5", "User rating"],
               ["24 hours", "Support"],
             ].map(([v, l]) => (
