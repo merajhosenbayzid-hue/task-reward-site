@@ -44,14 +44,16 @@ export default function Tasks() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconClipboard size={30} className="icon-3d" /> Task List</h1>
+      <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <p className="eyebrow text-center relative">Earn more</p>
+      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconClipboard size={34} className="icon-3d" /> Task List</h1></div>
       <p className="text-center text-mist mt-2 max-w-xl mx-auto">
         Clicking the button opens the link in a new tab.{" "}
         <b className="text-white">Stay 10 seconds</b> to count <b className="text-white">1 click</b> — closing the tab before that won&apos;t count.
       </p>
 
       {TASKS.length === 0 ? (
-        <div className="mt-8 glass rounded-[2.5rem] p-12 text-center max-w-md mx-auto">
+        <div className="mt-8 glass card-warm rounded-[2.5rem] p-12 text-center max-w-md mx-auto relative">
           <p className="flex justify-center"><IconInbox size={64} className="icon-3d animate-icon-float" /></p>
           <p className="mt-4 text-xl font-bold text-white">No tasks have been added yet</p>
           <p className="mt-1 text-mist text-sm">New tasks are coming soon.</p>
