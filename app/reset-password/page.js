@@ -7,7 +7,7 @@ import { verifyResetToken, resetPassword } from "../../lib/api";
 import { IconBadge, IconKey, IconXBadge, IconCheckBadge } from "../../components/icons";
 
 const input =
-  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
+  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 mt-1 focus:outline-none focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 text-white placeholder:text-faint";
 
 function ResetBody() {
   const params = useSearchParams();
@@ -58,15 +58,16 @@ function ResetBody() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-8">
-      <div className="text-center">
+    <div className="max-w-md mx-auto py-8 relative">
+      <div className="ambient-glow w-[28rem] h-[28rem] -top-24 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconKey size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 text-3xl font-bold text-white">Reset Password</h1>
+        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Reset Password</h1>
       </div>
 
-      <div className="mt-6 glass rounded-[2rem] p-8">
+      <div className="mt-6 glass card-warm rounded-[2rem] p-8 relative">
         {state === "checking" && (
           <p className="text-center text-mist text-sm py-4">Verifying your recovery link…</p>
         )}
@@ -118,7 +119,7 @@ function ResetBody() {
             <button
               type="submit"
               disabled={busy}
-              className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
+              className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
             >
               {busy ? "Resetting…" : "Reset Password"}
             </button>
