@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  addToList, getList, getCurrentUser, getWithdrawEligibility, isActive, daysLeft,
-} from "../../lib/demo";
+  getCurrentUser, getReferralInfo, getWithdrawEligibility, isActive, daysLeft,
+} from "../../lib/api";
 
 const METHODS = ["বিকাশ", "নগদ", "রকেট"];
 
@@ -13,6 +13,8 @@ const inputCls =
 
 export default function Withdraw() {
   const [user, setUser] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [stats, setStats] = useState({ total: 0, active: 0 });
   const [method, setMethod] = useState(METHODS[0]);
   const [account, setAccount] = useState("");
   const [amount, setAmount] = useState("");
@@ -20,9 +22,28 @@ export default function Withdraw() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    setUser(getCurrentUser());
-    setHistory(getList("withdrawals"));
+    let alive = true;
+    (async () => {
+      const cu = await getCurrentUser();
+      if (!alive) return;
+      setUser(cu);
+      if (cu) {
+        try {
+          const ri = await getReferralInfo();
+          if (alive) setStats({ total: ri.total, active: ri.active });
+        } catch {}
+      }
+      if (typeof window !== "undefined") {
+        try {
+          setHistory(JSON.parse(localStorage.getItem("tr_withdrawals") || "[]"));
+        } catch {}
+      }
+      setLoaded(true);
+    })();
+    return () => { alive = false; };
   }, []);
+
+  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
 
   if (!user) {
     return (
@@ -37,7 +58,7 @@ export default function Withdraw() {
     );
   }
 
-  const elig = getWithdrawEligibility(user);
+  const elig = getWithdrawEligibility(user, stats);
 
   const submit = (e) => {
     e.preventDefault();
@@ -58,8 +79,17 @@ export default function Withdraw() {
       alert("আপনার অ্যাকাউন্ট নম্বর দিন।");
       return;
     }
-    const list = addToList("withdrawals", { method, account, amount: amt });
+    const item = {
+      id: Date.now(),
+      method, account, amount: amt,
+      date: new Date().toLocaleString("bn-BD"),
+      status: "যাচাইাধীন",
+    };
+    const list = [item, ...history];
     setHistory(list);
+    try {
+      localStorage.setItem("tr_withdrawals", JSON.stringify(list));
+    } catch {}
     setDone(true);
     setAccount("");
     setAmount("");
@@ -73,8 +103,8 @@ export default function Withdraw() {
     },
     {
       label: "যোগ্য রেফারেল (কমপক্ষে ১০ জন)",
-      ok: elig.stats.active >= 10,
-      hint: `${elig.stats.active} জন অ্যাক্টিভ রেফারেল`,
+      ok: stats.active >= 10,
+      hint: `${stats.active} জন অ্যাক্টিভ রেফারেল`,
     },
   ];
 
