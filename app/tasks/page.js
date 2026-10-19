@@ -7,11 +7,6 @@ const WAIT_SECONDS = 10;
 
 const TASKS = [];
 
-const BN_DIGITS = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
-function bn(n) {
-  return String(n).replace(/\d/g, (d) => BN_DIGITS[+d]);
-}
-
 export default function Tasks() {
   const [clicks, setClicks] = useState({});
   const [countdown, setCountdown] = useState({}); // taskId -> seconds left
@@ -48,18 +43,17 @@ export default function Tasks() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-white">📋 টাস্ক তালিকা</h1>
+      <h1 className="text-3xl font-bold text-center text-white">📋 Task List</h1>
       <p className="text-center text-mist mt-2 max-w-xl mx-auto">
-        বাটনে ক্লিক করলে লিংক নতুন ট্যাবে খুলবে।{" "}
-        <b className="text-white">১০ সেকেন্ড</b> থাকলে <b className="text-white">১ ক্লিক</b> গণনা হবে — তার আগে ট্যাব বন্ধ
-        করলে গণনা হবে না।
+        Clicking the button opens the link in a new tab.{" "}
+        <b className="text-white">Stay 10 seconds</b> to count <b className="text-white">1 click</b> — closing the tab before that won&apos;t count.
       </p>
 
       {TASKS.length === 0 ? (
         <div className="mt-8 glass rounded-[2.5rem] p-12 text-center max-w-md mx-auto">
           <p className="text-6xl">📭</p>
-          <p className="mt-4 text-xl font-bold text-white">এখনো কোনো টাস্ক যোগ করা হয়নি</p>
-          <p className="mt-1 text-mist text-sm">নতুন টাস্ক শীঘ্রই আসছে।</p>
+          <p className="mt-4 text-xl font-bold text-white">No tasks have been added yet</p>
+          <p className="mt-1 text-mist text-sm">New tasks are coming soon.</p>
         </div>
       ) : (
       <div className="mt-8 grid sm:grid-cols-2 gap-5">
@@ -75,7 +69,7 @@ export default function Tasks() {
                   {t.n}
                 </span>
                 <span className="bg-white text-night text-sm font-bold px-3 py-1.5 rounded-full">
-                  পুরস্কার: {t.reward}
+                  Reward: {t.reward}
                 </span>
               </div>
               <div className="mt-4 bg-white/5 rounded-3xl p-5">
@@ -86,9 +80,9 @@ export default function Tasks() {
               <div className="mt-4">
                 <div className="flex justify-between text-sm font-bold text-white">
                   <span>
-                    ক্লিক: {bn(done)} / {bn(t.target)}
+                    Clicks: {done} / {t.target}
                   </span>
-                  <span>{bn(pct)}%</span>
+                  <span>{pct}%</span>
                 </div>
                 <div className="mt-2 h-3 bg-white/10 rounded-full overflow-hidden">
                   <div
@@ -101,10 +95,10 @@ export default function Tasks() {
               {counting ? (
                 <div className="mt-4 bg-white/5 rounded-3xl p-5 text-center">
                   <div className="text-4xl font-bold text-white">
-                    ⏳ {bn(left)}
+                    ⏳ {left}
                   </div>
                   <p className="text-sm text-mist mt-1">
-                    সেকেন্ড অপেক্ষা করুন… ট্যাব বন্ধ করবেন না
+                    seconds — please wait… don&apos;t close the tab
                   </p>
                   <div className="mt-3 h-3 bg-white/10 rounded-full overflow-hidden">
                     <div
@@ -120,13 +114,13 @@ export default function Tasks() {
                   onClick={() => startTask(t)}
                   className="mt-4 block w-full text-center btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25"
                 >
-                  টাস্ক শুরু করুন ↗
+                  Start task ↗
                 </button>
               )}
 
               {flashed[t.id] && (
                 <p className="mt-3 text-center text-white font-bold bg-white/10 rounded-full py-2">
-                  ✓ ১ ক্লিক গণনা হয়েছে!
+                  ✓ 1 click counted!
                 </p>
               )}
             </div>
@@ -136,7 +130,7 @@ export default function Tasks() {
       )}
 
       <p className="mt-8 text-center text-xs text-faint">
-        প্রতিটি টাস্কে ১০ সেকেন্ড করে থাকলে ১টি ক্লিক গণনা হয়।
+        Stay 10 seconds on each task to count 1 click.
       </p>
     </div>
   );
