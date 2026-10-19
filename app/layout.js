@@ -1,7 +1,5 @@
 import "./globals.css";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Background from "../components/Background";
+import Chrome from "../components/Chrome";
 
 export const metadata = {
   title: "Task Reward — Work, Refer, Earn Rewards",
@@ -21,10 +19,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="bg-night text-ink min-h-screen flex flex-col">
-        <Background />
-        <Header />
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 pt-28 pb-4 relative z-10">{children}</main>
-        <Footer />
+        <Chrome>{children}</Chrome>
       </body>
     </html>
   );
