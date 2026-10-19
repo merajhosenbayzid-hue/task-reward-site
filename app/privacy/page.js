@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconBadge, IconLock } from "../../components/icons";
 
 const sections = [
   {
@@ -36,9 +37,9 @@ export default function Privacy() {
   return (
     <div className="max-w-2xl mx-auto py-8">
       <div className="text-center">
-        <span className="inline-flex w-16 h-16 btn-gradient rounded-[1.5rem] text-4xl items-center justify-center mx-auto shadow-lg shadow-rose/30">
-          🔒
-        </span>
+        <IconBadge size={64} className="mx-auto">
+          <IconLock size={30} className="[&_*]:stroke-white" />
+        </IconBadge>
         <h1 className="mt-4 text-3xl font-bold text-white">Privacy Policy</h1>
         <p className="text-mist mt-1 text-sm">Last updated: October 2026</p>
       </div>
