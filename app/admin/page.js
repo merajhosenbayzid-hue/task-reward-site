@@ -5,12 +5,13 @@ import { IconLock } from "../../components/icons";
 
 export default function AdminMoved() {
   return (
-    <div className="max-w-md mx-auto py-20 text-center">
-      <div className="glass rounded-[2.5rem] p-10">
+    <div className="max-w-md mx-auto py-20 text-center relative">
+      <div className="ambient-glow w-[24rem] h-[16rem] top-0 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <div className="glass card-warm rounded-[2.5rem] p-10 relative">
         <div className="flex justify-center">
           <IconLock size={48} className="icon-3d" />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-white">Restricted area</h1>
+        <h1 className="mt-4 font-display text-3xl font-extrabold page-title">Restricted area</h1>
         <p className="mt-2 text-mist text-sm">
           The admin panel has moved to a private URL. Contact the site owner.
         </p>
