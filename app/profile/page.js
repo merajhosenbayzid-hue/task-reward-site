@@ -12,7 +12,7 @@ import { Avatar, StatusDot, IconUser, IconBadge, IconKey, IconCheckBadge, IconXB
 import CurrencySelect from "../../components/CurrencySelect";
 
 const input =
-  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3 mt-1 focus:outline-none focus:border-rose text-white placeholder:text-faint";
+  "w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3 mt-1 focus:outline-none focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 text-white placeholder:text-faint";
 
 function Msg({ ok, err }) {
   if (!ok && !err) return null;
@@ -28,8 +28,8 @@ function Msg({ ok, err }) {
 
 function Card({ title, children }) {
   return (
-    <div className="glass rounded-[2rem] p-6 sm:p-8">
-      <h2 className="text-lg font-bold text-white mb-5">{title}</h2>
+    <div className="glass card-warm rounded-[2rem] p-6 sm:p-8 relative">
+      <h2 className="font-display text-xl font-extrabold page-title mb-5">{title}</h2>
       <div className="space-y-4">{children}</div>
     </div>
   );
@@ -261,9 +261,10 @@ export default function Profile() {
   const shownPhoto = preview || user.photo;
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 space-y-6">
+    <div className="max-w-2xl mx-auto py-8 px-4 space-y-6 relative">
+      <div className="ambient-glow w-[30rem] h-[18rem] -top-16 left-1/2 -translate-x-1/2" aria-hidden="true" />
       {/* ---------- identity ---------- */}
-      <div className="glass rounded-[2.5rem] p-8 text-center">
+      <div className="glass card-warm rounded-[2.5rem] p-8 text-center relative">
         <div className="flex justify-center">
           {shownPhoto ? (
             <img src={shownPhoto} alt="Profile" className="w-[84px] h-[84px] rounded-full object-cover ring-2 ring-white/20" />
@@ -271,7 +272,7 @@ export default function Profile() {
             <Avatar name={user.name || user.email} size={84} />
           )}
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-white">{user.name || "User"}</h1>
+        <h1 className="mt-4 font-display text-3xl font-extrabold page-title">{user.name || "User"}</h1>
         <p className="text-mist text-sm mt-1">{user.email}</p>
         {user.phone && <p className="text-mist text-sm mt-0.5">{user.phone}</p>}
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
