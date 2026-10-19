@@ -6,6 +6,7 @@ import {
   getCurrentUser, requestDeposit, myDeposits, isActive, daysLeft,
 } from "../../lib/api";
 import { StatusDot, IconBanknote, IconCheckBadge, IconXBadge, IconBulb, IconSend, IconEdit, IconClock } from "../../components/icons";
+import { useCurrency, formatMoney } from "../../lib/currency";
 
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
@@ -23,6 +24,7 @@ function StatusLabel({ status }) {
 export default function Deposit() {
   const [user, setUser] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [currency] = useCurrency();
   const [method, setMethod] = useState(METHODS[0]);
   const [amount, setAmount] = useState("100");
   const [sender, setSender] = useState("");
@@ -97,7 +99,7 @@ export default function Deposit() {
         {active ? (
           <span className="inline-flex items-center gap-2"><StatusDot active size={13} /> Account active — {daysLeft(user)} days left</span>
         ) : (
-          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — an approved deposit of ৳100+ activates it for 7 days</span>
+          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — an approved deposit of {formatMoney(100, currency)}+ activates it for 7 days</span>
         )}
       </div>
 
@@ -120,7 +122,7 @@ export default function Deposit() {
             onChange={(e) => setAmount(e.target.value)}
             className={inputCls} placeholder="e.g. 100"
           />
-          <p className="text-xs text-faint mt-1 flex items-center gap-1"><IconBulb size={14} className="icon-3d" /> ৳100 or more activates your account for 7 days.</p>
+          <p className="text-xs text-faint mt-1 flex items-center gap-1"><IconBulb size={14} className="icon-3d" /> {formatMoney(100, currency)} or more activates your account for 7 days.</p>
         </div>
         <div>
           <label className="font-bold text-sm text-white">Payment method</label>
@@ -166,7 +168,7 @@ export default function Deposit() {
             {history.map((d) => (
               <div key={d.requestId} className="glass rounded-3xl p-5 text-sm">
                 <div className="flex justify-between items-center gap-2">
-                  <p className="font-bold text-white">{d.method} — ৳{d.amount}</p>
+                  <p className="font-bold text-white">{d.method} — {formatMoney(d.amount, currency)}</p>
                   <span className="text-xs font-bold whitespace-nowrap">
                     <StatusLabel status={d.status} />
                   </span>
