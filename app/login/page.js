@@ -111,6 +111,11 @@ export default function Login() {
         <div>
           <label className="font-bold text-sm text-white">Password</label>
           <input className={input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••" />
+          <div className="text-right mt-2">
+            <Link href="/forgot-password" className="text-xs font-bold text-mist hover:text-white">
+              Forgot Password?
+            </Link>
+          </div>
         </div>
 
         {error && (
