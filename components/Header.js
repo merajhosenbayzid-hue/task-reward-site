@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { getCurrentUser, logout, isActive } from "../lib/api";
 
 const LINKS = [
-  { href: "/", label: "হোম" },
-  { href: "/tasks", label: "টাস্ক" },
-  { href: "/dashboard", label: "ড্যাশবোর্ড" },
-  { href: "/deposit", label: "ডিপোজিট" },
-  { href: "/withdraw", label: "উত্তোলন" },
-  { href: "/referral", label: "রেফারেল" },
+  { href: "/", label: "Home" },
+  { href: "/tasks", label: "Tasks" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/deposit", label: "Deposit" },
+  { href: "/withdraw", label: "Withdraw" },
+  { href: "/referral", label: "Referral" },
 ];
 
 export default function Header() {
@@ -44,7 +44,7 @@ export default function Header() {
           <span className="w-10 h-10 rounded-full btn-gradient flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-rose/30">
             ৳
           </span>
-          <span className="text-lg font-bold text-white hidden sm:inline">টাস্ক রিওয়ার্ড</span>
+          <span className="text-lg font-bold text-white hidden sm:inline">Task Reward</span>
         </Link>
 
         <nav className="flex-1 hidden md:flex justify-center">
@@ -86,11 +86,11 @@ export default function Header() {
           (user ? (
             <div className="flex items-center gap-2 shrink-0">
               <span className="hidden lg:inline glass rounded-full px-4 py-2 text-sm font-bold text-white">
-                💰 {user.balance}৳
+                💰 ৳{user.balance}
               </span>
               <span
                 className={`w-9 h-9 rounded-full flex items-center justify-center text-sm glass`}
-                title={isActive(user) ? "অ্যাক্টিভ" : "ইনঅ্যাক্টিভ"}
+                title={isActive(user) ? "Active" : "Inactive"}
               >
                 {isActive(user) ? "🟢" : "🔴"}
               </span>
@@ -98,7 +98,7 @@ export default function Header() {
                 onClick={doLogout}
                 className="bg-white text-night text-sm font-bold px-5 py-2.5 rounded-full hover:bg-mist"
               >
-                লগআউট
+                Log out
               </button>
             </div>
           ) : (
@@ -107,13 +107,13 @@ export default function Header() {
                 href="/login"
                 className="text-sm font-bold text-mist hover:text-white px-3 py-2 hidden sm:inline"
               >
-                লগিন
+                Log in
               </Link>
               <Link
                 href="/signup"
                 className="btn-gradient text-white text-sm font-bold px-6 py-2.5 rounded-full shadow-lg shadow-rose/30 hover:opacity-90"
               >
-                শুরু করুন
+                Get started
               </Link>
             </div>
           ))}
