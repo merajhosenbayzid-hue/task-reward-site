@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import LiveFeed from "../components/LiveFeed";
+import { IconSparkles, IconGift, IconUsers, IconZap, IconLock, IconStar } from "../components/icons";
 
 const MARQUEE = ["Refer & Earn", "Win Commissions", "Complete Tasks", "10% Welcome Bonus", "Fast Payments", "24/7 Support"];
 
@@ -30,8 +31,8 @@ export default function Home() {
       {/* ---------- HERO ---------- */}
       <section className="grid lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
         <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-peach font-bold">
-            🎉 10% welcome bonus for new users
+          <p className="text-xs uppercase tracking-[0.25em] text-peach font-bold flex items-center gap-2">
+            <IconSparkles size={16} className="icon-3d" /> 10% welcome bonus for new users
           </p>
           <h1 className="mt-4 text-5xl sm:text-6xl font-bold leading-tight text-white">
             Work, <span className="text-gradient">refer</span>
@@ -82,7 +83,7 @@ export default function Home() {
             <div key={n} className="flex">
               {MARQUEE.map((m, i) => (
                 <span key={i} className="mx-6 text-sm font-bold uppercase tracking-widest text-mist flex items-center gap-6">
-                  {m} <span className="text-peach">✦</span>
+                  {m} <IconSparkles size={14} className="icon-3d" />
                 </span>
               ))}
             </div>
@@ -127,14 +128,14 @@ export default function Home() {
         </Reveal>
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {[
-            ["🎁", "10% welcome bonus", "Extra bonus on your first deposit."],
-            ["👥", "5% referral commission", "Instant commission on every referral's deposit."],
-            ["⚡", "Fast payments", "Quick approval on withdrawal requests."],
-            ["🔒", "100% secure", "Your data and balance are fully protected."],
+            [<IconGift size={38} className="icon-3d" />, "10% welcome bonus", "Extra bonus on your first deposit."],
+            [<IconUsers size={38} className="icon-3d" />, "5% referral commission", "Instant commission on every referral's deposit."],
+            [<IconZap size={38} className="icon-3d" />, "Fast payments", "Quick approval on withdrawal requests."],
+            [<IconLock size={38} className="icon-3d" />, "100% secure", "Your data and balance are fully protected."],
           ].map(([e, t, d], i) => (
             <Reveal key={t} delay={i * 100}>
               <div className="glass rounded-[2rem] p-6 h-full hover:bg-white/[0.08] transition">
-                <p className="text-4xl">{e}</p>
+                <div className="animate-icon-float w-fit">{e}</div>
                 <h3 className="mt-3 font-bold text-white">{t}</h3>
                 <p className="mt-1.5 text-sm text-mist">{d}</p>
               </div>
@@ -166,7 +167,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="font-bold text-white text-sm">{n}</p>
-                    <p className="text-xs text-faint">{c} • ⭐⭐⭐⭐⭐</p>
+                    <p className="text-xs text-faint">{c} • <span className="inline-flex items-center gap-0.5 align-middle">{[0, 1, 2, 3, 4].map((i) => <IconStar key={i} size={12} />)}</span></p>
                   </div>
                 </div>
               </div>
