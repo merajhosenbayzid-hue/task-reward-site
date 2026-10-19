@@ -10,7 +10,7 @@ const NAMES = [
   "শফিকুল ইসলাম", "মারিয়া সুলতানা", "রাকিব হোসেন", "অন্তরা দাস",
   "ফাহিম চৌধুরী", "লামিয়া আক্তার", "সজীব মিয়া", "প্রিয়া রানী",
 ];
-const AMOUNTS = ["৫", "২.৫০", "১৫", "৭.৫০", "১০"];
+const AMOUNTS = ["5", "2.50", "15", "7.50", "10"];
 const AVATAR_GRADS = [
   "from-peach to-rose", "from-aqua to-grape", "from-rose to-grape",
   "from-sun to-peach", "from-grape to-aqua",
@@ -30,10 +30,10 @@ function makeItem() {
 }
 
 function timeAgo(secs) {
-  if (secs < 60) return "এইমাত্র";
+  if (secs < 60) return "Just now";
   const m = Math.floor(secs / 60);
-  const bn = String(m).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
-  return `${bn} মিনিট আগে`;
+  const en = String(m).replace(/\d/g, (d) => "0123456789"[+d]);
+  return `${en} min ago`;
 }
 
 export default function LiveFeed() {
@@ -73,9 +73,9 @@ export default function LiveFeed() {
           <span className="animate-soft-ping absolute inline-flex h-full w-full rounded-full bg-rose" />
           <span className="relative inline-flex rounded-full h-3 w-3 bg-rose" />
         </span>
-        <p className="font-bold text-white">লাইভ রেফারেল অ্যাক্টিভিটি</p>
+        <p className="font-bold text-white">Live Referral Activity</p>
       </div>
-      <p className="text-xs text-mist mt-1">ইউজাররা এখন কমিশন পাচ্ছেন</p>
+      <p className="text-xs text-mist mt-1">Users are earning commissions right now</p>
 
       <div className="mt-4 h-[26rem] overflow-hidden relative">
         <div className="space-y-2.5">
@@ -90,12 +90,12 @@ export default function LiveFeed() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-white truncate">{f.name}</p>
                 <p className="text-xs text-mist truncate">
-                  রেফার কমিশন পেয়েছেন • {timeAgo(f.secs)}
+                  earned a referral commission • {timeAgo(f.secs)}
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <p className="text-sm font-bold text-peach whitespace-nowrap">+{f.amount}৳</p>
-                <p className="text-[10px] text-aqua font-bold">✓ অনুমোদিত</p>
+                <p className="text-sm font-bold text-peach whitespace-nowrap">+৳{f.amount}</p>
+                <p className="text-[10px] text-aqua font-bold">✓ Approved</p>
               </div>
             </div>
           ))}
@@ -105,8 +105,8 @@ export default function LiveFeed() {
       </div>
 
       <div className="mt-3 flex items-center justify-between text-xs text-faint">
-        <span>🟢 {120 + (tick.current % 30)} জন অনলাইন</span>
-        <span>আজ {340 + (tick.current % 50)}টি কমিশন</span>
+        <span>🟢 {120 + (tick.current % 30)} online</span>
+        <span>{340 + (tick.current % 50)} commissions today</span>
       </div>
     </div>
   );
