@@ -35,7 +35,7 @@ export default function Referral() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
-        <div className="glass rounded-[2.5rem] p-10">
+        <div className="glass card-warm rounded-[2.5rem] p-10">
           <p className="text-lg font-bold text-white">Log in to refer</p>
           <Link href="/login" className="mt-4 inline-block btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
             Log in
@@ -60,7 +60,8 @@ export default function Referral() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconGift size={30} className="icon-3d" /> <span className="text-gradient">Refer &amp; Win Rewards</span></h1>
+      <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconGift size={34} className="icon-3d" /> Refer &amp; Win Rewards</h1></div>
       <p className="text-center text-mist mt-2">
         Refer friends — when their deposit is approved, you get a <b className="text-white">5%</b> bonus!
       </p>
@@ -78,7 +79,7 @@ export default function Referral() {
       </div>
 
       {active ? (
-      <div className="mt-5 glass rounded-[2rem] p-7">
+      <div className="mt-5 glass card-warm rounded-[2rem] p-7">
         <p className="font-bold text-white flex items-center gap-2"><IconLink size={18} className="icon-3d" /> Your Referral Link</p>
         <div className="mt-3 flex gap-2">
           <input
@@ -97,7 +98,7 @@ export default function Referral() {
         <p className="mt-2 text-xs text-faint">Your code: <b className="text-white">{info?.referralCode}</b></p>
       </div>
       ) : (
-      <div className="mt-5 glass rounded-[2rem] p-7 text-center">
+      <div className="mt-5 glass card-warm rounded-[2rem] p-7 text-center">
         <p className="flex justify-center"><IconLock size={44} className="icon-3d" /></p>
         <p className="font-bold text-white mt-3">Referral link locked</p>
         <p className="text-sm text-mist mt-1">
@@ -108,12 +109,12 @@ export default function Referral() {
       )}
 
       <div className="mt-5 grid grid-cols-2 gap-4">
-        <div className="glass rounded-[2rem] p-6 text-center">
+        <div className="glass card-warm rounded-[2rem] p-6 text-center">
           <p className="flex justify-center"><IconUsers size={32} className="icon-3d" /></p>
           <p className="text-sm text-faint mt-1">Total referrals</p>
           <p className="text-2xl font-bold text-white">{info?.total ?? 0}</p>
         </div>
-        <div className="glass rounded-[2rem] p-6 text-center">
+        <div className="glass card-warm rounded-[2rem] p-6 text-center">
           <p className="flex justify-center"><StatusDot active size={30} /></p>
           <p className="text-sm text-faint mt-1">Active referrals</p>
           <p className="text-2xl font-bold text-white">{info?.active ?? 0}</p>
@@ -121,7 +122,7 @@ export default function Referral() {
       </div>
 
       {info && info.list.length > 0 && (
-        <div className="mt-5 glass rounded-[2rem] p-6">
+        <div className="mt-5 glass card-warm rounded-[2rem] p-6">
           <p className="font-bold text-white mb-3 flex items-center gap-2"><IconUsers size={18} className="icon-3d" /> Your referral list</p>
           <div className="space-y-2">
             {info.list.map((r, i) => (
@@ -146,7 +147,7 @@ export default function Referral() {
         <div className="mt-3 overflow-x-auto rounded-[1.5rem]">
           <table className="w-full text-center text-sm min-w-[420px] glass">
             <thead>
-              <tr className="bg-white/10 text-white">
+              <tr className="bg-orange-500/10 text-white">
                 <th className="p-4 font-bold">Referral&apos;s deposit</th>
                 <th className="p-4 font-bold">You get</th>
               </tr>
@@ -159,7 +160,7 @@ export default function Referral() {
               ].map((r, i) => (
                 <tr key={r.deposit} className={i % 2 ? "bg-white/5" : ""}>
                   <td className="p-4 text-white">{r.deposit}</td>
-                  <td className="p-4 font-bold text-peach">{r.bonus}</td>
+                  <td className="p-4 font-bold text-[#ff7a1a]">{r.bonus}</td>
                 </tr>
               ))}
             </tbody>
