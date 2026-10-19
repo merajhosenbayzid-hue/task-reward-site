@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getList, seedDemoData, getCurrentUser, getUsers, isActive } from "../../lib/demo";
+import {
+  getCurrentUser, adminDeposits, adminDecide, adminUsers,
+} from "../../lib/api";
 
 const OWNER_EMAIL = "merajhosenbayzid@gmail.com";
 
@@ -30,35 +32,66 @@ function Table({ head, children }) {
   );
 }
 
+const STATUS_BN = { pending: "⏳ যাচাইাধীন", approved: "✅ অনুমোদিত", rejected: "❌ প্রত্যাখ্যাত" };
+
 export default function Admin() {
-  const [deposits, setDeposits] = useState([]);
-  const [withdrawals, setWithdrawals] = useState([]);
-  const [users, setUsers] = useState([]);
   const [allowed, setAllowed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [pending, setPending] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [busyId, setBusyId] = useState(null);
+  const [rejectId, setRejectId] = useState(null);
+  const [rejectReason, setRejectReason] = useState("");
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    const cu = getCurrentUser();
-    const ok = !!cu && cu.email === OWNER_EMAIL;
-    setAllowed(ok);
-    if (ok) {
-      seedDemoData();
-      setDeposits(getList("deposits"));
-      setWithdrawals(getList("withdrawals"));
-      setUsers(getUsers());
-    }
-    setLoaded(true);
+    let alive = true;
+    (async () => {
+      const cu = await getCurrentUser();
+      const ok = !!cu && cu.email === OWNER_EMAIL;
+      if (!alive) return;
+      setAllowed(ok);
+      if (ok) await refresh();
+      setLoaded(true);
+    })();
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const approve = (list, setList, id) => {
-    const updated = list.map((x) => (x.id === id ? { ...x, status: "অনুমোদিত" } : x));
-    setList(updated);
-    if (typeof window !== "undefined") {
-      // persist demo change
-      const key = list === deposits ? "tr_deposits" : "tr_withdrawals";
-      localStorage.setItem(key, JSON.stringify(updated));
+  async function refresh() {
+    try {
+      const [p, h, u] = await Promise.all([
+        adminDeposits("pending"),
+        adminDeposits("all"),
+        adminUsers(),
+      ]);
+      setPending(p);
+      setHistory(h.filter((d) => d.status !== "pending"));
+      setUsers(u);
+    } catch (e) {
+      setMsg("❌ " + e.message);
     }
-  };
+  }
+
+  async function decide(requestId, decision) {
+    if (decision === "reject" && !rejectReason.trim()) {
+      setMsg("❌ প্রত্যাখ্যানের কারণ লিখুন।");
+      return;
+    }
+    setBusyId(requestId);
+    setMsg("");
+    try {
+      await adminDecide(requestId, decision, rejectReason);
+      setMsg(decision === "approve" ? "✅ অনুমোদিত — ব্যালেন্সে টাকা যোগ হয়েছে।" : "✅ রিকোয়েস্ট প্রত্যাখ্যাত হয়েছে।");
+      setRejectId(null);
+      setRejectReason("");
+      await refresh();
+    } catch (e) {
+      setMsg("❌ " + e.message);
+    }
+    setBusyId(null);
+  }
 
   if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
 
@@ -87,53 +120,87 @@ export default function Admin() {
       <h1 className="text-3xl font-bold text-center text-white">🛠️ অ্যাডমিন প্যানেল</h1>
       <p className="text-center text-mist mt-1">সব কার্যক্রম এখান থেকে পরিচালনা করুন</p>
 
-      <h2 className="mt-10 font-bold text-xl text-white">💵 ডিপোজিট যাচাই</h2>
-      <div className="mt-2">
-        <Table head={["ব্যবহারকারী", "মাধ্যম", "টাকা", "TrxID", "অবস্থা", ""]}>
-          {deposits.map((d, i) => (
-            <tr key={d.id} className={i % 2 ? "bg-white/5" : ""}>
-              <td className="p-4 text-white">{d.user || "ব্যবহারকারী"}</td>
-              <td className="p-4">{d.method}</td>
-              <td className="p-4 font-bold text-white">{d.amount} টাকা</td>
-              <td className="p-4">{d.trxId}</td>
-              <td className="p-4">{d.status}</td>
-              <td className="p-4">
-                {d.status === "যাচাইাধীন" && (
-                  <button
-                    onClick={() => approve(deposits, setDeposits, d.id)}
-                    className="btn-gradient text-white text-xs font-bold px-4 py-2 rounded-full hover:opacity-90"
-                  >
-                    অনুমোদন
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </Table>
-      </div>
+      {msg && (
+        <p className="mt-4 text-center text-sm font-bold text-white glass rounded-full px-5 py-3 max-w-xl mx-auto">
+          {msg}
+        </p>
+      )}
 
-      <h2 className="mt-10 font-bold text-xl text-white">🏧 উত্তোলন অনুমোদন</h2>
-      <div className="mt-2">
-        <Table head={["ব্যবহারকারী", "মাধ্যম", "টাকা", "তারিখ", "অবস্থা", ""]}>
-          {withdrawals.map((w, i) => (
-            <tr key={w.id} className={i % 2 ? "bg-white/5" : ""}>
-              <td className="p-4 text-white">{w.user || "ব্যবহারকারী"}</td>
-              <td className="p-4">{w.method}</td>
-              <td className="p-4 font-bold text-white">{w.amount} টাকা</td>
-              <td className="p-4">{w.date}</td>
-              <td className="p-4">{w.status}</td>
-              <td className="p-4">
-                {w.status === "যাচাইাধীন" && (
+      {/* PENDING DEPOSIT REQUESTS */}
+      <h2 className="mt-10 font-bold text-xl text-white">
+        ⏳ Pending Deposit Requests ({pending.length}টি)
+      </h2>
+      {pending.length === 0 ? (
+        <p className="mt-2 text-mist text-sm glass rounded-3xl p-5 text-center">
+          কোনো যাচাইাধীন রিকোয়েস্ট নেই। 🎉
+        </p>
+      ) : (
+        <div className="mt-3 space-y-4">
+          {pending.map((d) => (
+            <div key={d.requestId} className="glass rounded-[1.5rem] p-6">
+              <div className="flex flex-wrap justify-between gap-3 items-start">
+                <div>
+                  <p className="font-bold text-white text-lg">{d.amount} টাকা <span className="text-sm text-faint">({d.method})</span></p>
+                  <p className="text-sm text-mist mt-1">👤 {d.name} ({d.email})</p>
+                  <p className="text-sm text-mist">📱 প্রেরক: {d.senderNo}</p>
+                  <p className="text-sm text-mist">🔑 TrxID: <b className="text-white">{d.trxId}</b></p>
+                  <p className="text-xs text-faint mt-1">🕘 {d.createdAt} • ID: {d.requestId}</p>
+                </div>
+                <div className="flex gap-2">
                   <button
-                    onClick={() => approve(withdrawals, setWithdrawals, w.id)}
-                    className="btn-gradient text-white text-xs font-bold px-4 py-2 rounded-full hover:opacity-90"
+                    onClick={() => decide(d.requestId, "approve")}
+                    disabled={busyId === d.requestId}
+                    className="bg-aqua/20 border border-aqua/50 text-aqua font-bold px-5 py-2.5 rounded-full hover:bg-aqua/30 disabled:opacity-50 text-sm"
                   >
-                    অনুমোদন
+                    {busyId === d.requestId ? "…" : "✅ Approve"}
                   </button>
-                )}
-              </td>
+                  <button
+                    onClick={() => setRejectId(rejectId === d.requestId ? null : d.requestId)}
+                    disabled={busyId === d.requestId}
+                    className="bg-peach/10 border border-peach/40 text-peach font-bold px-5 py-2.5 rounded-full hover:bg-peach/20 disabled:opacity-50 text-sm"
+                  >
+                    ❌ Reject
+                  </button>
+                </div>
+              </div>
+              {rejectId === d.requestId && (
+                <div className="mt-4 flex gap-2">
+                  <input
+                    value={rejectReason}
+                    onChange={(e) => setRejectReason(e.target.value)}
+                    placeholder="প্রত্যাখ্যানের কারণ লিখুন…"
+                    className="flex-1 bg-white/5 border-2 border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-faint focus:outline-none focus:border-rose"
+                  />
+                  <button
+                    onClick={() => decide(d.requestId, "reject")}
+                    disabled={busyId === d.requestId}
+                    className="btn-gradient text-white text-sm font-bold px-5 rounded-full disabled:opacity-50"
+                  >
+                    নিশ্চিত করুন
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h2 className="mt-10 font-bold text-xl text-white">📜 ডিপোজিট হিস্ট্রি</h2>
+      <div className="mt-2">
+        <Table head={["ইউজার", "টাকা", "মাধ্যম", "TrxID", "অবস্থা", "সিদ্ধান্ত"]}>
+          {history.map((d, i) => (
+            <tr key={d.requestId} className={i % 2 ? "bg-white/5" : ""}>
+              <td className="p-4 text-white">{d.name}<br /><span className="text-xs text-faint">{d.email}</span></td>
+              <td className="p-4 font-bold text-white">{d.amount} টাকা</td>
+              <td className="p-4">{d.method}</td>
+              <td className="p-4">{d.trxId}</td>
+              <td className="p-4">{STATUS_BN[d.status]}</td>
+              <td className="p-4 text-xs">{d.decidedAt || "—"}</td>
             </tr>
           ))}
+          {history.length === 0 && (
+            <tr><td className="p-4 text-center" colSpan={6}>কোনো হিস্ট্রি নেই।</td></tr>
+          )}
         </Table>
       </div>
 
@@ -144,18 +211,16 @@ export default function Admin() {
             <tr key={u.email} className={i % 2 ? "bg-white/5" : ""}>
               <td className="p-4 font-bold text-white">{u.name}</td>
               <td className="p-4">{u.email}</td>
-              <td className="p-4">{u.phone}</td>
+              <td className="p-4">{u.phone || "—"}</td>
               <td className="p-4 text-white">{u.balance} টাকা</td>
               <td className="p-4">{u.referralCode}</td>
-              <td className="p-4 font-bold" style={{ color: isActive(u) ? "#2DD4BF" : "#FFB199" }}>
-                {isActive(u) ? "🟢 সক্রিয়" : "🔴 নিষ্ক্রিয়"}
+              <td className="p-4 font-bold" style={{ color: u.active ? "#2DD4BF" : "#FFB199" }}>
+                {u.active ? "🟢 সক্রিয়" : "🔴 নিষ্ক্রিয়"}
               </td>
             </tr>
           ))}
           {users.length === 0 && (
-            <tr>
-              <td className="p-4 text-center" colSpan={6}>এখনো কোনো ব্যবহারকারী রেজিস্টার করেনি।</td>
-            </tr>
+            <tr><td className="p-4 text-center" colSpan={6}>এখনো কোনো ব্যবহারকারী রেজিস্টার করেনি।</td></tr>
           )}
         </Table>
       </div>
