@@ -136,7 +136,8 @@ button, a, input, select, textarea {
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee, .animate-blob, .floaty, .animate-rise-fade,
   .animate-check-pop, .animate-dash, .animate-feed-in, .animate-soft-ping,
-  .animate-icon-float, .animate-spin-slow, .icon-badge-shine, .status-dot::after {
+  .animate-icon-float, .animate-spin-slow, .icon-badge-shine, .status-dot::after,
+  .float-name {
     animation: none !important;
   }
   .reveal { opacity: 1; transform: none; transition: none; }
@@ -266,4 +267,46 @@ button, a, input, select, textarea {
 }
 .animate-icon-pop-in {
   animation: icon-pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- Floating user names (LiveFeed) — no boxes, on background ---------- */
+.float-stage {
+  position: relative;
+  height: 24rem;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+}
+.float-name {
+  position: absolute;
+  top: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  white-space: nowrap;
+  animation: name-rise 9s linear forwards;
+  will-change: transform, opacity;
+}
+.float-name-text {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65), 0 0 26px rgba(255, 107, 157, 0.28);
+}
+.float-name-amt {
+  color: #FFB199;
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+}
+@keyframes name-rise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 1; }
+  25% { transform: translate(10px, -7rem); }
+  50% { transform: translate(-8px, -14rem); opacity: 1; }
+  75% { transform: translate(8px, -21rem); }
+  88% { opacity: 1; }
+  100% { transform: translate(0, -28rem); opacity: 0; }
 }
