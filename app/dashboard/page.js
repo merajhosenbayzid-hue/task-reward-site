@@ -39,21 +39,21 @@ export default function Dashboard() {
     return () => { alive = false; };
   }, []);
 
-  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
+  if (!loaded) return <p className="text-center py-16 text-mist">Loading...</p>;
 
   if (!authed)
     return (
       <div className="max-w-md mx-auto text-center py-16">
         <div className="glass rounded-[2.5rem] p-10">
           <p className="text-5xl">👤</p>
-          <h1 className="mt-4 text-2xl font-bold text-white">ড্যাশবোর্ড</h1>
-          <p className="text-mist mt-2">ড্যাশবোর্ড দেখতে লগিন করুন।</p>
+          <h1 className="mt-4 text-2xl font-bold text-white">Dashboard</h1>
+          <p className="text-mist mt-2">Log in to view your dashboard.</p>
           <div className="mt-6 flex gap-3 justify-center">
             <Link href="/login" className="bg-white text-night font-bold px-6 py-3 rounded-full hover:bg-mist">
-              লগিন করুন
+              Log in
             </Link>
             <Link href="/signup" className="btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
-              অ্যাকাউন্ট খুলুন
+              Create account
             </Link>
           </div>
         </div>
@@ -64,16 +64,16 @@ export default function Dashboard() {
   const elig = getWithdrawEligibility(user, stats);
 
   const cards = [
-    { icon: "💰", label: "ব্যালেন্স", value: `${user.balance} টাকা`, g: "from-peach to-rose" },
-    { icon: "👥", label: "মোট রেফার", value: `${stats.total} জন`, g: "from-aqua to-grape" },
-    { icon: "🟢", label: "অ্যাক্টিভ রেফার", value: `${stats.active} জন`, g: "from-grape to-rose" },
-    { icon: "✅", label: "সম্পন্ন টাস্ক", value: "০ টি", g: "from-rose to-sun" },
+    { icon: "💰", label: "Balance", value: `৳${user.balance}`, g: "from-peach to-rose" },
+    { icon: "👥", label: "Total referrals", value: `${stats.total}`, g: "from-aqua to-grape" },
+    { icon: "🟢", label: "Active referrals", value: `${stats.active}`, g: "from-grape to-rose" },
+    { icon: "✅", label: "Completed tasks", value: "0", g: "from-rose to-sun" },
   ];
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-white">ড্যাশবোর্ড</h1>
-      <p className="text-mist mt-1">স্বাগতম, {user.name}!</p>
+      <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+      <p className="text-mist mt-1">Welcome, {user.name}!</p>
 
       {/* deposit decision notifications */}
       {notices.map((n) => (
@@ -86,9 +86,9 @@ export default function Dashboard() {
           }`}
         >
           {n.status === "approved" ? (
-            <>🎉 আপনার {n.amount} টাকার ডিপোজিট অনুমোদিত হয়েছে! ব্যালেন্সে যোগ হয়েছে।</>
+            <>🎉 Your deposit of ৳{n.amount} was approved! It&apos;s been added to your balance.</>
           ) : (
-            <>⚠️ আপনার {n.amount} টাকার ডিপোজিট প্রত্যাখ্যাত হয়েছে। কারণ: {n.rejectReason || "—"}</>
+            <>⚠️ Your deposit of ৳{n.amount} was rejected. Reason: {n.rejectReason || "—"}</>
           )}
         </div>
       ))}
@@ -99,11 +99,11 @@ export default function Dashboard() {
         <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/20 blur-3xl animate-blob" />
         <div className="relative p-8 flex items-center justify-between">
           <div>
-            <p className="text-white/80 text-sm font-bold">মোট ব্যালেন্স</p>
-            <p className="text-5xl font-bold text-white mt-1">{user.balance}৳</p>
+            <p className="text-white/80 text-sm font-bold">Total balance</p>
+            <p className="text-5xl font-bold text-white mt-1">৳{user.balance}</p>
             <div className="mt-3 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 text-sm font-bold text-white">
-              {active ? "🟢 অ্যাক্টিভ" : "🔴 ইনঅ্যাক্টিভ"}
-              {active && <span>• {daysLeft(user)} দিন বাকি</span>}
+              {active ? "🟢 Active" : "🔴 Inactive"}
+              {active && <span>• {daysLeft(user)} days left</span>}
             </div>
           </div>
           <div className="text-7xl opacity-30 floaty">💰</div>
@@ -115,7 +115,7 @@ export default function Dashboard() {
           href="/deposit"
           className="mt-4 block text-center bg-white/10 border border-peach/40 rounded-2xl px-5 py-4 font-bold text-peach hover:bg-white/15"
         >
-          🔴 অ্যাকাউন্ট ইনঅ্যাক্টিভ — ডিপোজিট করে অ্যাক্টিভ করুন (১০০৳+ = ৭ দিন) →
+          🔴 Account inactive — deposit to activate (৳100+ = 7 days) →
         </Link>
       )}
 
@@ -134,26 +134,26 @@ export default function Dashboard() {
       <div className={`mt-5 glass rounded-[2rem] p-6 ${elig.eligible ? "border-aqua/40" : ""}`}>
         {elig.eligible ? (
           <p className="font-bold text-white">
-            🎉 আপনি টাকা উত্তোলনের যোগ্য!{" "}
-            <Link href="/withdraw" className="text-peach underline">উত্তোলন করুন →</Link>
+            🎉 You&apos;re eligible to withdraw!{" "}
+            <Link href="/withdraw" className="text-peach underline">Withdraw now →</Link>
           </p>
         ) : (
           <p className="text-mist text-sm">
-            ℹ️ উত্তোলনের যোগ্যতা: <b className="text-white">{stats.active}/১০</b> জন অ্যাক্টিভ রেফারেল
-            {!active && " • অ্যাকাউন্ট অ্যাক্টিভ করা বাকি"}
+            ℹ️ Withdrawal eligibility: <b className="text-white">{stats.active}/10</b> active referrals
+            {!active && " • Account still needs activation"}
           </p>
         )}
       </div>
 
       <div className="mt-6 grid sm:grid-cols-3 gap-4">
         <Link href="/tasks" className="btn-gradient text-white text-center font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25">
-          টাস্ক করুন
+          Do tasks
         </Link>
         <Link href="/deposit" className="bg-white text-night text-center font-bold py-4 rounded-full hover:bg-mist">
-          ডিপোজিট করুন
+          Deposit
         </Link>
         <Link href="/referral" className="glass text-white text-center font-bold py-4 rounded-full hover:bg-white/10">
-          বন্ধুদের রেফার করুন
+          Refer friends
         </Link>
       </div>
     </div>
