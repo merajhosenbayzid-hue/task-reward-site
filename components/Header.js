@@ -80,14 +80,14 @@ export default function Header() {
         </Link>
 
         <nav className="flex-1 hidden md:flex justify-center">
-          <div className="glass rounded-full px-2 py-1.5 flex items-center gap-0.5">
+          <div className="glass card-warm rounded-full px-2 py-1.5 flex items-center gap-0.5">
             {LINKS.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 className={`px-4 py-2 rounded-full text-sm font-bold transition whitespace-nowrap ${
                   pathname === l.href
-                    ? "bg-white text-night"
+                    ? "bg-gradient-to-r from-[#ff7a1a] via-[#ff5e62] to-[#c026d3] text-white shadow-[0_4px_16px_rgba(255,122,26,0.45)]"
                     : "text-mist hover:text-white hover:bg-white/10"
                 }`}
               >
@@ -105,7 +105,9 @@ export default function Header() {
                 key={l.href}
                 href={l.href}
                 className={`px-3 py-2 rounded-full font-bold ${
-                  pathname === l.href ? "bg-white text-night" : "text-mist"
+                  pathname === l.href
+                    ? "bg-gradient-to-r from-[#ff7a1a] via-[#ff5e62] to-[#c026d3] text-white shadow-[0_4px_16px_rgba(255,122,26,0.45)]"
+                    : "text-mist"
                 }`}
               >
                 {l.label}
@@ -142,7 +144,7 @@ export default function Header() {
                   )}
                 </button>
                 {menuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-64 glass rounded-2xl p-2 z-50 shadow-2xl shadow-black/50">
+                  <div className="absolute right-0 top-full mt-2 w-64 glass card-warm rounded-2xl p-2 z-50">
                     <div className="px-3 py-2.5 border-b border-white/10 flex items-center gap-3">
                       {user.photo ? (
                         <img src={user.photo} alt="" className="w-10 h-10 rounded-full object-cover shrink-0" />
