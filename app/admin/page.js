@@ -9,10 +9,10 @@ import {
 const OWNER_EMAIL = "merajhosenbayzid@gmail.com";
 
 const DEMO_TASKS = [
-  { name: "টাস্ক ১ — ৫০০ ক্লিক", reward: "১২ টাকা", done: 34 },
-  { name: "টাস্ক ২ — ৬০০ ক্লিক", reward: "১৪ টাকা", done: 21 },
-  { name: "টাস্ক ৩ — ৭০০ ক্লিক", reward: "১৬ টাকা", done: 12 },
-  { name: "টাস্ক ৪ — ৮০০ ক্লিক", reward: "২০ টাকা", done: 8 },
+  { name: "Task 1 — 500 clicks", reward: "৳12", done: 34 },
+  { name: "Task 2 — 600 clicks", reward: "৳14", done: 21 },
+  { name: "Task 3 — 700 clicks", reward: "৳16", done: 12 },
+  { name: "Task 4 — 800 clicks", reward: "৳20", done: 8 },
 ];
 
 function Table({ head, children }) {
@@ -32,7 +32,7 @@ function Table({ head, children }) {
   );
 }
 
-const STATUS_BN = { pending: "⏳ যাচাইাধীন", approved: "✅ অনুমোদিত", rejected: "❌ প্রত্যাখ্যাত" };
+const STATUS_EN = { pending: "⏳ Pending", approved: "✅ Approved", rejected: "❌ Rejected" };
 
 export default function Admin() {
   const [allowed, setAllowed] = useState(false);
@@ -76,14 +76,14 @@ export default function Admin() {
 
   async function decide(requestId, decision) {
     if (decision === "reject" && !rejectReason.trim()) {
-      setMsg("❌ প্রত্যাখ্যানের কারণ লিখুন।");
+      setMsg("❌ Please write a rejection reason.");
       return;
     }
     setBusyId(requestId);
     setMsg("");
     try {
       await adminDecide(requestId, decision, rejectReason);
-      setMsg(decision === "approve" ? "✅ অনুমোদিত — ব্যালেন্সে টাকা যোগ হয়েছে।" : "✅ রিকোয়েস্ট প্রত্যাখ্যাত হয়েছে।");
+      setMsg(decision === "approve" ? "✅ Approved — balance has been credited." : "✅ Request has been rejected.");
       setRejectId(null);
       setRejectReason("");
       await refresh();
@@ -93,22 +93,22 @@ export default function Admin() {
     setBusyId(null);
   }
 
-  if (!loaded) return <p className="text-center py-16 text-mist">লোড হচ্ছে...</p>;
+  if (!loaded) return <p className="text-center py-16 text-mist">Loading...</p>;
 
   if (!allowed) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
         <div className="glass rounded-[2.5rem] p-10">
           <p className="text-5xl">🔒</p>
-          <h1 className="mt-4 text-2xl font-bold text-white">অ্যাডমিন প্যানেল</h1>
+          <h1 className="mt-4 text-2xl font-bold text-white">Admin Panel</h1>
           <p className="text-mist mt-2 text-sm">
-            এই পেজটি শুধুমাত্র সাইট মালিকের জন্য সংরক্ষিত।
+            This page is reserved for the site owner only.
           </p>
           <Link
             href="/login"
             className="mt-6 inline-block btn-gradient text-white font-bold px-8 py-3 rounded-full hover:opacity-90"
           >
-            লগিন করুন
+            Log in
           </Link>
         </div>
       </div>
@@ -117,8 +117,8 @@ export default function Admin() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-center text-white">🛠️ অ্যাডমিন প্যানেল</h1>
-      <p className="text-center text-mist mt-1">সব কার্যক্রম এখান থেকে পরিচালনা করুন</p>
+      <h1 className="text-3xl font-bold text-center text-white">🛠️ Admin Panel</h1>
+      <p className="text-center text-mist mt-1">Manage everything from here</p>
 
       {msg && (
         <p className="mt-4 text-center text-sm font-bold text-white glass rounded-full px-5 py-3 max-w-xl mx-auto">
@@ -128,11 +128,11 @@ export default function Admin() {
 
       {/* PENDING DEPOSIT REQUESTS */}
       <h2 className="mt-10 font-bold text-xl text-white">
-        ⏳ Pending Deposit Requests ({pending.length}টি)
+        ⏳ Pending Deposit Requests ({pending.length})
       </h2>
       {pending.length === 0 ? (
         <p className="mt-2 text-mist text-sm glass rounded-3xl p-5 text-center">
-          কোনো যাচাইাধীন রিকোয়েস্ট নেই। 🎉
+          No pending requests. 🎉
         </p>
       ) : (
         <div className="mt-3 space-y-4">
@@ -140,9 +140,9 @@ export default function Admin() {
             <div key={d.requestId} className="glass rounded-[1.5rem] p-6">
               <div className="flex flex-wrap justify-between gap-3 items-start">
                 <div>
-                  <p className="font-bold text-white text-lg">{d.amount} টাকা <span className="text-sm text-faint">({d.method})</span></p>
+                  <p className="font-bold text-white text-lg">৳{d.amount} <span className="text-sm text-faint">({d.method})</span></p>
                   <p className="text-sm text-mist mt-1">👤 {d.name} ({d.email})</p>
-                  <p className="text-sm text-mist">📱 প্রেরক: {d.senderNo}</p>
+                  <p className="text-sm text-mist">📱 Sender: {d.senderNo}</p>
                   <p className="text-sm text-mist">🔑 TrxID: <b className="text-white">{d.trxId}</b></p>
                   <p className="text-xs text-faint mt-1">🕘 {d.createdAt} • ID: {d.requestId}</p>
                 </div>
@@ -168,7 +168,7 @@ export default function Admin() {
                   <input
                     value={rejectReason}
                     onChange={(e) => setRejectReason(e.target.value)}
-                    placeholder="প্রত্যাখ্যানের কারণ লিখুন…"
+                    placeholder="Write the rejection reason…"
                     className="flex-1 bg-white/5 border-2 border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-faint focus:outline-none focus:border-rose"
                   />
                   <button
@@ -176,7 +176,7 @@ export default function Admin() {
                     disabled={busyId === d.requestId}
                     className="btn-gradient text-white text-sm font-bold px-5 rounded-full disabled:opacity-50"
                   >
-                    নিশ্চিত করুন
+                    Confirm
                   </button>
                 </div>
               )}
@@ -185,54 +185,54 @@ export default function Admin() {
         </div>
       )}
 
-      <h2 className="mt-10 font-bold text-xl text-white">📜 ডিপোজিট হিস্ট্রি</h2>
+      <h2 className="mt-10 font-bold text-xl text-white">📜 Deposit history</h2>
       <div className="mt-2">
-        <Table head={["ইউজার", "টাকা", "মাধ্যম", "TrxID", "অবস্থা", "সিদ্ধান্ত"]}>
+        <Table head={["User", "Amount", "Method", "TrxID", "Status", "Decided"]}>
           {history.map((d, i) => (
             <tr key={d.requestId} className={i % 2 ? "bg-white/5" : ""}>
               <td className="p-4 text-white">{d.name}<br /><span className="text-xs text-faint">{d.email}</span></td>
-              <td className="p-4 font-bold text-white">{d.amount} টাকা</td>
+              <td className="p-4 font-bold text-white">৳{d.amount}</td>
               <td className="p-4">{d.method}</td>
               <td className="p-4">{d.trxId}</td>
-              <td className="p-4">{STATUS_BN[d.status]}</td>
+              <td className="p-4">{STATUS_EN[d.status]}</td>
               <td className="p-4 text-xs">{d.decidedAt || "—"}</td>
             </tr>
           ))}
           {history.length === 0 && (
-            <tr><td className="p-4 text-center" colSpan={6}>কোনো হিস্ট্রি নেই।</td></tr>
+            <tr><td className="p-4 text-center" colSpan={6}>No history yet.</td></tr>
           )}
         </Table>
       </div>
 
-      <h2 className="mt-10 font-bold text-xl text-white">👥 ব্যবহারকারী ({users.length} জন)</h2>
+      <h2 className="mt-10 font-bold text-xl text-white">👥 Users ({users.length})</h2>
       <div className="mt-2">
-        <Table head={["নাম", "ইমেইল", "মোবাইল", "ব্যালেন্স", "রেফারেল কোড", "অবস্থা"]}>
+        <Table head={["Name", "Email", "Mobile", "Balance", "Referral Code", "Status"]}>
           {users.map((u, i) => (
             <tr key={u.email} className={i % 2 ? "bg-white/5" : ""}>
               <td className="p-4 font-bold text-white">{u.name}</td>
               <td className="p-4">{u.email}</td>
               <td className="p-4">{u.phone || "—"}</td>
-              <td className="p-4 text-white">{u.balance} টাকা</td>
+              <td className="p-4 text-white">৳{u.balance}</td>
               <td className="p-4">{u.referralCode}</td>
               <td className="p-4 font-bold" style={{ color: u.active ? "#2DD4BF" : "#FFB199" }}>
-                {u.active ? "🟢 সক্রিয়" : "🔴 নিষ্ক্রিয়"}
+                {u.active ? "🟢 Active" : "🔴 Inactive"}
               </td>
             </tr>
           ))}
           {users.length === 0 && (
-            <tr><td className="p-4 text-center" colSpan={6}>এখনো কোনো ব্যবহারকারী রেজিস্টার করেনি।</td></tr>
+            <tr><td className="p-4 text-center" colSpan={6}>No users have registered yet.</td></tr>
           )}
         </Table>
       </div>
 
-      <h2 className="mt-10 font-bold text-xl text-white">📋 টাস্কসমূহ</h2>
+      <h2 className="mt-10 font-bold text-xl text-white">📋 Tasks</h2>
       <div className="mt-2">
-        <Table head={["টাস্ক", "পুরস্কার", "সম্পন্ন"]}>
+        <Table head={["Task", "Reward", "Completed"]}>
           {DEMO_TASKS.map((t, i) => (
             <tr key={t.name} className={i % 2 ? "bg-white/5" : ""}>
               <td className="p-4 font-bold text-white">{t.name}</td>
               <td className="p-4">{t.reward}</td>
-              <td className="p-4">{t.done} জন</td>
+              <td className="p-4">{t.done}</td>
             </tr>
           ))}
         </Table>
