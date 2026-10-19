@@ -209,6 +209,7 @@ export default function PromoPage() {
             <h1
               className={`${baloo.className} promo-headline mt-5`}
               style={{ fontSize: "clamp(3.2rem, 8.5vw, 7rem)" }}
+              aria-label="Work, refer and win rewards"
             >
               <span className="promo-dark-word block">WORK,</span>
               <span className="neon-word block" data-text="REFER">
