@@ -1,12 +1,14 @@
 "use client";
 
+import { BrandMark, IconCheckBadge, IconWallet, IconUsers, IconGift, IconUser } from "./icons";
+
 const COINS = [
-  { left: "4%", top: "14%", size: "text-3xl", delay: "0s", dur: "8s" },
-  { left: "90%", top: "10%", size: "text-4xl", delay: "1.5s", dur: "9s" },
-  { left: "8%", top: "62%", size: "text-2xl", delay: "3s", dur: "7s" },
-  { left: "86%", top: "58%", size: "text-3xl", delay: "0.8s", dur: "10s" },
-  { left: "72%", top: "86%", size: "text-2xl", delay: "2.2s", dur: "8.5s" },
-  { left: "18%", top: "88%", size: "text-4xl", delay: "4s", dur: "11s" },
+  { left: "4%", top: "14%", size: 34, delay: "0s", dur: "8s" },
+  { left: "90%", top: "10%", size: 44, delay: "1.5s", dur: "9s" },
+  { left: "8%", top: "62%", size: 26, delay: "3s", dur: "7s" },
+  { left: "86%", top: "58%", size: 34, delay: "0.8s", dur: "10s" },
+  { left: "72%", top: "86%", size: 26, delay: "2.2s", dur: "8.5s" },
+  { left: "18%", top: "88%", size: 44, delay: "4s", dur: "11s" },
 ];
 
 const CHECKS = [
@@ -17,10 +19,10 @@ const CHECKS = [
 ];
 
 const RISERS = [
-  { left: "3%", text: "+৳5 commission", icon: "💰", delay: "0s", dur: "10s" },
-  { left: "92%", text: "✓ Task completed", icon: "✅", delay: "2.5s", dur: "10s" },
-  { left: "8%", text: "👥 New referral", icon: "", delay: "5s", dur: "10s" },
-  { left: "87%", text: "+৳15 bonus", icon: "🎁", delay: "7.5s", dur: "10s" },
+  { left: "3%", text: "+৳5 commission", Icon: IconWallet, delay: "0s", dur: "10s" },
+  { left: "92%", text: "Task completed", Icon: IconCheckBadge, delay: "2.5s", dur: "10s" },
+  { left: "8%", text: "New referral", Icon: IconUsers, delay: "5s", dur: "10s" },
+  { left: "87%", text: "+৳15 bonus", Icon: IconGift, delay: "7.5s", dur: "10s" },
 ];
 
 const NODES = [
@@ -99,9 +101,7 @@ export default function Background() {
           className="animate-check-pop absolute"
           style={{ left: c.left, top: c.top, animationDelay: c.delay }}
         >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-aqua to-grape flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-aqua/30">
-            ✓
-          </div>
+          <IconCheckBadge size={46} />
         </div>
       ))}
 
@@ -109,10 +109,10 @@ export default function Background() {
       {COINS.map((c, i) => (
         <span
           key={i}
-          className={`floaty absolute ${c.size} font-bold text-peach opacity-20`}
+          className="floaty absolute opacity-25"
           style={{ left: c.left, top: c.top, animationDelay: c.delay, animationDuration: c.dur }}
         >
-          ৳
+          <BrandMark size={c.size} />
         </span>
       ))}
 
@@ -123,18 +123,23 @@ export default function Background() {
           className="animate-rise-fade absolute"
           style={{ left: r.left, bottom: "6%", animationDelay: r.delay, animationDuration: r.dur }}
         >
-          <div className="glass rounded-full px-4 py-2 text-xs font-bold text-white whitespace-nowrap">
-            {r.icon ? `${r.icon} ` : ""}{r.text}
+          <div className="glass rounded-full pl-3 pr-4 py-2 text-xs font-bold text-white whitespace-nowrap flex items-center gap-2">
+            <r.Icon size={15} className="icon-3d" />
+            {r.text}
           </div>
         </div>
       ))}
 
       {/* people working online — subtle illustration accents */}
-      <div className="floaty absolute left-[6%] top-[42%] text-5xl opacity-20 hidden md:block" style={{ animationDuration: "12s" }}>
-        🧑‍💻
+      <div className="floaty absolute left-[6%] top-[42%] opacity-25 hidden md:block" style={{ animationDuration: "12s" }}>
+        <span className="w-14 h-14 rounded-full glass flex items-center justify-center">
+          <IconUser size={26} className="icon-3d" />
+        </span>
       </div>
-      <div className="floaty absolute right-[7%] top-[64%] text-4xl opacity-20 hidden md:block" style={{ animationDuration: "10s", animationDelay: "2s" }}>
-        👩‍💻
+      <div className="floaty absolute right-[7%] top-[64%] opacity-25 hidden md:block" style={{ animationDuration: "10s", animationDelay: "2s" }}>
+        <span className="w-12 h-12 rounded-full glass flex items-center justify-center">
+          <IconUser size={22} className="icon-3d" />
+        </span>
       </div>
     </div>
   );
