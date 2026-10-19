@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   getCurrentUser, getReferralInfo, getWithdrawEligibility, isActive, daysLeft,
+  requestWithdrawal, myWithdrawals,
 } from "../../lib/api";
 import { IconBank, IconClipboard, IconCheckBadge, IconXBadge, IconSparkles, IconAlert, IconClock } from "../../components/icons";
 import { useCurrency, formatMoney } from "../../lib/currency";
@@ -23,6 +24,14 @@ export default function Withdraw() {
   const [amount, setAmount] = useState("");
   const [done, setDone] = useState(false);
   const [history, setHistory] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [formErr, setFormErr] = useState("");
+
+  async function loadHistory() {
+    try {
+      setHistory(await myWithdrawals());
+    } catch {}
+  }
 
   useEffect(() => {
     let alive = true;
@@ -35,10 +44,9 @@ export default function Withdraw() {
           const ri = await getReferralInfo();
           if (alive) setStats({ total: ri.total, active: ri.active });
         } catch {}
-      }
-      if (typeof window !== "undefined") {
         try {
-          setHistory(JSON.parse(localStorage.getItem("tr_withdrawals") || "[]"));
+          const h = await myWithdrawals();
+          if (alive) setHistory(h);
         } catch {}
       }
       setLoaded(true);
@@ -63,39 +71,40 @@ export default function Withdraw() {
 
   const elig = getWithdrawEligibility(user, stats);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    setFormErr("");
     if (!elig.eligible) {
-      alert("Requirements not met — see the list below.");
+      setFormErr("Requirements not met — see the list below.");
       return;
     }
     const amt = parseInt(amount, 10);
     if (!amt || amt <= 0) {
-      alert("Enter a valid amount.");
+      setFormErr("Enter a valid amount.");
       return;
     }
     if (amt > user.balance) {
-      alert("You can't request more than your balance.");
+      setFormErr("You can't request more than your balance.");
       return;
     }
-    if (!account) {
-      alert("Enter your account number.");
+    if (!account.trim()) {
+      setFormErr("Enter your account number.");
       return;
     }
-    const item = {
-      id: Date.now(),
-      method, account, amount: amt,
-      date: new Date().toLocaleString("en-US"),
-      status: "Pending",
-    };
-    const list = [item, ...history];
-    setHistory(list);
+    setSubmitting(true);
     try {
-      localStorage.setItem("tr_withdrawals", JSON.stringify(list));
-    } catch {}
-    setDone(true);
-    setAccount("");
-    setAmount("");
+      await requestWithdrawal({ amount: amt, method, accountNo: account.trim() });
+      setDone(true);
+      setAccount("");
+      setAmount("");
+      await loadHistory();
+      const cu = await getCurrentUser();
+      if (cu) setUser(cu);
+    } catch (err) {
+      setFormErr(err.message || "Request failed — try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const checks = [
@@ -183,8 +192,17 @@ export default function Withdraw() {
             <label className="font-bold text-sm text-white">Amount</label>
             <input type="number" min="1" value={amount} onChange={(e) => setAmount(e.target.value)} className={inputCls} placeholder="e.g. 100" />
           </div>
-          <button type="submit" className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25">
-            Request withdrawal
+          {formErr && (
+            <p className="bg-rose/10 border border-rose/30 rounded-2xl px-4 py-3 text-sm font-bold text-rose flex items-center gap-2">
+              <IconAlert size={14} className="icon-3d" /> {formErr}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 shadow-lg shadow-rose/25 disabled:opacity-50"
+          >
+            {submitting ? "Submitting..." : "Request withdrawal"}
           </button>
         </form>
       )}
@@ -193,15 +211,31 @@ export default function Withdraw() {
         <div className="mt-8">
           <h2 className="font-bold text-xl text-white flex items-center gap-2"><IconClock size={20} className="icon-3d" /> Withdrawal history</h2>
           <div className="mt-3 space-y-3">
-            {history.map((w) => (
-              <div key={w.id} className="glass rounded-3xl p-5 text-sm flex justify-between items-center">
-                <div>
-                  <p className="font-bold text-white">{w.method} — {formatMoney(w.amount, currency)}</p>
-                  <p className="text-faint text-xs">{w.date}</p>
+            {history.map((w) => {
+              const s = String(w.status || "").toLowerCase();
+              return (
+                <div key={w.requestId || w.id} className="glass rounded-3xl p-5 text-sm">
+                  <div className="flex justify-between items-center gap-3">
+                    <div>
+                      <p className="font-bold text-white">{w.method} — {formatMoney(w.amount, currency)}</p>
+                      <p className="text-faint text-xs">
+                        {w.requestId}{w.createdAt ? ` • ${new Date(w.createdAt).toLocaleString("en-US")}` : ""}
+                      </p>
+                    </div>
+                    {s === "approved" ? (
+                      <span className="inline-flex items-center gap-1 bg-aqua/15 text-aqua text-xs font-bold px-3 py-1.5 rounded-full"><IconCheckBadge size={14} className="icon-3d" /> Approved</span>
+                    ) : s === "rejected" ? (
+                      <span className="inline-flex items-center gap-1 bg-rose/15 text-rose text-xs font-bold px-3 py-1.5 rounded-full"><IconXBadge size={14} className="icon-3d" /> Rejected</span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 bg-peach/15 text-peach text-xs font-bold px-3 py-1.5 rounded-full"><IconClock size={14} className="icon-3d" /> Pending</span>
+                    )}
+                  </div>
+                  {s === "rejected" && w.rejectReason && (
+                    <p className="mt-2 text-xs text-rose">Reason: {w.rejectReason}</p>
+                  )}
                 </div>
-                <span className="bg-white/10 text-white text-xs font-bold px-3 py-1.5 rounded-full">{w.status}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
