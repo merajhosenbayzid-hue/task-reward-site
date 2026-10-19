@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getCurrentUser, isActive, daysLeft, getReferralInfo, referralLink } from "../../lib/api";
 import { StatusDot, IconGift, IconCheckBadge, IconUsers, IconBanknote, IconLink, IconLock } from "../../components/icons";
+import { useCurrency, formatMoney } from "../../lib/currency";
 
 export default function Referral() {
   const [user, setUser] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [currency] = useCurrency();
   const [copied, setCopied] = useState(false);
   const [info, setInfo] = useState(null);
 
@@ -151,9 +153,9 @@ export default function Referral() {
             </thead>
             <tbody>
               {[
-                { deposit: "৳100", bonus: "৳5" },
-                { deposit: "৳500", bonus: "৳25" },
-                { deposit: "৳1000", bonus: "৳50" },
+                { deposit: formatMoney(100, currency), bonus: formatMoney(5, currency) },
+                { deposit: formatMoney(500, currency), bonus: formatMoney(25, currency) },
+                { deposit: formatMoney(1000, currency), bonus: formatMoney(50, currency) },
               ].map((r, i) => (
                 <tr key={r.deposit} className={i % 2 ? "bg-white/5" : ""}>
                   <td className="p-4 text-white">{r.deposit}</td>
