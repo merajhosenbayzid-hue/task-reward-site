@@ -12,19 +12,19 @@
  * (Execute as: Me, Who has access: Anyone) → copy the /exec URL.
  */
 
-// ================= CONFIG — প্রয়োজনে এডিট করো =================
+// ================= CONFIG — edit if needed =================
 var CONFIG = {
-  ADMIN_EMAIL: "merajhosenbayzid@gmail.com", // অ্যাডমিন (তোমার Gmail)
+  ADMIN_EMAIL: "merajhosenbayzid@gmail.com", // Admin (your Gmail)
   GOOGLE_CLIENT_ID: "688604361585-lnb0dmbl5jc6ona8avhnub6094gmitf0.apps.googleusercontent.com", // Google Cloud OAuth Client ID
-  TOKEN_SECRET: "tr-secret-change-to-random-2026", // সেশন টোকেনের জন্য গোপন কী
-  ACTIVATION_AMOUNT: 100,   // এত টাকা (বা বেশি) ডিপোজিটে অ্যাকাউন্ট অ্যাক্টিভ
-  ACTIVATION_DAYS: 7,       // অ্যাক্টিভ থাকবে এত দিন
-  REFERRER_BONUS_PCT: 5,    // রেফারকারীর বোনাস %
-  OTP_EXPIRY_MIN: 5,         // OTP মেয়াদ (মিনিট)
-  OTP_MAX_ATTEMPTS: 5,       // ভুল চেষ্টা সীমা
-  OTP_LOCK_MIN: 15,          // লক সময় (মিনিট)
-  OTP_RESEND_SEC: 60,        // পুনরায় পাঠানোর বিরতি (সেকেন্ড)
-  TOKEN_DAYS: 30,            // লগইন সেশন মেয়াদ (দিন)
+  TOKEN_SECRET: "tr-secret-change-to-random-2026", // change this to a long random string
+  ACTIVATION_AMOUNT: 100,   // account activates on this deposit amount (or more)
+  ACTIVATION_DAYS: 7,       // stays active for this many days
+  REFERRER_BONUS_PCT: 5,    // referrer bonus %
+  OTP_EXPIRY_MIN: 5,         // OTP expiry (minutes)
+  OTP_MAX_ATTEMPTS: 5,       // wrong-attempt limit
+  OTP_LOCK_MIN: 15,          // lockout time (minutes)
+  OTP_RESEND_SEC: 60,        // resend cooldown (seconds)
+  TOKEN_DAYS: 30,            // login session lifetime (days)
 };
 // ==============================================================
 
@@ -139,9 +139,9 @@ function getUserByToken(token) {
 }
 function requireAdmin(token) {
   var u = getUserByToken(token);
-  if (!u) return { ok: false, error: "লগইন প্রয়োজন।" };
+  if (!u) return { ok: false, error: "Login required." };
   if (String(u.email).toLowerCase() !== CONFIG.ADMIN_EMAIL.toLowerCase())
-    return { ok: false, error: "অ্যাডমিন অনুমতি নেই।" };
+    return { ok: false, error: "Admin access required." };
   return { ok: true, user: u };
 }
 
@@ -164,13 +164,13 @@ function setupOnce() {
 // ---------- OTP ----------
 
 function sendOtpEmail(email, name, otp) {
-  var subject = "টাস্ক রিওয়ার্ড — ইমেইল যাচাইকরণ কোড";
-  var body = "আসসালামু আলাইকুম " + name + ",\n\n" +
-    "টাস্ক রিওয়ার্ডে অ্যাকাউন্ট যাচাই করতে আপনার OTP কোড:\n\n" +
+  var subject = "Task Reward — Email Verification Code";
+  var body = "Hello " + name + ",\n\n" +
+    "Your OTP code to verify your Task Reward account:\n\n" +
     "    " + otp + "\n\n" +
-    "এই কোডটি " + CONFIG.OTP_EXPIRY_MIN + " মিনিটের জন্য কার্যকর থাকবে।\n" +
-    "কোডটি কারো সাথে শেয়ার করবেন না।\n\n" +
-    "— টাস্ক রিওয়ার্ড টিম";
+    "This code is valid for " + CONFIG.OTP_EXPIRY_MIN + " minutes.\n" +
+    "Do not share this code with anyone.\n\n" +
+    "— Task Reward Team";
   GmailApp.sendEmail(email, subject, body);
 }
 
@@ -181,18 +181,18 @@ function actionRequestOtp(d) {
   var password = String(d.password || "");
   var referral = String(d.referral || "").trim().toUpperCase();
 
-  if (!name) return { ok: false, error: "আপনার নাম লিখুন।" };
-  if (!isGmail(email)) return { ok: false, error: "শুধুমাত্র Gmail ঠিকানা দিয়ে অ্যাকাউন্ট খোলা যাবে (@gmail.com)।" };
-  if (!isBdPhone(phone)) return { ok: false, error: "BD মোবাইল নম্বর ছাড়া অ্যাকাউন্ট খোলা যাবে না (01XXXXXXXXX)।" };
-  if (!password || password.length < 6) return { ok: false, error: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।" };
+  if (!name) return { ok: false, error: "Please enter your name." };
+  if (!isGmail(email)) return { ok: false, error: "Only Gmail addresses are accepted (@gmail.com)." };
+  if (!isBdPhone(phone)) return { ok: false, error: "A valid BD mobile number is required (01XXXXXXXXX)." };
+  if (!password || password.length < 6) return { ok: false, error: "Password must be at least 6 characters." };
 
   var ush = getSheet("Users");
   if (findRow(ush, 1, email) !== -1)
-    return { ok: false, error: "এই Gmail দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে — লগিন করুন।" };
+    return { ok: false, error: "An account with this Gmail already exists — please log in." };
   if (findRow(ush, 3, phone) !== -1)
-    return { ok: false, error: "এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে।" };
+    return { ok: false, error: "An account with this mobile number already exists." };
   if (referral && findRow(ush, 7, referral) === -1)
-    return { ok: false, error: "রেফারেল কোডটি সঠিক নয়।" };
+    return { ok: false, error: "Invalid referral code." };
 
   var osh = getSheet("OTPs");
   var r = findRow(osh, 1, email);
@@ -200,9 +200,9 @@ function actionRequestOtp(d) {
   if (r !== -1) {
     var o = rowToObj(osh, r);
     if (Number(o.lockedUntil) > now)
-      return { ok: false, error: "অনেকবার ভুল কোড দিয়েছেন — কিছুক্ষণ পর আবার চেষ্টা করুন।" };
+      return { ok: false, error: "Too many wrong attempts — try again later." };
     if (now - Number(o.lastSentAt) < CONFIG.OTP_RESEND_SEC * 1000)
-      return { ok: false, error: "কোড পাঠানো হয়েছে — ১ মিনিট পর আবার চেষ্টা করুন।" };
+      return { ok: false, error: "Code already sent — try again after 1 minute." };
   }
 
   var otp = String(Math.floor(100000 + Math.random() * 900000));
@@ -214,9 +214,9 @@ function actionRequestOtp(d) {
   try {
     sendOtpEmail(email, name, otp);
   } catch (e) {
-    return { ok: false, error: "ইমেইল পাঠানো যায়নি — পরে আবার চেষ্টা করুন।" };
+    return { ok: false, error: "Could not send the email — try again later." };
   }
-  return { ok: true, message: "আপনার Gmail-এ ৬ সংখ্যার কোড পাঠানো হয়েছে।" };
+  return { ok: true, message: "A 6-digit code has been sent to your Gmail." };
 }
 
 function actionVerifyOtp(d) {
@@ -224,31 +224,31 @@ function actionVerifyOtp(d) {
   var otp = String(d.otp || "").trim();
   var osh = getSheet("OTPs");
   var r = findRow(osh, 1, email);
-  if (r === -1) return { ok: false, error: "প্রথমে 'ইমেইল যাচাই করুন' বাটনে ক্লিক করুন।" };
+  if (r === -1) return { ok: false, error: "Click 'Verify Email' first." };
   var o = rowToObj(osh, r);
   var now = Date.now();
   if (o.used === true || o.used === "TRUE")
-    return { ok: false, error: "এই কোড ইতিমধ্যে ব্যবহার হয়েছে — নতুন কোড নিন।" };
+    return { ok: false, error: "This code has already been used — request a new one." };
   if (Number(o.lockedUntil) > now)
-    return { ok: false, error: "অনেকবার ভুল কোড দিয়েছেন — কিছুক্ষণ পর আবার চেষ্টা করুন।" };
+    return { ok: false, error: "Too many wrong attempts — try again later." };
   if (now > Number(o.expiresAt))
-    return { ok: false, error: "কোডের মেয়াদ শেষ — নতুন কোড পাঠান।" };
+    return { ok: false, error: "Code expired — request a new code." };
 
   if (sha256hex("otp$" + otp) !== String(o.otpHash)) {
     var attempts = Number(o.attempts) + 1;
     osh.getRange(r, 4).setValue(attempts);
     if (attempts >= CONFIG.OTP_MAX_ATTEMPTS) {
       osh.getRange(r, 7).setValue(now + CONFIG.OTP_LOCK_MIN * 60000);
-      return { ok: false, error: "অনেকবার ভুল কোড — ১৫ মিনিট পর আবার চেষ্টা করুন।" };
+      return { ok: false, error: "Too many wrong attempts — try again after 15 minutes." };
     }
-    return { ok: false, error: "ভুল যাচাইকরণ কোড।" };
+    return { ok: false, error: "Wrong verification code." };
   }
 
   // OTP correct — create the account (mark used FIRST so it can't be reused)
   osh.getRange(r, 5).setValue(true);
   var ush = getSheet("Users");
   if (findRow(ush, 1, email) !== -1)
-    return { ok: false, error: "এই Gmail দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে — লগিন করুন।" };
+    return { ok: false, error: "An account with this Gmail already exists — please log in." };
   var code = genReferralCode();
   ush.appendRow([email, o.name, o.phone, o.passHash, "", true, code,
                  o.referral || "", 0, 0,
@@ -264,28 +264,28 @@ function actionLogin(d) {
   var password = String(d.password || "");
   var sh = getSheet("Users");
   var r = findRow(sh, 1, email);
-  if (r === -1) return { ok: false, error: "এই Gmail দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি।" };
+  if (r === -1) return { ok: false, error: "No account found with this Gmail." };
   var u = rowToObj(sh, r);
   if (u.passHash && sha256hex("tr$" + password) !== String(u.passHash))
-    return { ok: false, error: "পাসওয়ার্ড ভুল হয়েছে।" };
+    return { ok: false, error: "Incorrect password." };
   if (!u.passHash && !u.googleId)
-    return { ok: false, error: "পাসওয়ার্ড ভুল হয়েছে।" };
+    return { ok: false, error: "Incorrect password." };
   var token = issueToken(email);
   return { ok: true, token: token, user: publicUser(rowToObj(sh, r)) };
 }
 
 function verifyGoogleToken(idToken) {
   if (CONFIG.GOOGLE_CLIENT_ID.indexOf("PASTE_") === 0)
-    return { ok: false, error: "সার্ভারে Google Client ID সেট করা হয়নি।" };
+    return { ok: false, error: "Google Client ID is not configured on the server." };
   var resp = UrlFetchApp.fetch(
     "https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(idToken),
     { muteHttpExceptions: true });
-  if (resp.getResponseCode() !== 200) return { ok: false, error: "Google যাচাই ব্যর্থ হয়েছে।" };
+  if (resp.getResponseCode() !== 200) return { ok: false, error: "Google verification failed." };
   var info = JSON.parse(resp.getContentText());
   if (info.aud !== CONFIG.GOOGLE_CLIENT_ID)
-    return { ok: false, error: "Google যাচাই ব্যর্থ হয়েছে।" };
+    return { ok: false, error: "Google verification failed." };
   if (info.email_verified !== "true")
-    return { ok: false, error: "Google ইমেইল যাচাইকৃত নয়।" };
+    return { ok: false, error: "Google email is not verified." };
   return { ok: true, email: String(info.email).toLowerCase(), name: info.name || "", googleId: info.sub };
 }
 
@@ -313,7 +313,7 @@ function actionGoogleLogin(d) {
 
 function actionGetMe(d) {
   var u = getUserByToken(d.token);
-  if (!u) return { ok: false, error: "সেশন শেষ — আবার লগিন করুন।" };
+  if (!u) return { ok: false, error: "Session expired — please log in again." };
   return { ok: true, user: publicUser(u) };
 }
 
@@ -331,7 +331,7 @@ function actionLogout(d) {
 
 function actionReferralInfo(d) {
   var u = getUserByToken(d.token);
-  if (!u) return { ok: false, error: "সেশন শেষ — আবার লগিন করুন।" };
+  if (!u) return { ok: false, error: "Session expired — please log in again." };
   var sh = getSheet("Users");
   var last = sh.getLastRow();
   var total = 0, active = 0;
@@ -354,17 +354,17 @@ function actionReferralInfo(d) {
 
 function actionRequestDeposit(d) {
   var u = getUserByToken(d.token);
-  if (!u) return { ok: false, error: "সেশন শেষ — আবার লগিন করুন।" };
+  if (!u) return { ok: false, error: "Session expired — please log in again." };
   var amount = Math.floor(Number(d.amount));
   var method = String(d.method || "").trim();
   var senderNo = String(d.senderNo || "").trim();
   var trxId = String(d.trxId || "").trim().toUpperCase();
 
-  if (!amount || amount <= 0) return { ok: false, error: "সঠিক টাকার পরিমাণ দিন।" };
-  if (["বিকাশ", "নগদ", "রকেট"].indexOf(method) === -1)
-    return { ok: false, error: "পেমেন্ট মাধ্যম সিলেক্ট করুন।" };
-  if (!isBdPhone(senderNo)) return { ok: false, error: "সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)।" };
-  if (!trxId) return { ok: false, error: "ট্রানজেকশন আইডি দিন।" };
+  if (!amount || amount <= 0) return { ok: false, error: "Enter a valid amount." };
+  if (["বিকাশ", "নগদ", "রকেট", "bKash", "Nagad", "Rocket"].indexOf(method) === -1)
+    return { ok: false, error: "Select a payment method." };
+  if (!isBdPhone(senderNo)) return { ok: false, error: "Enter a valid mobile number (01XXXXXXXXX)." };
+  if (!trxId) return { ok: false, error: "Enter the transaction ID." };
 
   var sh = getSheet("Deposits");
   var last = sh.getLastRow();
@@ -373,10 +373,10 @@ function actionRequestDeposit(d) {
     for (var i = 0; i < vals.length; i++) {
       // duplicate TrxID (pending or approved) — rejected ones may be retried
       if (String(vals[i][6]).toUpperCase() === trxId && vals[i][7] !== "rejected")
-        return { ok: false, error: "এই ট্রানজেকশন আইডি ইতিমধ্যে ব্যবহার হয়েছে।" };
+        return { ok: false, error: "This transaction ID has already been used." };
       // same user already has a pending request
       if (String(vals[i][1]).toLowerCase() === String(u.email).toLowerCase() && vals[i][7] === "pending")
-        return { ok: false, error: "আপনার একটি রিকোয়েস্ট ইতিমধ্যে যাচাইাধীন আছে।" };
+        return { ok: false, error: "You already have a pending request." };
     }
   }
 
@@ -385,12 +385,12 @@ function actionRequestDeposit(d) {
                 "pending", Utilities.formatDate(new Date(), "Asia/Dhaka", "dd/MM/yyyy HH:mm"),
                 "", "", ""]);
   return { ok: true, requestId: requestId,
-           message: "ডিপোজিট রিকোয়েস্ট পাঠানো হয়েছে — অ্যাডমিন অনুমোদন করলে ব্যালেন্স যোগ হবে।" };
+           message: "Deposit request sent — balance will be added after admin approval." };
 }
 
 function actionMyDeposits(d) {
   var u = getUserByToken(d.token);
-  if (!u) return { ok: false, error: "সেশন শেষ — আবার লগিন করুন।" };
+  if (!u) return { ok: false, error: "Session expired — please log in again." };
   var sh = getSheet("Deposits");
   var last = sh.getLastRow();
   var list = [];
@@ -434,26 +434,26 @@ function actionAdminDecide(d) {
   var decision = String(d.decision || "").trim(); // approve | reject
   var reason = String(d.reason || "").trim();
   if (decision !== "approve" && decision !== "reject")
-    return { ok: false, error: "সিদ্ধান্ত সঠিক নয়।" };
+    return { ok: false, error: "Invalid decision." };
   if (decision === "reject" && !reason)
-    return { ok: false, error: "প্রত্যাখ্যানের কারণ লিখুন।" };
+    return { ok: false, error: "Please write a rejection reason." };
 
   var lock = LockService.getScriptLock();
   lock.waitLock(15000);
   try {
     var dsh = getSheet("Deposits");
     var r = findRow(dsh, 1, requestId);
-    if (r === -1) return { ok: false, error: "রিকোয়েস্ট পাওয়া যায়নি।" };
+    if (r === -1) return { ok: false, error: "Request not found." };
     var dep = rowToObj(dsh, r);
     if (dep.status !== "pending")
-      return { ok: false, error: "এই রিকোয়েস্ট ইতিমধ্যে " +
-        (dep.status === "approved" ? "অনুমোদিত" : "প্রত্যাখ্যাত") + " হয়েছে।" };
+  return { ok: false, error: "This request has already been " +
+        (dep.status === "approved" ? "approved" : "rejected") + "." };
 
     var nowStr = Utilities.formatDate(new Date(), "Asia/Dhaka", "dd/MM/yyyy HH:mm");
     if (decision === "approve") {
       var ush = getSheet("Users");
       var ur = findRow(ush, 1, dep.email);
-      if (ur === -1) return { ok: false, error: "ইউজার পাওয়া যায়নি।" };
+      if (ur === -1) return { ok: false, error: "User not found." };
       var uu = rowToObj(ush, ur);
       var amount = Number(dep.amount) || 0;
       // credit balance
@@ -527,10 +527,10 @@ function doPost(e) {
       case "adminDeposits": out = actionAdminDeposits(d); break;
       case "adminDecide": out = actionAdminDecide(d); break;
       case "adminUsers": out = actionAdminUsers(d); break;
-      default: out = { ok: false, error: "অজানা action।" };
+      default: out = { ok: false, error: "Unknown action." };
     }
     return json(out);
   } catch (err) {
-    return json({ ok: false, error: "সার্ভার সমস্যা — পরে আবার চেষ্টা করুন।" });
+    return json({ ok: false, error: "Server error — try again later." });
   }
 }
