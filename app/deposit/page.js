@@ -11,7 +11,7 @@ import { useCurrency, formatMoney } from "../../lib/currency";
 const METHODS = ["bKash", "Nagad", "Rocket"];
 
 const inputCls =
-  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-rose focus:outline-none text-white placeholder:text-faint";
+  "mt-1 w-full bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3.5 focus:border-[#ff7a1a] focus:ring-2 focus:ring-[#ff7a1a]/30 focus:outline-none text-white placeholder:text-faint";
 
 function StatusLabel({ status }) {
   const cls = "inline-flex items-center gap-1";
@@ -56,7 +56,7 @@ export default function Deposit() {
   if (!user) {
     return (
       <div className="max-w-md mx-auto text-center py-16">
-        <div className="glass rounded-[2.5rem] p-10">
+        <div className="glass card-warm rounded-[2.5rem] p-10">
           <p className="text-lg font-bold text-white">Log in to deposit</p>
           <Link href="/login" className="mt-4 inline-block btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
             Log in
@@ -88,7 +88,8 @@ export default function Deposit() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center text-white flex items-center justify-center gap-2"><IconBanknote size={30} className="icon-3d" /> Deposit</h1>
+      <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
+      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBanknote size={34} className="icon-3d" /> Deposit</h1></div>
       <p className="text-center text-mist mt-2 text-sm">
         Send the money, then submit the transaction ID — your balance will be credited after admin approval.
       </p>
@@ -114,7 +115,7 @@ export default function Deposit() {
         </div>
       )}
 
-      <form onSubmit={submit} className="mt-5 glass rounded-[2rem] p-7 space-y-5">
+      <form onSubmit={submit} className="mt-5 glass card-warm rounded-[2rem] p-7 space-y-5 relative">
         <div>
           <label className="font-bold text-sm text-white">Amount</label>
           <input
@@ -152,7 +153,7 @@ export default function Deposit() {
         <button
           type="submit"
           disabled={busy}
-          className="w-full btn-gradient text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50 shadow-lg shadow-rose/25"
+          className="w-full btn-gradient animate-cta-pulse text-white font-bold py-4 rounded-full hover:opacity-90 disabled:opacity-50"
         >
           {busy ? "Sending…" : <span className="inline-flex items-center gap-2"><IconSend size={18} className="icon-3d icon-interactive" /> Send deposit request</span>}
         </button>
@@ -166,7 +167,7 @@ export default function Deposit() {
           <h2 className="font-bold text-xl text-white flex items-center gap-2"><IconClock size={20} className="icon-3d" /> My deposit requests</h2>
           <div className="mt-3 space-y-3">
             {history.map((d) => (
-              <div key={d.requestId} className="glass rounded-3xl p-5 text-sm">
+              <div key={d.requestId} className="glass card-warm rounded-3xl p-5 text-sm">
                 <div className="flex justify-between items-center gap-2">
                   <p className="font-bold text-white">{d.method} — {formatMoney(d.amount, currency)}</p>
                   <span className="text-xs font-bold whitespace-nowrap">
