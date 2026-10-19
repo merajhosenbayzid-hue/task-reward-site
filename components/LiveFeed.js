@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Avatar, StatusDot, IconCheck } from "./icons";
 
 const NAMES = [
   "রহিম উদ্দিন", "সুমাইয়া আক্তার", "করিম হোসেন", "নাজমুল হক",
@@ -11,10 +12,6 @@ const NAMES = [
   "ফাহিম চৌধুরী", "লামিয়া আক্তার", "সজীব মিয়া", "প্রিয়া রানী",
 ];
 const AMOUNTS = ["5", "2.50", "15", "7.50", "10"];
-const AVATAR_GRADS = [
-  "from-peach to-rose", "from-aqua to-grape", "from-rose to-grape",
-  "from-sun to-peach", "from-grape to-aqua",
-];
 
 let uid = 0;
 function makeItem() {
@@ -23,7 +20,6 @@ function makeItem() {
     id: uid,
     name: NAMES[Math.floor(Math.random() * NAMES.length)],
     amount: AMOUNTS[Math.floor(Math.random() * AMOUNTS.length)],
-    grad: AVATAR_GRADS[Math.floor(Math.random() * AVATAR_GRADS.length)],
     secs: 0,
     fresh: true,
   };
@@ -84,9 +80,7 @@ export default function LiveFeed() {
               key={f.id}
               className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors ${f.fresh ? "animate-feed-in" : ""}`}
             >
-              <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${f.grad} flex items-center justify-center font-bold text-white text-sm shrink-0 shadow-md`}>
-                {f.name[0]}
-              </div>
+              <Avatar name={f.name} size={40} seed={f.id} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-white truncate">{f.name}</p>
                 <p className="text-xs text-mist truncate">
@@ -95,7 +89,9 @@ export default function LiveFeed() {
               </div>
               <div className="text-right shrink-0">
                 <p className="text-sm font-bold text-peach whitespace-nowrap">+৳{f.amount}</p>
-                <p className="text-[10px] text-aqua font-bold">✓ Approved</p>
+                <p className="text-[10px] text-aqua font-bold flex items-center gap-1 justify-end">
+                  <IconCheck size={11} /> Approved
+                </p>
               </div>
             </div>
           ))}
@@ -105,7 +101,7 @@ export default function LiveFeed() {
       </div>
 
       <div className="mt-3 flex items-center justify-between text-xs text-faint">
-        <span>🟢 {120 + (tick.current % 30)} online</span>
+        <span className="flex items-center gap-1.5"><StatusDot active size={10} /> {120 + (tick.current % 30)} online</span>
         <span>{340 + (tick.current % 50)} commissions today</span>
       </div>
     </div>
