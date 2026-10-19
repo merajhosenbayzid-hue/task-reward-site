@@ -7,6 +7,7 @@ import {
   getWithdrawEligibility, myDeposits,
 } from "../../lib/api";
 import { StatusDot, IconWallet, IconUsers, IconCheckBadge, IconUser, IconSparkles, IconAlert } from "../../components/icons";
+import { useCurrency, formatMoney } from "../../lib/currency";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [loaded, setLoaded] = useState(false);
   const [stats, setStats] = useState({ total: 0, active: 0 });
   const [notices, setNotices] = useState([]);
+  const [currency] = useCurrency();
 
   useEffect(() => {
     let alive = true;
@@ -65,7 +67,7 @@ export default function Dashboard() {
   const elig = getWithdrawEligibility(user, stats);
 
   const cards = [
-    { icon: <IconWallet size={24} className="[&_*]:stroke-white" />, label: "Balance", value: `৳${user.balance}`, g: "from-peach to-rose" },
+    { icon: <IconWallet size={24} className="[&_*]:stroke-white" />, label: "Balance", value: formatMoney(user.balance, currency), g: "from-peach to-rose" },
     { icon: <IconUsers size={24} className="[&_*]:stroke-white" />, label: "Total referrals", value: `${stats.total}`, g: "from-aqua to-grape" },
     { icon: <StatusDot active size={22} />, label: "Active referrals", value: `${stats.active}`, g: "from-grape to-rose" },
     { icon: <IconCheckBadge size={24} className="[&_*]:stroke-white" />, label: "Completed tasks", value: "0", g: "from-rose to-sun" },
@@ -87,9 +89,9 @@ export default function Dashboard() {
           }`}
         >
           {n.status === "approved" ? (
-            <span className="inline-flex items-center gap-2"><IconSparkles size={18} className="icon-3d" /> Your deposit of ৳{n.amount} was approved! It&apos;s been added to your balance.</span>
+            <span className="inline-flex items-center gap-2"><IconSparkles size={18} className="icon-3d" /> Your deposit of {formatMoney(n.amount, currency)} was approved! It&apos;s been added to your balance.</span>
           ) : (
-            <span className="inline-flex items-center gap-2"><IconAlert size={18} className="icon-3d" /> Your deposit of ৳{n.amount} was rejected. Reason: {n.rejectReason || "—"}</span>
+            <span className="inline-flex items-center gap-2"><IconAlert size={18} className="icon-3d" /> Your deposit of {formatMoney(n.amount, currency)} was rejected. Reason: {n.rejectReason || "—"}</span>
           )}
         </div>
       ))}
@@ -101,7 +103,7 @@ export default function Dashboard() {
         <div className="relative p-8 flex items-center justify-between">
           <div>
             <p className="text-white/80 text-sm font-bold">Total balance</p>
-            <p className="text-5xl font-bold text-white mt-1">৳{user.balance}</p>
+            <p className="text-5xl font-bold text-white mt-1">{formatMoney(user.balance, currency)}</p>
             <div className="mt-3 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 text-sm font-bold text-white">
               {active ? <span className="inline-flex items-center gap-1.5"><StatusDot active size={12} /> Active</span> : <span className="inline-flex items-center gap-1.5"><StatusDot size={12} /> Inactive</span>}
               {active && <span>• {daysLeft(user)} days left</span>}
@@ -116,7 +118,7 @@ export default function Dashboard() {
           href="/deposit"
           className="mt-4 block text-center bg-white/10 border border-peach/40 rounded-2xl px-5 py-4 font-bold text-peach hover:bg-white/15"
         >
-          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — deposit to activate (৳100+ = 7 days) →</span>
+          <span className="inline-flex items-center gap-2"><StatusDot size={13} /> Account inactive — deposit to activate ({formatMoney(100, currency)}+ = 7 days) →</span>
         </Link>
       )}
 
