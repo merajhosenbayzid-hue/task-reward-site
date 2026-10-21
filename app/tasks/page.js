@@ -46,7 +46,7 @@ export default function Tasks() {
     <div>
       <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
       <p className="eyebrow text-center relative">Earn more</p>
-      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconClipboard size={34} className="icon-3d" /> Task List</h1></div>
+      <h1 className="font-display text-5xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconClipboard size={34} className="icon-3d" /> Task List</h1></div>
       <p className="text-center text-mist mt-2 max-w-xl mx-auto">
         Clicking the button opens the link in a new tab.{" "}
         <b className="text-white">Stay 10 seconds</b> to count <b className="text-white">1 click</b> — closing the tab before that won&apos;t count.
