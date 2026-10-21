@@ -59,36 +59,6 @@ function PhotoBg() {
   );
 }
 
-// The owner's panda photo as a fixed, persistent background watermark —
-// same image on every inner page, so it never disappears on navigation.
-// Skipped on /classic (archive) and the owner panel.
-function PandaBg() {
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute -right-[14vmin] top-1/2 h-[72vmin] w-[72vmin] -translate-y-1/2">
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            backgroundImage: "url(/images/panda-bg.webp)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.16,
-            maskImage: "radial-gradient(circle, black 52%, transparent 70%)",
-            WebkitMaskImage: "radial-gradient(circle, black 52%, transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute -inset-[10%] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,122,26,.12), transparent 65%)",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 // Shared page chrome. The "/" landing page renders its own nav/hero,
 // so the global Header/Background/Footer are skipped only on that route.
 // The owner panel route is never bannered and never maintenance-gated.
@@ -122,7 +92,6 @@ export default function Chrome({ children }) {
     <>
       {banner}
       {!isClassic && <PhotoBg />}
-      {!isClassic && <PandaBg />}
       <Background />
       <Header />
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 pt-8 pb-4 relative z-10">{children}</main>
