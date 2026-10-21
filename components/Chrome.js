@@ -44,40 +44,21 @@ function MaintenanceScreen() {
   );
 }
 
-// Orange diagonal "wash" echoing the homepage hero — sits behind inner-page
-// content, never intercepts clicks. Skipped on /, /classic and the owner panel.
-function InnerWash() {
+// The owner's hero photo as a fixed background on every inner page —
+// the same photo as the homepage, so it never disappears on navigation.
+// Skipped on /classic (archive) and the owner panel.
+function PhotoBg() {
   return (
-    <div className="absolute inset-x-0 top-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      {/* diagonal orange shape */}
-      <div
-        className="absolute inset-x-0 top-0 h-[300px] sm:h-[420px]"
-        style={{
-          clipPath: "polygon(0 0, 100% 0, 100% 30%, 0 100%)",
-          background: "linear-gradient(135deg, #ff7a1a, #d14d00)",
-        }}
+    <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
+      <img
+        src="/images/hero-bg.jpg"
+        alt=""
+        className="h-full w-full object-cover"
       />
-      {/* warm highlight on the orange */}
+      {/* slight dim so page text/cards stay readable over the photo */}
       <div
-        className="absolute inset-x-0 top-0 h-[300px] sm:h-[420px]"
-        style={{
-          clipPath: "polygon(0 0, 100% 0, 100% 30%, 0 100%)",
-          background:
-            "radial-gradient(60% 55% at 18% 18%, rgba(255,226,182,.38), transparent 70%)",
-        }}
-      />
-      {/* soft radial glow */}
-      <div
-        className="absolute -top-24 left-1/4 w-[30rem] h-[22rem] rounded-full blur-3xl opacity-30"
-        style={{ background: "radial-gradient(closest-side, rgba(255,122,26,.55), transparent)" }}
-      />
-      {/* dark fade blending into the page background */}
-      <div
-        className="absolute inset-x-0 top-0 h-[400px] sm:h-[540px]"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 42%, rgba(10,10,24,.55) 74%, #0a0a18 100%)",
-        }}
+        className="absolute inset-0"
+        style={{ background: "rgba(10,10,24,.32)" }}
       />
     </div>
   );
@@ -145,7 +126,7 @@ export default function Chrome({ children }) {
   return (
     <>
       {banner}
-      {!isClassic && <InnerWash />}
+      {!isClassic && <PhotoBg />}
       {!isClassic && <PandaBg />}
       <Background />
       <Header />
