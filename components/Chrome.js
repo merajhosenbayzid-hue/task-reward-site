@@ -55,11 +55,6 @@ function PhotoBg() {
         alt=""
         className="h-full w-full object-cover"
       />
-      {/* slight dim so page text/cards stay readable over the photo */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "rgba(10,10,24,.32)" }}
-      />
     </div>
   );
 }
