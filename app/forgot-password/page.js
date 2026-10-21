@@ -27,13 +27,13 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-8 relative">
+    <div className="max-w-lg mx-auto py-8 relative">
       <div className="ambient-glow w-[28rem] h-[28rem] -top-24 left-1/2 -translate-x-1/2" aria-hidden="true" />
       <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconMail size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Forgot Password</h1>
+        <h1 className="mt-4 font-display text-5xl font-extrabold page-title">Forgot Password</h1>
         <p className="text-mist mt-1 text-sm">Enter your registered Gmail address and we&apos;ll send you a recovery link.</p>
       </div>
 
