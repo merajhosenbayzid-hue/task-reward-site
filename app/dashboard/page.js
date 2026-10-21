@@ -46,10 +46,10 @@ export default function Dashboard() {
 
   if (!authed)
     return (
-      <div className="max-w-md mx-auto text-center py-16">
+      <div className="max-w-lg mx-auto text-center py-16">
         <div className="glass card-warm rounded-[2.5rem] p-10">
           <p className="flex justify-center"><IconUser size={48} className="icon-3d" /></p>
-          <h1 className="mt-4 text-2xl font-bold text-white">Dashboard</h1>
+          <h1 className="mt-4 text-3xl font-bold text-white">Dashboard</h1>
           <p className="text-mist mt-2">Log in to view your dashboard.</p>
           <div className="mt-6 flex gap-3 justify-center">
             <Link href="/login" className="bg-white text-night font-bold px-6 py-3 rounded-full hover:bg-mist">
