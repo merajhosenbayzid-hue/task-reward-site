@@ -34,9 +34,9 @@ export default function Referral() {
 
   if (!user) {
     return (
-      <div className="max-w-md mx-auto text-center py-16">
+      <div className="max-w-lg mx-auto text-center py-16">
         <div className="glass card-warm rounded-[2.5rem] p-10">
-          <p className="text-lg font-bold text-white">Log in to refer</p>
+          <p className="text-2xl font-bold text-white">Log in to refer</p>
           <Link href="/login" className="mt-4 inline-block btn-gradient text-white font-bold px-6 py-3 rounded-full hover:opacity-90">
             Log in
           </Link>
