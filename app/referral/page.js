@@ -61,7 +61,7 @@ export default function Referral() {
   return (
     <div className="max-w-xl mx-auto">
       <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
-      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconGift size={34} className="icon-3d" /> Refer &amp; Win Rewards</h1></div>
+      <h1 className="font-display text-5xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconGift size={34} className="icon-3d" /> Refer &amp; Win Rewards</h1></div>
       <p className="text-center text-mist mt-2">
         Refer friends — when their deposit is approved, you get a <b className="text-white">5%</b> bonus!
       </p>
