@@ -89,7 +89,7 @@ export default function Deposit() {
   return (
     <div className="max-w-xl mx-auto">
       <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
-      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBanknote size={34} className="icon-3d" /> Deposit</h1></div>
+      <h1 className="font-display text-5xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBanknote size={34} className="icon-3d" /> Deposit</h1></div>
       <p className="text-center text-mist mt-2 text-sm">
         Send the money, then submit the transaction ID — your balance will be credited after admin approval.
       </p>
