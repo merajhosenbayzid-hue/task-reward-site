@@ -123,7 +123,7 @@ export default function Withdraw() {
   return (
     <div className="max-w-xl mx-auto">
       <div className="relative"><div className="ambient-glow w-[26rem] h-[14rem] -top-20 left-1/2 -translate-x-1/2" aria-hidden="true" />
-      <h1 className="font-display text-4xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBank size={34} className="icon-3d" /> Withdraw Money</h1></div>
+      <h1 className="font-display text-5xl font-extrabold text-center page-title flex items-center justify-center gap-3 relative"><IconBank size={34} className="icon-3d" /> Withdraw Money</h1></div>
 
       <div className="mt-6 glass card-warm rounded-[2rem] p-8 text-center relative">
         <p className="text-faint text-sm">Withdrawable balance</p>
