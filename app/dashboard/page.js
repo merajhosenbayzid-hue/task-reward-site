@@ -77,7 +77,7 @@ export default function Dashboard() {
     <div>
       <div className="relative"><div className="ambient-glow w-[30rem] h-[16rem] -top-24 -left-24" aria-hidden="true" />
       <p className="eyebrow relative">Overview</p>
-      <h1 className="font-display text-4xl font-extrabold page-title relative">Dashboard</h1></div>
+      <h1 className="font-display text-5xl font-extrabold page-title relative">Dashboard</h1></div>
       <p className="text-mist mt-1">Welcome, {user.name}!</p>
 
       {/* deposit decision notifications */}
