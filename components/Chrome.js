@@ -94,7 +94,7 @@ export default function Chrome({ children }) {
       {!isClassic && <PhotoBg />}
       <Background />
       <Header />
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 pt-8 pb-4 relative z-10">{children}</main>
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 pt-8 pb-4 relative z-10">{children}</main>
       <Footer />
     </>
   );
