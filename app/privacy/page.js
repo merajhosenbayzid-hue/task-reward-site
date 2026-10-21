@@ -41,7 +41,7 @@ export default function Privacy() {
         <IconBadge size={64} className="mx-auto">
           <IconLock size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Privacy Policy</h1>
+        <h1 className="mt-4 font-display text-5xl font-extrabold page-title">Privacy Policy</h1>
         <p className="text-mist mt-1 text-sm">Last updated: October 2026</p>
       </div>
 
