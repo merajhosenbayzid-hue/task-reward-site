@@ -58,13 +58,13 @@ function ResetBody() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-8 relative">
+    <div className="max-w-lg mx-auto py-8 relative">
       <div className="ambient-glow w-[28rem] h-[28rem] -top-24 left-1/2 -translate-x-1/2" aria-hidden="true" />
       <div className="text-center relative">
         <IconBadge size={64} className="mx-auto">
           <IconKey size={30} className="[&_*]:stroke-white" />
         </IconBadge>
-        <h1 className="mt-4 font-display text-4xl font-extrabold page-title">Reset Password</h1>
+        <h1 className="mt-4 font-display text-5xl font-extrabold page-title">Reset Password</h1>
       </div>
 
       <div className="mt-6 glass card-warm rounded-[2rem] p-8 relative">
