@@ -176,32 +176,6 @@ export default function PromoPage() {
           />
         </div>
 
-        {/* panda watermark in the dark side of the hero — the owner's photo,
-            blended with a warm glow to match the palette */}
-        <div
-          className="pointer-events-none absolute -right-[12vmin] top-[6%] z-0 h-[56vmin] w-[56vmin]"
-          aria-hidden="true"
-        >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              backgroundImage: "url(/images/panda-bg.webp)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: 0.34,
-              maskImage: "radial-gradient(circle, black 52%, transparent 70%)",
-              WebkitMaskImage: "radial-gradient(circle, black 52%, transparent 70%)",
-            }}
-          />
-          <div
-            className="absolute -inset-[10%] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(255,122,26,.22), transparent 65%)",
-            }}
-          />
-        </div>
-
         <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-7xl items-center gap-10 px-5 pb-20 pt-28 lg:grid-cols-[1.05fr_1fr] lg:pt-24">
           {/* left: copy */}
           <div className="promo-rise">
